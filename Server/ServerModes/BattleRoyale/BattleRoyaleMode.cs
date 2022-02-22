@@ -63,7 +63,7 @@ namespace Server
         {
             uint ID;
             byte[] data;
-            uint objectID, index, count;
+            uint objectID, index, count, fromID, toID;
             ItemSpawnInfo spawnInfo;
             NetDefines.StateDefines.NetState_Inventory inventory;
             lock (client._sync)
@@ -118,7 +118,15 @@ namespace Server
                             {
                                 Log.Print("Client ID=" + client.ID + " logged in as " + target.name);
                                 client.profile = target;
-                                NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.LoginSuccessRes, Encoding.UTF8.GetBytes(target.name));
+                                client.teamID = Backend.clientTeamIDCounter++;
+                                m = new MemoryStream();
+                                NetHelper.WriteU32(m, client.ID);
+                                NetHelper.WriteU32(m, client.teamID);
+                                NetHelper.WriteU32(m, (uint)target.name.Length);
+                                foreach (char c in target.name)
+                                    m.WriteByte((byte)c);
+                                NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.LoginSuccessRes, m.ToArray());
+                                Backend.BroadcastCommandExcept((uint)BackendCommand.RefreshPlayerListReq, new byte[0], client);
                             }
                         }
                         break;
@@ -288,6 +296,51 @@ namespace Server
                     case BackendCommand.PlayFootStepSoundReq:
                         data = NetHelper.CopyCommandData(m);
                         Backend.BroadcastCommandExcept((uint)BackendCommand.PlayFootStepSoundReq, data, client);
+                        break;
+                    case BackendCommand.GetPlayersOnServerReq:
+                        m = new MemoryStream();
+                        NetHelper.WriteU32(m, (uint)Backend.clientList.Count);
+                        foreach (ClientInfo other in Backend.clientList)
+                        {
+                            NetHelper.WriteU32(m, other.ID);
+                            NetHelper.WriteU32(m, other.teamID);
+                            m.WriteByte((byte)(other.isTeamReady ? 1 : 0));
+                            NetHelper.WriteU32(m, (uint)other.profile.name.Length);
+                            foreach (char c in other.profile.name)
+                                m.WriteByte((byte)c);
+                        }
+                        NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.GetPlayersOnServerRes, m.ToArray());
+                        break;
+                    case BackendCommand.TeamInviteReq:
+                        fromID = NetHelper.ReadU32(m);
+                        toID = NetHelper.ReadU32(m);
+                        foreach (ClientInfo other in Backend.clientList)
+                            if (other.ID == toID)
+                            {
+                                Log.Print("Sending team invite from " + fromID + " to " + toID);
+                                data = NetHelper.CopyCommandData(m);
+                                NetHelper.ServerSendCMDPacket(other.ns, (uint)BackendCommand.TeamInviteReq, data);
+                                break;
+                            }
+                        break;
+                    case BackendCommand.TeamInviteAcceptReq:
+                        toID = NetHelper.ReadU32(m);
+                        foreach (ClientInfo other in Backend.clientList)
+                            if (other.ID == toID)
+                            {
+                                Log.Print("Accepting team invite by " + client.ID + " into team of " + toID);
+                                client.teamID = other.teamID;
+                                Backend.BroadcastCommand((uint)BackendCommand.RefreshPlayerListReq, new byte[0]);
+                                break;
+                            }
+                        break;
+                    case BackendCommand.TeamLeaveReq:
+                        client.teamID = Backend.clientTeamIDCounter++;
+                        Backend.BroadcastCommand((uint)BackendCommand.RefreshPlayerListReq, new byte[0]);
+                        break;
+                    case BackendCommand.SetTeamReadyStateReq:
+                        client.isTeamReady = m.ReadByte() == 1;
+                        Backend.BroadcastCommand((uint)BackendCommand.RefreshPlayerListReq, new byte[0]);
                         break;
                     //Responses
                     case BackendCommand.DeleteObjectsRes:

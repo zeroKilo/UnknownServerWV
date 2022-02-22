@@ -12,6 +12,8 @@ namespace Server
     public class ClientInfo
     {
         public uint ID;
+        public uint teamID;
+        public bool isTeamReady = false;
         public TcpClient tcp;
         public IPEndPoint udp;
         public NetworkStream ns;

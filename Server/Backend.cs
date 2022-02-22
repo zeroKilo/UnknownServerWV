@@ -15,6 +15,7 @@ namespace Server
         public static ServerModeState modeState;
         public static string SERVER_SALT = "blabla";
         public static List<ClientInfo> clientList = new List<ClientInfo>();
+        public static uint clientTeamIDCounter = 333;
         private static readonly object _sync = new object();
         private static TcpListener tcp;
         private static bool _running = false;
@@ -101,6 +102,7 @@ namespace Server
                     break;
                 }
             ObjectManager.RemoveClientObjects(c);
+            BroadcastCommand((uint)BackendCommand.RefreshPlayerListReq, new byte[0]);
         }
 
         public static void tClient(object obj)

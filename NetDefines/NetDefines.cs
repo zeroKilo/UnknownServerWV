@@ -99,7 +99,14 @@ namespace NetDefines
         GetAllPickupsReq,
         GetAllItemContainersReq,
         UpdateBlueZoneReq,
-        PlayFootStepSoundReq
+        PlayFootStepSoundReq,
+        GetPlayersOnServerReq,
+        GetPlayersOnServerRes,
+        RefreshPlayerListReq,
+        TeamInviteReq,
+        TeamInviteAcceptReq,
+        TeamLeaveReq,
+        SetTeamReadyStateReq,
     }
     
     public enum HitLocation
