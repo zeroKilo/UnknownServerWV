@@ -13,6 +13,13 @@ namespace Server
         public static List<NetObject> objects = new List<NetObject>();
 
         public static uint objectIDcounter = 0x1000;
+
+        public static void Reset()
+        {
+            objects = new List<NetObject>();
+            Log.Print("RESET ObjectManager");
+        }
+
         public static NetObject FindByAccessKey(uint key)
         {
             foreach (NetObject o in objects)

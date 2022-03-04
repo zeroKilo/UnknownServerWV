@@ -86,6 +86,7 @@ namespace NetDefines
         GetDoorStatesRes,
         ServerStateChangedReq,
         PlayerReadyReq,
+        PlayerNotReadyReq,
         SetCountDownNumberReq,
         SetFlightPathReq,
         PlayerHitReq,
@@ -107,6 +108,13 @@ namespace NetDefines
         TeamInviteAcceptReq,
         TeamLeaveReq,
         SetTeamReadyStateReq,
+        PickupInfiniteItemReq,
+        KillsToWinReq,
+        KillsToWinRes,
+        UpdateRoundTimeReq,
+        GetPlayerScoresReq,
+        GetPlayerScoresRes,
+        AddScoresReq
     }
     
     public enum HitLocation
@@ -136,8 +144,8 @@ namespace NetDefines
     public enum ServerMode
     {
         Offline,
-        ArcadeMode,
         BattleRoyaleMode,
+        TeamDeathMatchMode,
     }
 
     public enum ServerModeState
@@ -146,7 +154,10 @@ namespace NetDefines
         BR_LobbyState,
         BR_CountDownState,
         BR_MainGameState,
-        ARC_LobbyState
+        TDM_LobbyState,
+        TDM_CountDownState,
+        TDM_MainGameState,
+        TDM_RoundEndState
     }
 
     public static class NetConstants
@@ -156,9 +167,43 @@ namespace NetDefines
         public static string[] ServerModeNames = new string[]
         {
             "Offline",
-            "Arcade Mode",
             "Battle Royale Mode",
+            "Team Death Match Mode",
         };
+    }
+
+    public class PlayerScoreEntry
+    {
+        public uint playerID;
+        public uint kills;
+        public uint deaths;
+        public uint assists;
+        public PlayerScoreEntry(uint ID)
+        {
+            playerID = ID;
+            kills = deaths = assists = 0;
+        }
+
+        public PlayerScoreEntry(Stream s)
+        {
+            Read(s);
+        }
+
+        public void Read(Stream s)
+        {
+            playerID = NetHelper.ReadU32(s);
+            kills = NetHelper.ReadU32(s);
+            deaths = NetHelper.ReadU32(s);
+            assists = NetHelper.ReadU32(s);
+        }
+
+        public void Write(Stream s)
+        {
+            NetHelper.WriteU32(s, playerID);
+            NetHelper.WriteU32(s, kills);
+            NetHelper.WriteU32(s, deaths);
+            NetHelper.WriteU32(s, assists);
+        }
     }
 
     public class SpawnGroupRemoveInfo

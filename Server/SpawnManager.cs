@@ -19,6 +19,7 @@ namespace Server
             spawnGroupChanges = new List<SpawnGroupRemoveInfo>();
             droppedItems = new List<DroppedItemInfo>();
             itemContainers = new List<ItemContainerInfo>();
+            Log.Print("RESET SpawnManager");
         }
 
         public static void RegisterItemContainer(float[] pos, ItemContainerType type, string name, NetDefines.StateDefines.NetState_Inventory inventory)

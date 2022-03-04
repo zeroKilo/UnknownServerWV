@@ -10,6 +10,7 @@ namespace NetDefines
 
     public static class NetHelper
     {
+        private static readonly object _client_sync = new object();
         public static Random rnd = new Random();
         public static ushort ReadU16(Stream s)
         {
@@ -79,31 +80,30 @@ namespace NetDefines
         }
         public static void ClientSendCMDPacket(Stream s, uint cmd, byte[] data)
         {
-            MemoryStream m = new MemoryStream();
-            WriteU32(m, NetConstants.PACKET_MAGIC);
-            WriteU32(m, (uint)data.Length + 4);
-            WriteU32(m, cmd);
-            m.Write(data, 0, data.Length);
-            byte[] packet = m.ToArray();
-            s.Write(packet, 0, packet.Length);
+            lock (_client_sync)
+            {
+                MemoryStream m = new MemoryStream();
+                WriteU32(m, NetConstants.PACKET_MAGIC);
+                WriteU32(m, (uint)data.Length + 4);
+                WriteU32(m, cmd);
+                m.Write(data, 0, data.Length);
+                byte[] packet = m.ToArray();
+                s.Write(packet, 0, packet.Length);
+            }
         }
 
-        public static byte[] ServerMakeCMDPacket(uint cmd, byte[] data)
+        public static void ServerSendCMDPacket(Stream s, uint cmd, byte[] data, object _sync)
         {
-            MemoryStream m = new MemoryStream();
-            ServerSendCMDPacket(m, cmd, data);
-            return m.ToArray();
-        }
-
-        public static void ServerSendCMDPacket(Stream s, uint cmd, byte[] data)
-        {
-            MemoryStream m = new MemoryStream();
-            WriteU32(m, NetConstants.PACKET_MAGIC);
-            WriteU32(m, (uint)data.Length + 4);
-            WriteU32(m, cmd);
-            m.Write(data, 0, data.Length);
-            byte[] packet = m.ToArray();
-            s.Write(packet, 0, packet.Length);
+            lock (_sync)
+            {
+                MemoryStream m = new MemoryStream();
+                WriteU32(m, NetConstants.PACKET_MAGIC);
+                WriteU32(m, (uint)data.Length + 4);
+                WriteU32(m, cmd);
+                m.Write(data, 0, data.Length);
+                byte[] packet = m.ToArray();
+                s.Write(packet, 0, packet.Length);
+            }
         }
 
         public static byte[] CopyCommandData(Stream s)

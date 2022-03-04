@@ -90,6 +90,8 @@ namespace Server
                             Backend.BroadcastServerStateChange(ServerMode.BattleRoyaleMode, ServerModeState.BR_LobbyState);
                             DoorManager.Reset();
                             SpawnManager.Reset();
+                            ObjectManager.Reset();
+                            sw.Restart();
                         }
                         break;
                 }
@@ -103,8 +105,6 @@ namespace Server
         {
             _exit = false;
             _running = false;
-            DoorManager.Reset();
-            SpawnManager.Reset();
             new Thread(tMain).Start();
         }
 

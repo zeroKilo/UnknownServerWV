@@ -10,6 +10,7 @@ namespace NetDefines
 {
     public class NetObjPlayerState : NetObject
     {
+        public uint playerID;
         public float[] position = new float[3];
         public float[] rotation = new float[4];
         public float[] input = new float[2];

@@ -40,6 +40,14 @@ namespace UnknownServerWV
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.panel_tdm_mode = new System.Windows.Forms.Panel();
+            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.comboBox3 = new System.Windows.Forms.ComboBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.panel_br_mode = new System.Windows.Forms.Panel();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
@@ -49,16 +57,16 @@ namespace UnknownServerWV
             this.label4 = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.panel_arcade_mode = new System.Windows.Forms.Panel();
             this.rtb1 = new System.Windows.Forms.RichTextBox();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.status = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
-            this.label7 = new System.Windows.Forms.Label();
+            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.textBox6 = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -68,8 +76,8 @@ namespace UnknownServerWV
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
+            this.panel_tdm_mode.SuspendLayout();
             this.panel_br_mode.SuspendLayout();
-            this.panel_arcade_mode.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -150,7 +158,7 @@ namespace UnknownServerWV
             // 
             // splitContainer2.Panel2
             // 
-            this.splitContainer2.Panel2.Controls.Add(this.panel_arcade_mode);
+            this.splitContainer2.Panel2.Controls.Add(this.panel_tdm_mode);
             this.splitContainer2.Panel2.Controls.Add(this.label2);
             this.splitContainer2.Panel2.Controls.Add(this.panel_br_mode);
             this.splitContainer2.Size = new System.Drawing.Size(800, 303);
@@ -182,6 +190,96 @@ namespace UnknownServerWV
             this.label1.TabIndex = 0;
             this.label1.Text = "Select Mode";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // panel_tdm_mode
+            // 
+            this.panel_tdm_mode.AutoScroll = true;
+            this.panel_tdm_mode.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_tdm_mode.Controls.Add(this.textBox6);
+            this.panel_tdm_mode.Controls.Add(this.label11);
+            this.panel_tdm_mode.Controls.Add(this.textBox5);
+            this.panel_tdm_mode.Controls.Add(this.label10);
+            this.panel_tdm_mode.Controls.Add(this.textBox3);
+            this.panel_tdm_mode.Controls.Add(this.label8);
+            this.panel_tdm_mode.Controls.Add(this.textBox4);
+            this.panel_tdm_mode.Controls.Add(this.label9);
+            this.panel_tdm_mode.Controls.Add(this.comboBox3);
+            this.panel_tdm_mode.Controls.Add(this.label7);
+            this.panel_tdm_mode.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel_tdm_mode.Location = new System.Drawing.Point(0, 25);
+            this.panel_tdm_mode.Name = "panel_tdm_mode";
+            this.panel_tdm_mode.Size = new System.Drawing.Size(530, 278);
+            this.panel_tdm_mode.TabIndex = 3;
+            // 
+            // textBox3
+            // 
+            this.textBox3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.textBox3.Location = new System.Drawing.Point(0, 110);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(528, 21);
+            this.textBox3.TabIndex = 11;
+            this.textBox3.Text = "3";
+            this.textBox3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label8
+            // 
+            this.label8.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label8.Location = new System.Drawing.Point(0, 88);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(528, 22);
+            this.label8.TabIndex = 10;
+            this.label8.Text = "Count Down Time in Seconds";
+            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // textBox4
+            // 
+            this.textBox4.Dock = System.Windows.Forms.DockStyle.Top;
+            this.textBox4.Location = new System.Drawing.Point(0, 67);
+            this.textBox4.Name = "textBox4";
+            this.textBox4.Size = new System.Drawing.Size(528, 21);
+            this.textBox4.TabIndex = 9;
+            this.textBox4.Text = "1";
+            this.textBox4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label9
+            // 
+            this.label9.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label9.Location = new System.Drawing.Point(0, 45);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(528, 22);
+            this.label9.TabIndex = 8;
+            this.label9.Text = "Minimal Player Count";
+            this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // comboBox3
+            // 
+            this.comboBox3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.comboBox3.FormattingEnabled = true;
+            this.comboBox3.Location = new System.Drawing.Point(0, 22);
+            this.comboBox3.Name = "comboBox3";
+            this.comboBox3.Size = new System.Drawing.Size(528, 23);
+            this.comboBox3.TabIndex = 3;
+            // 
+            // label7
+            // 
+            this.label7.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label7.Location = new System.Drawing.Point(0, 0);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(528, 22);
+            this.label7.TabIndex = 2;
+            this.label7.Text = "Map";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label2
+            // 
+            this.label2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label2.Font = new System.Drawing.Font("Courier New", 9F);
+            this.label2.Location = new System.Drawing.Point(0, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(530, 25);
+            this.label2.TabIndex = 1;
+            this.label2.Text = "Select Settings";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // panel_br_mode
             // 
@@ -228,7 +326,7 @@ namespace UnknownServerWV
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(528, 21);
             this.textBox1.TabIndex = 5;
-            this.textBox1.Text = "1";
+            this.textBox1.Text = "10";
             this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label5
@@ -279,29 +377,6 @@ namespace UnknownServerWV
             this.label3.TabIndex = 0;
             this.label3.Text = "Map";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label2
-            // 
-            this.label2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label2.Font = new System.Drawing.Font("Courier New", 9F);
-            this.label2.Location = new System.Drawing.Point(0, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(530, 25);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "Select Settings";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // panel_arcade_mode
-            // 
-            this.panel_arcade_mode.AutoScroll = true;
-            this.panel_arcade_mode.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_arcade_mode.Controls.Add(this.comboBox3);
-            this.panel_arcade_mode.Controls.Add(this.label7);
-            this.panel_arcade_mode.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel_arcade_mode.Location = new System.Drawing.Point(0, 25);
-            this.panel_arcade_mode.Name = "panel_arcade_mode";
-            this.panel_arcade_mode.Size = new System.Drawing.Size(530, 278);
-            this.panel_arcade_mode.TabIndex = 3;
             // 
             // rtb1
             // 
@@ -357,24 +432,45 @@ namespace UnknownServerWV
             this.timer1.Enabled = true;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // comboBox3
+            // textBox5
             // 
-            this.comboBox3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(0, 22);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(528, 23);
-            this.comboBox3.TabIndex = 3;
+            this.textBox5.Dock = System.Windows.Forms.DockStyle.Top;
+            this.textBox5.Location = new System.Drawing.Point(0, 153);
+            this.textBox5.Name = "textBox5";
+            this.textBox5.Size = new System.Drawing.Size(528, 21);
+            this.textBox5.TabIndex = 13;
+            this.textBox5.Text = "20";
+            this.textBox5.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // label7
+            // label10
             // 
-            this.label7.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label7.Location = new System.Drawing.Point(0, 0);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(528, 22);
-            this.label7.TabIndex = 2;
-            this.label7.Text = "Map";
-            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label10.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label10.Location = new System.Drawing.Point(0, 131);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(528, 22);
+            this.label10.TabIndex = 12;
+            this.label10.Text = "Round Time in Minutes";
+            this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // textBox6
+            // 
+            this.textBox6.Dock = System.Windows.Forms.DockStyle.Top;
+            this.textBox6.Location = new System.Drawing.Point(0, 196);
+            this.textBox6.Name = "textBox6";
+            this.textBox6.Size = new System.Drawing.Size(528, 21);
+            this.textBox6.TabIndex = 15;
+            this.textBox6.Text = "40";
+            this.textBox6.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label11
+            // 
+            this.label11.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label11.Location = new System.Drawing.Point(0, 174);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(528, 22);
+            this.label11.TabIndex = 14;
+            this.label11.Text = "Kills to Win";
+            this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // Form1
             // 
@@ -387,7 +483,7 @@ namespace UnknownServerWV
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Unknown Server by Warranty Voider";
+            this.Text = "Unknown Server by Warranty Voider V1.0";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.menuStrip1.ResumeLayout(false);
@@ -401,9 +497,10 @@ namespace UnknownServerWV
             this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
+            this.panel_tdm_mode.ResumeLayout(false);
+            this.panel_tdm_mode.PerformLayout();
             this.panel_br_mode.ResumeLayout(false);
             this.panel_br_mode.PerformLayout();
-            this.panel_arcade_mode.ResumeLayout(false);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
@@ -440,9 +537,17 @@ namespace UnknownServerWV
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Panel panel_arcade_mode;
+        private System.Windows.Forms.Panel panel_tdm_mode;
         private System.Windows.Forms.ComboBox comboBox3;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TextBox textBox6;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.TextBox textBox5;
+        private System.Windows.Forms.Label label10;
     }
 }
 

@@ -38,6 +38,7 @@ namespace Server
         public static void Reset()
         {
             doorChanges = new List<DoorInfo>();
+            Log.Print("RESET DoorManager");
         }
     }
 

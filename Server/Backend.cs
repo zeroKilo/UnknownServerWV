@@ -17,6 +17,7 @@ namespace Server
         public static List<ClientInfo> clientList = new List<ClientInfo>();
         public static uint clientTeamIDCounter = 333;
         private static readonly object _sync = new object();
+        private static readonly object _syncBroadcast = new object();
         private static TcpListener tcp;
         private static bool _running = false;
         private static bool _exit = false;
@@ -95,21 +96,30 @@ namespace Server
 
         private static void RemoveClient(ClientInfo c)
         {
-            for(int i = 0; i < clientList.Count; i++)
-                if(clientList[i].ID == c.ID)
+            lock (_syncBroadcast)
+            {
+                switch (mode)
                 {
-                    clientList.RemoveAt(i);
-                    break;
+                    case ServerMode.TeamDeathMatchMode:
+                        TeamDeathMatchMode.RemovePlayer(c.ID);
+                        break;
                 }
-            ObjectManager.RemoveClientObjects(c);
-            BroadcastCommand((uint)BackendCommand.RefreshPlayerListReq, new byte[0]);
+                for (int i = 0; i < clientList.Count; i++)
+                    if (clientList[i].ID == c.ID)
+                    {
+                        clientList.RemoveAt(i);
+                        break;
+                    }
+                ObjectManager.RemoveClientObjects(c);
+                BroadcastCommand((uint)BackendCommand.RefreshPlayerListReq, new byte[0]);
+            }
         }
 
         public static void tClient(object obj)
         {
             ClientInfo cInfo = (ClientInfo)obj;
             Log.Print("BACKEND Client connected with ID=" + cInfo.ID);
-            NetHelper.ServerSendCMDPacket(cInfo.ns, (uint)mode, new byte[0]); 
+            NetHelper.ServerSendCMDPacket(cInfo.ns, (uint)mode, BitConverter.GetBytes((uint)modeState), cInfo._sync); 
             while (true)
             {
                 bool exit = false;
@@ -151,8 +161,8 @@ namespace Server
                     {
                         switch (mode)
                         {
-                            case ServerMode.ArcadeMode:
-                                ArcadeMode.HandleMessage(buff, cInfo);
+                            case ServerMode.TeamDeathMatchMode:
+                                TeamDeathMatchMode.HandleMessage(buff, cInfo);
                                 break;
                             case ServerMode.BattleRoyaleMode:
                                 BattleRoyaleMode.HandleMessage(buff, cInfo);
@@ -200,20 +210,7 @@ namespace Server
 
         public static void BroadcastCommand(uint cmd, byte[] data)
         {
-            foreach (ClientInfo client in clientList)
-            {
-                try
-                {
-                    lock (client._sync)
-                    {
-                        NetHelper.ServerSendCMDPacket(client.ns, cmd, data);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Log.Print("BACKEND Broadcast failed with : " + ex.Message);
-                }
-            }
+            BroadcastCommandExcept(cmd, data, null);
         }
 
         public static void BroadcastCommandExcept(uint cmd, byte[] data, ClientInfo except)
@@ -223,16 +220,12 @@ namespace Server
                 if (client != except)
                     try
                     {
-                        lock (client._sync)
-                        {
-                            NetHelper.ServerSendCMDPacket(client.ns, cmd, data);
-                        }
+                        NetHelper.ServerSendCMDPacket(client.ns, cmd, data, client._sync);
                     }
                     catch (Exception ex)
                     {
                         Log.Print("BACKEND Broadcast failed with : " + ex.Message);
                     }
-                    
             }
         }
 

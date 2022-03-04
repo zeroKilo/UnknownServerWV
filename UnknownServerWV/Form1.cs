@@ -47,12 +47,12 @@ namespace UnknownServerWV
                     comboBox1.SelectedIndex = 0;
                     panel_br_mode.BringToFront();
                     break;
-                case ServerMode.ArcadeMode:
+                case ServerMode.TeamDeathMatchMode:
                     comboBox3.Items.Clear();
-                    foreach (NetMapInfo map in ArcadeMode.mapInfos)
+                    foreach (NetMapInfo map in TeamDeathMatchMode.mapInfos)
                         comboBox3.Items.Add(map.name);
                     comboBox3.SelectedIndex = 0;
-                    panel_arcade_mode.BringToFront();
+                    panel_tdm_mode.BringToFront();
                     break;
             }
         }
@@ -78,12 +78,19 @@ namespace UnknownServerWV
 
         private void OnStart()
         {
+            ObjectManager.Reset();
+            DoorManager.Reset();
+            SpawnManager.Reset();
             ServerMode mode = availableModes[listBox1.SelectedIndex];
             switch (mode)
             {
-                case ServerMode.ArcadeMode:
-                    ArcadeMode.mapName = comboBox3.SelectedItem.ToString();
-                    ArcadeMode.Start();
+                case ServerMode.TeamDeathMatchMode:
+                    TeamDeathMatchMode.mapName = comboBox3.SelectedItem.ToString();
+                    TeamDeathMatchMode.Start();
+                    TeamDeathMatchServerLogic.neededPlayers = Convert.ToInt32(textBox4.Text);
+                    TeamDeathMatchServerLogic.countDownTime = Convert.ToInt32(textBox3.Text) * 1000;
+                    TeamDeathMatchServerLogic.roundTime = Convert.ToInt32(textBox5.Text) * 60;
+                    TeamDeathMatchServerLogic.killsToWin = Convert.ToInt32(textBox6.Text);
                     break;
                 case ServerMode.BattleRoyaleMode:
                     BattleRoyaleMode.mapName = comboBox1.SelectedItem.ToString();
@@ -103,8 +110,8 @@ namespace UnknownServerWV
             ServerMode mode = availableModes[listBox1.SelectedIndex];
             switch (mode)
             {
-                case ServerMode.ArcadeMode:
-                    ArcadeMode.Stop();
+                case ServerMode.TeamDeathMatchMode:
+                    TeamDeathMatchMode.Stop();
                     break;
                 case ServerMode.BattleRoyaleMode:
                     BattleRoyaleMode.Stop();
