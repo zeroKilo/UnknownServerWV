@@ -100,6 +100,9 @@ namespace Server
             {
                 switch (mode)
                 {
+                    case ServerMode.DeathMatchMode:
+                        DeathMatchMode.RemovePlayer(c.ID);
+                        break;
                     case ServerMode.TeamDeathMatchMode:
                         TeamDeathMatchMode.RemovePlayer(c.ID);
                         break;
@@ -161,6 +164,9 @@ namespace Server
                     {
                         switch (mode)
                         {
+                            case ServerMode.DeathMatchMode:
+                                DeathMatchMode.HandleMessage(buff, cInfo);
+                                break;
                             case ServerMode.TeamDeathMatchMode:
                                 TeamDeathMatchMode.HandleMessage(buff, cInfo);
                                 break;

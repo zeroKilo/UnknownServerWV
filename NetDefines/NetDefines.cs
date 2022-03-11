@@ -145,6 +145,7 @@ namespace NetDefines
     {
         Offline,
         BattleRoyaleMode,
+        DeathMatchMode,
         TeamDeathMatchMode,
     }
 
@@ -157,7 +158,11 @@ namespace NetDefines
         TDM_LobbyState,
         TDM_CountDownState,
         TDM_MainGameState,
-        TDM_RoundEndState
+        TDM_RoundEndState,
+        DM_LobbyState,
+        DM_CountDownState,
+        DM_MainGameState,
+        DM_RoundEndState
     }
 
     public static class NetConstants
@@ -168,6 +173,7 @@ namespace NetDefines
         {
             "Offline",
             "Battle Royale Mode",
+            "Death Match Mode",
             "Team Death Match Mode",
         };
     }

@@ -47,6 +47,13 @@ namespace UnknownServerWV
                     comboBox1.SelectedIndex = 0;
                     panel_br_mode.BringToFront();
                     break;
+                case ServerMode.DeathMatchMode:
+                    comboBox4.Items.Clear();
+                    foreach (NetMapInfo map in DeathMatchMode.mapInfos)
+                        comboBox4.Items.Add(map.name);
+                    comboBox4.SelectedIndex = 0;
+                    panel_dm_mode.BringToFront();
+                    break;
                 case ServerMode.TeamDeathMatchMode:
                     comboBox3.Items.Clear();
                     foreach (NetMapInfo map in TeamDeathMatchMode.mapInfos)
@@ -84,6 +91,14 @@ namespace UnknownServerWV
             ServerMode mode = availableModes[listBox1.SelectedIndex];
             switch (mode)
             {
+                case ServerMode.DeathMatchMode:
+                    DeathMatchMode.mapName = comboBox4.SelectedItem.ToString();
+                    DeathMatchMode.Start();
+                    DeathMatchServerLogic.neededPlayers = Convert.ToInt32(textBox10.Text);
+                    DeathMatchServerLogic.countDownTime = Convert.ToInt32(textBox9.Text) * 1000;
+                    DeathMatchServerLogic.roundTime = Convert.ToInt32(textBox8.Text) * 60;
+                    DeathMatchServerLogic.killsToWin = Convert.ToInt32(textBox7.Text);
+                    break;
                 case ServerMode.TeamDeathMatchMode:
                     TeamDeathMatchMode.mapName = comboBox3.SelectedItem.ToString();
                     TeamDeathMatchMode.Start();
@@ -110,6 +125,9 @@ namespace UnknownServerWV
             ServerMode mode = availableModes[listBox1.SelectedIndex];
             switch (mode)
             {
+                case ServerMode.DeathMatchMode:
+                    DeathMatchMode.Stop();
+                    break;
                 case ServerMode.TeamDeathMatchMode:
                     TeamDeathMatchMode.Stop();
                     break;
