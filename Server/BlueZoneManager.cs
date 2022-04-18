@@ -11,14 +11,41 @@ namespace Server
 {
     public static class BlueZoneManager
     {
+        //public static List<BlueZoneStateStep> stateSteps = new List<BlueZoneStateStep>()
+        //{
+        //    new BlueZoneStateStep(BlueZoneState.Waiting,    456.47f,    296.71f,    300,    0.4f,   new float[]{ 2048f, -2048f },   new float[]{ 2048f, -2048f }),
+        //    new BlueZoneStateStep(BlueZoneState.Shrinking,  456.47f,    296.71f,    720,    0.4f,   new float[]{ 2048f, -2048f },   new float[]{ 2048f, -2048f }),
+        //
+        //    new BlueZoneStateStep(BlueZoneState.Waiting,    296.71f,    148.35f,    200,    0.6f,   new float[]{ 2048f, -2048f },   new float[]{ 2048f, -2048f }),
+        //    new BlueZoneStateStep(BlueZoneState.Shrinking,  296.71f,    148.35f,    340,    0.6f,   new float[]{ 2048f, -2048f },   new float[]{ 2048f, -2048f }),
+        //
+        //};
+
         public static List<BlueZoneStateStep> stateSteps = new List<BlueZoneStateStep>()
         {
-            new BlueZoneStateStep(BlueZoneState.Waiting,    456.47f,    296.71f,    300,    0.4f,   new float[]{ 2048f, 2048f },   new float[]{ 2048f, 2048f }),
-            new BlueZoneStateStep(BlueZoneState.Shrinking,  456.47f,    296.71f,    720,    0.4f,   new float[]{ 2048f, 2048f },   new float[]{ 2048f, 2048f }),
+            new BlueZoneStateStep(BlueZoneState.Waiting,    4564.7f,    2967.1f,    300,    0.4f,   new float[]{ 2048f, -2048f },   new float[]{ 2048f, -2048f }),
+            new BlueZoneStateStep(BlueZoneState.Shrinking,  4564.7f,    2967.1f,    720,    0.4f,   new float[]{ 2048f, -2048f },   new float[]{ 2048f, -2048f }),
 
-            new BlueZoneStateStep(BlueZoneState.Waiting,    296.71f,    148.35f,    200,    0.6f,   new float[]{ 2048f, 2048f },   new float[]{ 2048f, 2048f }),
-            new BlueZoneStateStep(BlueZoneState.Shrinking,  296.71f,    148.35f,    340,    0.6f,   new float[]{ 2048f, 2048f },   new float[]{ 2048f, 2048f }),
- 
+            new BlueZoneStateStep(BlueZoneState.Waiting,    2967.1f,    1483.5f,    200,    0.6f,   new float[]{ 2048f, -2048f },   new float[]{ 2048f, -2048f }),
+            new BlueZoneStateStep(BlueZoneState.Shrinking,  2967.1f,    1483.5f,    340,    0.6f,   new float[]{ 2048f, -2048f },   new float[]{ 2048f, -2048f }),
+
+            new BlueZoneStateStep(BlueZoneState.Waiting,    1483.5f,    741.8f,     150,    0.8f,   new float[]{ 2048f, -2048f },   new float[]{ 2048f, -2048f }),
+            new BlueZoneStateStep(BlueZoneState.Shrinking,  1483.5f,    741.8f,     240,    0.8f,   new float[]{ 2048f, -2048f },   new float[]{ 2048f, -2048f }),
+
+            new BlueZoneStateStep(BlueZoneState.Waiting,    741.8f,     370.9f,     120,    1f,     new float[]{ 2048f, -2048f },   new float[]{ 2048f, -2048f }),
+            new BlueZoneStateStep(BlueZoneState.Shrinking,  741.8f,     370.9f,     180,    1f,     new float[]{ 2048f, -2048f },   new float[]{ 2048f, -2048f }),
+
+            new BlueZoneStateStep(BlueZoneState.Waiting,    370.9f,     185.4f,     120,    3f,     new float[]{ 2048f, -2048f },   new float[]{ 2048f, -2048f }),
+            new BlueZoneStateStep(BlueZoneState.Shrinking,  370.9f,     185.4f,     160,    3f,     new float[]{ 2048f, -2048f },   new float[]{ 2048f, -2048f }),
+
+            new BlueZoneStateStep(BlueZoneState.Waiting,    185.4f,     92.7f,      90,     5f,     new float[]{ 2048f, -2048f },   new float[]{ 2048f, -2048f }),
+            new BlueZoneStateStep(BlueZoneState.Shrinking,  185.4f,     92.7f,      120,    5f,     new float[]{ 2048f, -2048f },   new float[]{ 2048f, -2048f }),
+
+            new BlueZoneStateStep(BlueZoneState.Waiting,    92.7f,      46.4f,      60,     5f,     new float[]{ 2048f, -2048f },   new float[]{ 2048f, -2048f }),
+            new BlueZoneStateStep(BlueZoneState.Shrinking,  92.7f,      46.4f,      90,     5f,     new float[]{ 2048f, -2048f },   new float[]{ 2048f, -2048f }),
+
+            new BlueZoneStateStep(BlueZoneState.Waiting,    46.4f,      0.1f,       180,    11f,    new float[]{ 2048f, -2048f },   new float[]{ 2048f, -2048f }),
+            new BlueZoneStateStep(BlueZoneState.Shrinking,  46.4f,      0.1f,       15,     11f,    new float[]{ 2048f, -2048f },   new float[]{ 2048f, -2048f }),
         };
 
         public static int currentStep = 0;
