@@ -13,6 +13,7 @@ namespace Server
         public static List<SpawnGroupRemoveInfo> spawnGroupChanges = new List<SpawnGroupRemoveInfo>();
         public static List<DroppedItemInfo> droppedItems = new List<DroppedItemInfo>();
         public static List<ItemContainerInfo> itemContainers = new List<ItemContainerInfo>();
+        private static Random rnd = new Random();
 
         public static void Reset()
         {
@@ -122,6 +123,27 @@ namespace Server
             NetHelper.WriteU32(s, (uint)itemContainers.Count);
             foreach (ItemContainerInfo info in itemContainers)
                 info.Write(s);
+        }
+
+        public static List<ItemSpawnInfo> GetRandomSpawn(SpawnTierLevel tier, uint count)
+        {
+            List<ItemSpawnInfo> resultList = new List<ItemSpawnInfo>();
+            List<ItemSpawnInfo> chooseFrom = new List<ItemSpawnInfo>()
+            {
+                //new ItemSpawnInfo(Item.AK47, 10),
+                //new ItemSpawnInfo(Item.M24, 10),
+                //new ItemSpawnInfo(Item.M416, 10),
+                //new ItemSpawnInfo(Item.M762, 10),
+                //new ItemSpawnInfo(Item.SCAR_L, 10),
+                //new ItemSpawnInfo(Item.QBZ, 10),
+                new ItemSpawnInfo(Item.MK14, 10),
+                new ItemSpawnInfo(Item.SKS, 10),
+            };
+            resultList.Add(chooseFrom[rnd.Next(0, chooseFrom.Count)]);
+            resultList.Add(new ItemSpawnInfo(Item.EnergyDrink, 10));
+            for (int i = 1; i < count - 1; i++)
+                resultList.Add(new ItemSpawnInfo(Item.AmmoBoxNato762mm, 12));
+            return resultList;
         }
     }
 }

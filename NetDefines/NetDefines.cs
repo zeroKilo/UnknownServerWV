@@ -34,7 +34,22 @@ namespace NetDefines
 
         //Rifles
         AK47,
+        AUG_A3,
+        M16A4,
+        M416,
+        M762,
+        MK47,
+        SCAR_L,
+        QBZ,
+
+        //Snipers
+        AWM,
+        Kar98,
         M24,
+        Mini14,
+        MK14,
+        SKS,
+        SLR,
 
         //Pistols
         P1911,
@@ -47,13 +62,37 @@ namespace NetDefines
 
         //Scopes
         ScopeRedDot,
+        Scope2X,
+        Scope3X,
+        Scope4X,
+        Scope6X,
+        Scope8X,
 
         //Muzzle
         Suppressor,
 
+        //Stocks
+        TacticalStock,
+
+        //Health
+        Bandage,
+        EnergyDrink,
+        Pills,
+        Injection,
+        FirstAid,
+        FirstAidBox,
+
         //Undefined
         UNDEFINED = 0x7FFFFFFF
     }
+
+    public enum FireMode
+    {
+        Single,
+        Burst,
+        Auto
+    }
+
     public enum BackendCommand
     {
         WelcomeReq,

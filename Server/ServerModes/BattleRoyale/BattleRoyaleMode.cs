@@ -363,10 +363,7 @@ namespace Server
             float[] pos = new float[] { NetHelper.ReadFloat(s), NetHelper.ReadFloat(s), NetHelper.ReadFloat(s) };
             uint count = NetHelper.ReadU32(s);
             SpawnTierLevel tierLevel = (SpawnTierLevel)NetHelper.ReadU32(s);
-            List<ItemSpawnInfo> resultList = new List<ItemSpawnInfo>();
-            resultList.Add(new ItemSpawnInfo(Item.AK47, 0));
-            for (int i = 0; i < count - 1; i++)
-                resultList.Add(new ItemSpawnInfo(Item.AmmoBoxNato762mm, 12));
+            List<ItemSpawnInfo> resultList = SpawnManager.GetRandomSpawn(tierLevel, count);
             MemoryStream m = new MemoryStream();
             foreach (float f in pos)
                 NetHelper.WriteFloat(m, f);
