@@ -1,76 +1,71 @@
-﻿using System;
-using System.IO;
+﻿using NetDefines;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Threading;
-using NetDefines;
 
 namespace Server
 {
-    public static class BattleRoyaleMode
+    public class FreeExploreMode
     {
         public static string mapName;
         public static string[] spawnLocNames;
         public static int spawnLocIdx;
         public static List<NetMapInfo> mapInfos = new List<NetMapInfo>()
         {
-            new NetMapInfo("sanhok",
-                            new List<string>()
-                            {
-                                "Boot Camp"
-                            }),
-            new NetMapInfo("vikendi",
-                            new List<string>()
-                            {
-                                "Not available yet!"
-                            }),
-            new NetMapInfo("erangel",
-                            new List<string>()
-                            {
-                                "Not available yet!"
-                            }),
-            new NetMapInfo("miramar",
-                            new List<string>()
-                            {
-                                "Somewhere"
-                            }),
+            new NetMapInfo("miramar", new List<string>(){"SpawnLoc"})
         };
+
+        public static void RemovePlayer(uint id)
+        {
+            int index = -1;
+            for (int i = 0; i < FreeExploreServerLogic.playerIDs.Count; i++)
+                if (FreeExploreServerLogic.playerIDs[i] == id)
+                {
+                    index = i;
+                    break;
+                }
+            if (index != -1)
+                FreeExploreServerLogic.playerIDs.RemoveAt(index);
+        }
+
         public static void Start()
         {
-            Log.Print("Starting battle royale mode...");
+            Log.Print("Starting free explore mode...");
             if (spawnLocIdx == 0)
                 spawnLocIdx = NetHelper.rnd.Next(spawnLocNames.Length);
             else
                 spawnLocIdx--;
             Log.Print("Choosen spawn location: " + spawnLocNames[spawnLocIdx]);
-            Backend.mode = ServerMode.BattleRoyaleMode;
-            Backend.modeState = ServerModeState.BR_LobbyState;
+            Backend.mode = ServerMode.FreeExploreMode;
+            Backend.modeState = ServerModeState.FEM_LobbyState;
             Backend.Start();
             MainServer.Start();
-            BattleRoyaleServerLogic.Start();
+            FreeExploreServerLogic.Start();
         }
+
         public static void Stop()
         {
-            Log.Print("Stopping battle royale mode...");
+            Log.Print("Stopping free explore mode...");
             MainServer.Stop();
             Backend.Stop();
-            BattleRoyaleServerLogic.Stop();
+            FreeExploreServerLogic.Stop();
         }
 
         public static void HandleMessage(byte[] msg, ClientInfo client)
         {
             uint ID;
             byte[] data;
-            uint objectID, index, count, fromID, toID;
+            bool found;
+            uint objectID, index;
             ItemSpawnInfo spawnInfo;
-            NetDefines.StateDefines.NetState_Inventory inventory;
             MemoryStream m = new MemoryStream(msg);
-            MemoryStream tmp = new MemoryStream();
+            MemoryStream tmp;
             BackendCommand cmd = (BackendCommand)NetHelper.ReadU32(m);
             if (cmd != BackendCommand.PingReq)
-                Log.Print("BattleRoyaleMode: Client " + client.ID + " send CMD " + cmd);
+                Log.Print("FreeExploreMode: Client " + client.ID + " send CMD " + cmd);
             switch (cmd)
             {
                 //Requests
@@ -100,7 +95,7 @@ namespace Server
                     else
                     {
                         Log.Print("Client ID=" + client.ID + " tries to login as " + target.name);
-                        bool found = false;
+                        found = false;
                         foreach (ClientInfo c in Backend.clientList)
                             if (c.profile != null && c.profile.key == key)
                             {
@@ -117,6 +112,7 @@ namespace Server
                             Log.Print("Client ID=" + client.ID + " logged in as " + target.name);
                             client.profile = target;
                             client.teamID = Backend.clientTeamIDCounter++;
+                            client.isTeamReady = true;
                             m = new MemoryStream();
                             NetHelper.WriteU32(m, client.ID);
                             NetHelper.WriteU32(m, client.teamID);
@@ -132,12 +128,22 @@ namespace Server
                     NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.GetMapRes, Encoding.UTF8.GetBytes(mapName), client._sync);
                     break;
                 case BackendCommand.GetSpawnLocReq:
+                    tmp = new MemoryStream();
                     NetHelper.WriteU32(tmp, (uint)spawnLocIdx);
                     byte[] spawnLocName = Encoding.UTF8.GetBytes(spawnLocNames[spawnLocIdx]);
                     tmp.Write(spawnLocName, 0, spawnLocName.Length);
                     NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.GetSpawnLocRes, tmp.ToArray(), client._sync);
                     break;
                 case BackendCommand.CreatePlayerObjectReq:
+                    found = false;
+                    foreach (uint id in FreeExploreServerLogic.playerIDs)
+                        if (id == client.ID)
+                        {
+                            found = true;
+                            break;
+                        }
+                    if (!found)
+                        FreeExploreServerLogic.playerIDs.Add(client.ID);
                     NetObjPlayerState playerTransform = new NetObjPlayerState();
                     playerTransform.ID = ObjectManager.objectIDcounter++;
                     playerTransform.accessKey = ObjectManager.MakeNewAccessKey();
@@ -146,7 +152,7 @@ namespace Server
                     client.objIDs.Add(playerTransform.ID);
                     data = playerTransform.Create(true);
                     m = new MemoryStream();
-                    NetHelper.WriteU32(m, (uint)spawnLocIdx);
+                    NetHelper.WriteU32(m, 0);
                     m.Write(data, 0, data.Length);
                     NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.CreatePlayerObjectRes, m.ToArray(), client._sync);
                     data = playerTransform.Create(false);
@@ -236,21 +242,6 @@ namespace Server
                         }
                     }
                     break;
-                case BackendCommand.PlayerDiedReq:
-                    ID = NetHelper.ReadU32(m);
-                    Log.Print("Player with id 0x" + ID.ToString("X8") + " died!");
-                    pos = new float[] { NetHelper.ReadFloat(m), NetHelper.ReadFloat(m), NetHelper.ReadFloat(m) };
-                    inventory = new NetDefines.StateDefines.NetState_Inventory();
-                    inventory.Read(m);
-                    count = NetHelper.ReadU32(m);
-                    name = "";
-                    for (int i = 0; i < count; i++)
-                        name = name + (char)m.ReadByte();
-                    SpawnManager.RegisterItemContainer(pos, ItemContainerType.PlayerCrate, name, inventory);
-                    data = NetHelper.CopyCommandData(m);
-                    Backend.BroadcastCommand((uint)BackendCommand.PlayerDiedReq, data);
-                    ObjectManager.RemoveClientObjects(client);
-                    break;
                 case BackendCommand.SpawnGroupItemReq:
                     HandleSpawnGroupItemRequest(client, m);
                     break;
@@ -315,37 +306,11 @@ namespace Server
                     }
                     NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.GetPlayersOnServerRes, m.ToArray(), client._sync);
                     break;
-                case BackendCommand.TeamInviteReq:
-                    fromID = NetHelper.ReadU32(m);
-                    toID = NetHelper.ReadU32(m);
-                    foreach (ClientInfo other in Backend.clientList)
-                        if (other.ID == toID)
-                        {
-                            Log.Print("Sending team invite from " + fromID + " to " + toID);
-                            data = NetHelper.CopyCommandData(m);
-                            NetHelper.ServerSendCMDPacket(other.ns, (uint)BackendCommand.TeamInviteReq, data, other._sync);
-                            break;
-                        }
+                case BackendCommand.PickupInfiniteItemReq:
+                    data = NetHelper.CopyCommandData(m);
+                    Backend.BroadcastCommand((uint)BackendCommand.PickupInfiniteItemReq, data);
                     break;
-                case BackendCommand.TeamInviteAcceptReq:
-                    toID = NetHelper.ReadU32(m);
-                    foreach (ClientInfo other in Backend.clientList)
-                        if (other.ID == toID)
-                        {
-                            Log.Print("Accepting team invite by " + client.ID + " into team of " + toID);
-                            client.teamID = other.teamID;
-                            Backend.BroadcastCommand((uint)BackendCommand.RefreshPlayerListReq, new byte[0]);
-                            break;
-                        }
-                    break;
-                case BackendCommand.TeamLeaveReq:
-                    client.teamID = Backend.clientTeamIDCounter++;
-                    Backend.BroadcastCommand((uint)BackendCommand.RefreshPlayerListReq, new byte[0]);
-                    break;
-                case BackendCommand.SetTeamReadyStateReq:
-                    client.isTeamReady = m.ReadByte() == 1;
-                    Backend.BroadcastCommand((uint)BackendCommand.RefreshPlayerListReq, new byte[0]);
-                    break;
+
                 //Responses
                 case BackendCommand.DeleteObjectsRes:
                 case BackendCommand.CreateEnemyObjectRes:
@@ -353,11 +318,9 @@ namespace Server
                     break;
                 default:
                     throw new Exception("Unknown command 0x" + cmd.ToString("X"));
+
             }
         }
-
-        
-
         private static void HandleSpawnGroupItemRequest(ClientInfo client, Stream s)
         {
             float[] pos = new float[] { NetHelper.ReadFloat(s), NetHelper.ReadFloat(s), NetHelper.ReadFloat(s) };

@@ -136,8 +136,10 @@ namespace Server
                 //new ItemSpawnInfo(Item.M762, 10),
                 //new ItemSpawnInfo(Item.SCAR_L, 10),
                 //new ItemSpawnInfo(Item.QBZ, 10),
-                new ItemSpawnInfo(Item.MK14, 10),
-                new ItemSpawnInfo(Item.SKS, 10),
+                //new ItemSpawnInfo(Item.MK14, 10),
+                //new ItemSpawnInfo(Item.SKS, 10),
+                new ItemSpawnInfo(Item.Win1894, 10),
+                new ItemSpawnInfo(Item.Win1897, 10),
             };
             resultList.Add(chooseFrom[rnd.Next(0, chooseFrom.Count)]);
             resultList.Add(new ItemSpawnInfo(Item.EnergyDrink, 10));

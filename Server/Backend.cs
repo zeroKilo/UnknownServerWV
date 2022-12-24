@@ -106,6 +106,9 @@ namespace Server
                     case ServerMode.TeamDeathMatchMode:
                         TeamDeathMatchMode.RemovePlayer(c.ID);
                         break;
+                    case ServerMode.FreeExploreMode:
+                        FreeExploreMode.RemovePlayer(c.ID);
+                        break;
                 }
                 for (int i = 0; i < clientList.Count; i++)
                     if (clientList[i].ID == c.ID)
@@ -172,6 +175,9 @@ namespace Server
                                 break;
                             case ServerMode.BattleRoyaleMode:
                                 BattleRoyaleMode.HandleMessage(buff, cInfo);
+                                break;
+                            case ServerMode.FreeExploreMode:
+                                FreeExploreMode.HandleMessage(buff, cInfo);
                                 break;
                         }
                     }

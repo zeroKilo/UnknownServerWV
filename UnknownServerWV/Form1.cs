@@ -61,6 +61,13 @@ namespace UnknownServerWV
                     comboBox3.SelectedIndex = 0;
                     panel_tdm_mode.BringToFront();
                     break;
+                case ServerMode.FreeExploreMode:
+                    comboBox5.Items.Clear();
+                    foreach (NetMapInfo map in FreeExploreMode.mapInfos)
+                        comboBox5.Items.Add(map.name);
+                    comboBox5.SelectedIndex = 0;
+                    panel_fem_mode.BringToFront();
+                    break;
             }
         }
 
@@ -115,6 +122,12 @@ namespace UnknownServerWV
                     BattleRoyaleServerLogic.neededPlayers = Convert.ToInt32(textBox1.Text);
                     BattleRoyaleServerLogic.countDownTime = Convert.ToInt32(textBox2.Text) * 1000;
                     break;
+                case ServerMode.FreeExploreMode:
+                    FreeExploreMode.mapName = comboBox5.SelectedItem.ToString();
+                    FreeExploreMode.spawnLocIdx = comboBox6.SelectedIndex;
+                    FreeExploreMode.spawnLocNames = FreeExploreMode.mapInfos[comboBox5.SelectedIndex].spawnLocations.ToArray();
+                    FreeExploreMode.Start();
+                    break;
                 default:
                     return;
             }
@@ -133,6 +146,9 @@ namespace UnknownServerWV
                     break;
                 case ServerMode.BattleRoyaleMode:
                     BattleRoyaleMode.Stop();
+                    break;
+                case ServerMode.FreeExploreMode:
+                    FreeExploreMode.Stop();
                     break;
                 default:
                     return;
@@ -187,6 +203,19 @@ namespace UnknownServerWV
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
             rtb1.Text = "";
+        }
+
+        private void comboBox5_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int n = comboBox5.SelectedIndex;
+            if (n == -1)
+                return;
+            string[] names = FreeExploreMode.mapInfos[n].spawnLocations.ToArray();
+            comboBox6.Items.Clear();
+            comboBox6.Items.Add("<Random>");
+            foreach (string name in names)
+                comboBox6.Items.Add(name);
+            comboBox6.SelectedIndex = 0;
         }
     }
 }

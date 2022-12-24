@@ -23,9 +23,15 @@ namespace NetDefines
         BigMagQ,
         BigMagEX,
         BigMagEXQ,
+        SmallMagQ,
+        SmallMagEX,
+        SmallMagEXQ,
         SniperMagQ,
         SniperMagEX,
         SniperMagEXQ,
+        MagDP28,
+        MagM249,
+        MagPP19,
 
         //Helmets
         HelmetL1,
@@ -35,24 +41,46 @@ namespace NetDefines
         //Rifles
         AK47,
         AUG_A3,
+        DP28,
+        G36C,
+        Groza,
         M16A4,
+        M249,
         M416,
         M762,
         MK47,
+        PP19,
+        S12K,
+        S686,
         SCAR_L,
+        Thompson,
         QBZ,
+        UMP,
+        UZI,
+        UZI_PRO,
+        Vector,
+        Win1897,
 
         //Snipers
         AWM,
         Kar98,
         M24,
         Mini14,
+        MosinNagant,
         MK14,
+        QBU,
         SKS,
         SLR,
+        VSS,
+        Win1894,
 
         //Pistols
+        P18,
         P1911,
+        P92,
+        R45,
+        SawedOff,
+        Skorpion,
 
         //Grenades
         SmokeGrenade,
@@ -186,6 +214,7 @@ namespace NetDefines
         BattleRoyaleMode,
         DeathMatchMode,
         TeamDeathMatchMode,
+        FreeExploreMode
     }
 
     public enum ServerModeState
@@ -201,7 +230,8 @@ namespace NetDefines
         DM_LobbyState,
         DM_CountDownState,
         DM_MainGameState,
-        DM_RoundEndState
+        DM_RoundEndState,
+        FEM_LobbyState
     }
 
     public static class NetConstants
@@ -214,6 +244,7 @@ namespace NetDefines
             "Battle Royale Mode",
             "Death Match Mode",
             "Team Death Match Mode",
+            "Free Explore Mode"
         };
     }
 

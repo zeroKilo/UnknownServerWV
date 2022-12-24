@@ -40,33 +40,12 @@ namespace UnknownServerWV
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.panel_tdm_mode = new System.Windows.Forms.Panel();
-            this.textBox6 = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.textBox5 = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
-            this.label7 = new System.Windows.Forms.Label();
+            this.panel_fem_mode = new System.Windows.Forms.Panel();
+            this.comboBox6 = new System.Windows.Forms.ComboBox();
+            this.label17 = new System.Windows.Forms.Label();
+            this.comboBox5 = new System.Windows.Forms.ComboBox();
+            this.label21 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.panel_br_mode = new System.Windows.Forms.Panel();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.rtb1 = new System.Windows.Forms.RichTextBox();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.status = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.panel_dm_mode = new System.Windows.Forms.Panel();
             this.textBox7 = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
@@ -78,6 +57,32 @@ namespace UnknownServerWV
             this.label15 = new System.Windows.Forms.Label();
             this.comboBox4 = new System.Windows.Forms.ComboBox();
             this.label16 = new System.Windows.Forms.Label();
+            this.panel_br_mode = new System.Windows.Forms.Panel();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.panel_tdm_mode = new System.Windows.Forms.Panel();
+            this.textBox6 = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.comboBox3 = new System.Windows.Forms.ComboBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.rtb1 = new System.Windows.Forms.RichTextBox();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.status = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -87,11 +92,12 @@ namespace UnknownServerWV
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
-            this.panel_tdm_mode.SuspendLayout();
+            this.panel_fem_mode.SuspendLayout();
+            this.panel_dm_mode.SuspendLayout();
             this.panel_br_mode.SuspendLayout();
+            this.panel_tdm_mode.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
-            this.panel_dm_mode.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -170,8 +176,9 @@ namespace UnknownServerWV
             // 
             // splitContainer2.Panel2
             // 
-            this.splitContainer2.Panel2.Controls.Add(this.panel_dm_mode);
+            this.splitContainer2.Panel2.Controls.Add(this.panel_fem_mode);
             this.splitContainer2.Panel2.Controls.Add(this.label2);
+            this.splitContainer2.Panel2.Controls.Add(this.panel_dm_mode);
             this.splitContainer2.Panel2.Controls.Add(this.panel_br_mode);
             this.splitContainer2.Panel2.Controls.Add(this.panel_tdm_mode);
             this.splitContainer2.Size = new System.Drawing.Size(800, 303);
@@ -203,6 +210,281 @@ namespace UnknownServerWV
             this.label1.TabIndex = 0;
             this.label1.Text = "Select Mode";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // panel_fem_mode
+            // 
+            this.panel_fem_mode.Controls.Add(this.comboBox6);
+            this.panel_fem_mode.Controls.Add(this.label17);
+            this.panel_fem_mode.Controls.Add(this.comboBox5);
+            this.panel_fem_mode.Controls.Add(this.label21);
+            this.panel_fem_mode.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel_fem_mode.Location = new System.Drawing.Point(0, 25);
+            this.panel_fem_mode.Name = "panel_fem_mode";
+            this.panel_fem_mode.Size = new System.Drawing.Size(530, 278);
+            this.panel_fem_mode.TabIndex = 5;
+            // 
+            // comboBox6
+            // 
+            this.comboBox6.Dock = System.Windows.Forms.DockStyle.Top;
+            this.comboBox6.FormattingEnabled = true;
+            this.comboBox6.Location = new System.Drawing.Point(0, 67);
+            this.comboBox6.Name = "comboBox6";
+            this.comboBox6.Size = new System.Drawing.Size(530, 23);
+            this.comboBox6.TabIndex = 19;
+            // 
+            // label17
+            // 
+            this.label17.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label17.Location = new System.Drawing.Point(0, 45);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(530, 22);
+            this.label17.TabIndex = 18;
+            this.label17.Text = "SpawnLocation";
+            this.label17.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // comboBox5
+            // 
+            this.comboBox5.Dock = System.Windows.Forms.DockStyle.Top;
+            this.comboBox5.FormattingEnabled = true;
+            this.comboBox5.Location = new System.Drawing.Point(0, 22);
+            this.comboBox5.Name = "comboBox5";
+            this.comboBox5.Size = new System.Drawing.Size(530, 23);
+            this.comboBox5.TabIndex = 17;
+            this.comboBox5.SelectedIndexChanged += new System.EventHandler(this.comboBox5_SelectedIndexChanged);
+            // 
+            // label21
+            // 
+            this.label21.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label21.Location = new System.Drawing.Point(0, 0);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(530, 22);
+            this.label21.TabIndex = 16;
+            this.label21.Text = "Map";
+            this.label21.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label2
+            // 
+            this.label2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label2.Font = new System.Drawing.Font("Courier New", 9F);
+            this.label2.Location = new System.Drawing.Point(0, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(530, 25);
+            this.label2.TabIndex = 1;
+            this.label2.Text = "Select Settings";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // panel_dm_mode
+            // 
+            this.panel_dm_mode.Controls.Add(this.textBox7);
+            this.panel_dm_mode.Controls.Add(this.label12);
+            this.panel_dm_mode.Controls.Add(this.textBox8);
+            this.panel_dm_mode.Controls.Add(this.label13);
+            this.panel_dm_mode.Controls.Add(this.textBox9);
+            this.panel_dm_mode.Controls.Add(this.label14);
+            this.panel_dm_mode.Controls.Add(this.textBox10);
+            this.panel_dm_mode.Controls.Add(this.label15);
+            this.panel_dm_mode.Controls.Add(this.comboBox4);
+            this.panel_dm_mode.Controls.Add(this.label16);
+            this.panel_dm_mode.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel_dm_mode.Location = new System.Drawing.Point(0, 0);
+            this.panel_dm_mode.Name = "panel_dm_mode";
+            this.panel_dm_mode.Size = new System.Drawing.Size(530, 303);
+            this.panel_dm_mode.TabIndex = 4;
+            // 
+            // textBox7
+            // 
+            this.textBox7.Dock = System.Windows.Forms.DockStyle.Top;
+            this.textBox7.Location = new System.Drawing.Point(0, 196);
+            this.textBox7.Name = "textBox7";
+            this.textBox7.Size = new System.Drawing.Size(530, 21);
+            this.textBox7.TabIndex = 25;
+            this.textBox7.Text = "40";
+            this.textBox7.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label12
+            // 
+            this.label12.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label12.Location = new System.Drawing.Point(0, 174);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(530, 22);
+            this.label12.TabIndex = 24;
+            this.label12.Text = "Kills to Win";
+            this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // textBox8
+            // 
+            this.textBox8.Dock = System.Windows.Forms.DockStyle.Top;
+            this.textBox8.Location = new System.Drawing.Point(0, 153);
+            this.textBox8.Name = "textBox8";
+            this.textBox8.Size = new System.Drawing.Size(530, 21);
+            this.textBox8.TabIndex = 23;
+            this.textBox8.Text = "20";
+            this.textBox8.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label13
+            // 
+            this.label13.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label13.Location = new System.Drawing.Point(0, 131);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(530, 22);
+            this.label13.TabIndex = 22;
+            this.label13.Text = "Round Time in Minutes";
+            this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // textBox9
+            // 
+            this.textBox9.Dock = System.Windows.Forms.DockStyle.Top;
+            this.textBox9.Location = new System.Drawing.Point(0, 110);
+            this.textBox9.Name = "textBox9";
+            this.textBox9.Size = new System.Drawing.Size(530, 21);
+            this.textBox9.TabIndex = 21;
+            this.textBox9.Text = "3";
+            this.textBox9.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label14
+            // 
+            this.label14.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label14.Location = new System.Drawing.Point(0, 88);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(530, 22);
+            this.label14.TabIndex = 20;
+            this.label14.Text = "Count Down Time in Seconds";
+            this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // textBox10
+            // 
+            this.textBox10.Dock = System.Windows.Forms.DockStyle.Top;
+            this.textBox10.Location = new System.Drawing.Point(0, 67);
+            this.textBox10.Name = "textBox10";
+            this.textBox10.Size = new System.Drawing.Size(530, 21);
+            this.textBox10.TabIndex = 19;
+            this.textBox10.Text = "1";
+            this.textBox10.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label15
+            // 
+            this.label15.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label15.Location = new System.Drawing.Point(0, 45);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(530, 22);
+            this.label15.TabIndex = 18;
+            this.label15.Text = "Minimal Player Count";
+            this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // comboBox4
+            // 
+            this.comboBox4.Dock = System.Windows.Forms.DockStyle.Top;
+            this.comboBox4.FormattingEnabled = true;
+            this.comboBox4.Location = new System.Drawing.Point(0, 22);
+            this.comboBox4.Name = "comboBox4";
+            this.comboBox4.Size = new System.Drawing.Size(530, 23);
+            this.comboBox4.TabIndex = 17;
+            // 
+            // label16
+            // 
+            this.label16.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label16.Location = new System.Drawing.Point(0, 0);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(530, 22);
+            this.label16.TabIndex = 16;
+            this.label16.Text = "Map";
+            this.label16.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // panel_br_mode
+            // 
+            this.panel_br_mode.AutoScroll = true;
+            this.panel_br_mode.Controls.Add(this.textBox2);
+            this.panel_br_mode.Controls.Add(this.label6);
+            this.panel_br_mode.Controls.Add(this.textBox1);
+            this.panel_br_mode.Controls.Add(this.label5);
+            this.panel_br_mode.Controls.Add(this.comboBox2);
+            this.panel_br_mode.Controls.Add(this.label4);
+            this.panel_br_mode.Controls.Add(this.comboBox1);
+            this.panel_br_mode.Controls.Add(this.label3);
+            this.panel_br_mode.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel_br_mode.Location = new System.Drawing.Point(0, 0);
+            this.panel_br_mode.Name = "panel_br_mode";
+            this.panel_br_mode.Size = new System.Drawing.Size(530, 303);
+            this.panel_br_mode.TabIndex = 2;
+            // 
+            // textBox2
+            // 
+            this.textBox2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.textBox2.Location = new System.Drawing.Point(0, 155);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(530, 21);
+            this.textBox2.TabIndex = 7;
+            this.textBox2.Text = "3";
+            this.textBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label6
+            // 
+            this.label6.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label6.Location = new System.Drawing.Point(0, 133);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(530, 22);
+            this.label6.TabIndex = 6;
+            this.label6.Text = "Count Down Time in Seconds";
+            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // textBox1
+            // 
+            this.textBox1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.textBox1.Location = new System.Drawing.Point(0, 112);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(530, 21);
+            this.textBox1.TabIndex = 5;
+            this.textBox1.Text = "10";
+            this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label5
+            // 
+            this.label5.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label5.Location = new System.Drawing.Point(0, 90);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(530, 22);
+            this.label5.TabIndex = 4;
+            this.label5.Text = "Minimal Player Count";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // comboBox2
+            // 
+            this.comboBox2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Location = new System.Drawing.Point(0, 67);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(530, 23);
+            this.comboBox2.TabIndex = 3;
+            // 
+            // label4
+            // 
+            this.label4.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label4.Location = new System.Drawing.Point(0, 45);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(530, 22);
+            this.label4.TabIndex = 2;
+            this.label4.Text = "SpawnLocation";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(0, 22);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(530, 23);
+            this.comboBox1.TabIndex = 1;
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            // 
+            // label3
+            // 
+            this.label3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label3.Location = new System.Drawing.Point(0, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(530, 22);
+            this.label3.TabIndex = 0;
+            this.label3.Text = "Map";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // panel_tdm_mode
             // 
@@ -322,113 +604,6 @@ namespace UnknownServerWV
             this.label7.Text = "Map";
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label2
-            // 
-            this.label2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label2.Font = new System.Drawing.Font("Courier New", 9F);
-            this.label2.Location = new System.Drawing.Point(0, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(530, 25);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "Select Settings";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // panel_br_mode
-            // 
-            this.panel_br_mode.AutoScroll = true;
-            this.panel_br_mode.Controls.Add(this.textBox2);
-            this.panel_br_mode.Controls.Add(this.label6);
-            this.panel_br_mode.Controls.Add(this.textBox1);
-            this.panel_br_mode.Controls.Add(this.label5);
-            this.panel_br_mode.Controls.Add(this.comboBox2);
-            this.panel_br_mode.Controls.Add(this.label4);
-            this.panel_br_mode.Controls.Add(this.comboBox1);
-            this.panel_br_mode.Controls.Add(this.label3);
-            this.panel_br_mode.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel_br_mode.Location = new System.Drawing.Point(0, 0);
-            this.panel_br_mode.Name = "panel_br_mode";
-            this.panel_br_mode.Size = new System.Drawing.Size(530, 303);
-            this.panel_br_mode.TabIndex = 2;
-            // 
-            // textBox2
-            // 
-            this.textBox2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.textBox2.Location = new System.Drawing.Point(0, 155);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(530, 21);
-            this.textBox2.TabIndex = 7;
-            this.textBox2.Text = "3";
-            this.textBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // label6
-            // 
-            this.label6.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label6.Location = new System.Drawing.Point(0, 133);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(530, 22);
-            this.label6.TabIndex = 6;
-            this.label6.Text = "Count Down Time in Seconds";
-            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // textBox1
-            // 
-            this.textBox1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.textBox1.Location = new System.Drawing.Point(0, 112);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(530, 21);
-            this.textBox1.TabIndex = 5;
-            this.textBox1.Text = "10";
-            this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // label5
-            // 
-            this.label5.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label5.Location = new System.Drawing.Point(0, 90);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(530, 22);
-            this.label5.TabIndex = 4;
-            this.label5.Text = "Minimal Player Count";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // comboBox2
-            // 
-            this.comboBox2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(0, 67);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(530, 23);
-            this.comboBox2.TabIndex = 3;
-            // 
-            // label4
-            // 
-            this.label4.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label4.Location = new System.Drawing.Point(0, 45);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(530, 22);
-            this.label4.TabIndex = 2;
-            this.label4.Text = "SpawnLocation";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(0, 22);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(530, 23);
-            this.comboBox1.TabIndex = 1;
-            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
-            // 
-            // label3
-            // 
-            this.label3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label3.Location = new System.Drawing.Point(0, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(530, 22);
-            this.label3.TabIndex = 0;
-            this.label3.Text = "Map";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // rtb1
             // 
             this.rtb1.DetectUrls = false;
@@ -483,123 +658,6 @@ namespace UnknownServerWV
             this.timer1.Enabled = true;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // panel_dm_mode
-            // 
-            this.panel_dm_mode.Controls.Add(this.textBox7);
-            this.panel_dm_mode.Controls.Add(this.label12);
-            this.panel_dm_mode.Controls.Add(this.textBox8);
-            this.panel_dm_mode.Controls.Add(this.label13);
-            this.panel_dm_mode.Controls.Add(this.textBox9);
-            this.panel_dm_mode.Controls.Add(this.label14);
-            this.panel_dm_mode.Controls.Add(this.textBox10);
-            this.panel_dm_mode.Controls.Add(this.label15);
-            this.panel_dm_mode.Controls.Add(this.comboBox4);
-            this.panel_dm_mode.Controls.Add(this.label16);
-            this.panel_dm_mode.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel_dm_mode.Location = new System.Drawing.Point(0, 25);
-            this.panel_dm_mode.Name = "panel_dm_mode";
-            this.panel_dm_mode.Size = new System.Drawing.Size(530, 278);
-            this.panel_dm_mode.TabIndex = 4;
-            // 
-            // textBox7
-            // 
-            this.textBox7.Dock = System.Windows.Forms.DockStyle.Top;
-            this.textBox7.Location = new System.Drawing.Point(0, 196);
-            this.textBox7.Name = "textBox7";
-            this.textBox7.Size = new System.Drawing.Size(530, 21);
-            this.textBox7.TabIndex = 25;
-            this.textBox7.Text = "40";
-            this.textBox7.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // label12
-            // 
-            this.label12.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label12.Location = new System.Drawing.Point(0, 174);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(530, 22);
-            this.label12.TabIndex = 24;
-            this.label12.Text = "Kills to Win";
-            this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // textBox8
-            // 
-            this.textBox8.Dock = System.Windows.Forms.DockStyle.Top;
-            this.textBox8.Location = new System.Drawing.Point(0, 153);
-            this.textBox8.Name = "textBox8";
-            this.textBox8.Size = new System.Drawing.Size(530, 21);
-            this.textBox8.TabIndex = 23;
-            this.textBox8.Text = "20";
-            this.textBox8.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // label13
-            // 
-            this.label13.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label13.Location = new System.Drawing.Point(0, 131);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(530, 22);
-            this.label13.TabIndex = 22;
-            this.label13.Text = "Round Time in Minutes";
-            this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // textBox9
-            // 
-            this.textBox9.Dock = System.Windows.Forms.DockStyle.Top;
-            this.textBox9.Location = new System.Drawing.Point(0, 110);
-            this.textBox9.Name = "textBox9";
-            this.textBox9.Size = new System.Drawing.Size(530, 21);
-            this.textBox9.TabIndex = 21;
-            this.textBox9.Text = "3";
-            this.textBox9.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // label14
-            // 
-            this.label14.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label14.Location = new System.Drawing.Point(0, 88);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(530, 22);
-            this.label14.TabIndex = 20;
-            this.label14.Text = "Count Down Time in Seconds";
-            this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // textBox10
-            // 
-            this.textBox10.Dock = System.Windows.Forms.DockStyle.Top;
-            this.textBox10.Location = new System.Drawing.Point(0, 67);
-            this.textBox10.Name = "textBox10";
-            this.textBox10.Size = new System.Drawing.Size(530, 21);
-            this.textBox10.TabIndex = 19;
-            this.textBox10.Text = "1";
-            this.textBox10.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // label15
-            // 
-            this.label15.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label15.Location = new System.Drawing.Point(0, 45);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(530, 22);
-            this.label15.TabIndex = 18;
-            this.label15.Text = "Minimal Player Count";
-            this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // comboBox4
-            // 
-            this.comboBox4.Dock = System.Windows.Forms.DockStyle.Top;
-            this.comboBox4.FormattingEnabled = true;
-            this.comboBox4.Location = new System.Drawing.Point(0, 22);
-            this.comboBox4.Name = "comboBox4";
-            this.comboBox4.Size = new System.Drawing.Size(530, 23);
-            this.comboBox4.TabIndex = 17;
-            // 
-            // label16
-            // 
-            this.label16.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label16.Location = new System.Drawing.Point(0, 0);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(530, 22);
-            this.label16.TabIndex = 16;
-            this.label16.Text = "Map";
-            this.label16.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -625,16 +683,17 @@ namespace UnknownServerWV
             this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
-            this.panel_tdm_mode.ResumeLayout(false);
-            this.panel_tdm_mode.PerformLayout();
+            this.panel_fem_mode.ResumeLayout(false);
+            this.panel_dm_mode.ResumeLayout(false);
+            this.panel_dm_mode.PerformLayout();
             this.panel_br_mode.ResumeLayout(false);
             this.panel_br_mode.PerformLayout();
+            this.panel_tdm_mode.ResumeLayout(false);
+            this.panel_tdm_mode.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
-            this.panel_dm_mode.ResumeLayout(false);
-            this.panel_dm_mode.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -689,6 +748,11 @@ namespace UnknownServerWV
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.ComboBox comboBox4;
         private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Panel panel_fem_mode;
+        private System.Windows.Forms.ComboBox comboBox6;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.ComboBox comboBox5;
+        private System.Windows.Forms.Label label21;
     }
 }
 
