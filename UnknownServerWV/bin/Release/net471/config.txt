@@ -2,7 +2,7 @@
 name = Unknown Server by Warranty Voider
 
 #client ping timeout in ms
-timeout = 3000
+timeout = 30000
 
 #server backend tcp port
 port_tcp = 1234

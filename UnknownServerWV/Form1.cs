@@ -31,7 +31,7 @@ namespace UnknownServerWV
                     listBox1.Items.Add(NetConstants.ServerModeNames[(int)mode]);
                     availableModes.Add(mode);
                 }
-            listBox1.SelectedIndex = 1;
+            listBox1.SelectedIndex = 0;
             Log.Init(rtb1);
             Config.Init();
         }

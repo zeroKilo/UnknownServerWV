@@ -251,5 +251,20 @@ namespace Server
             BroadcastCommand((uint)BackendCommand.ServerStateChangedReq, m.ToArray());
             Log.Print("BACKEND changed mode to " + mode + " : " + modeState);
         }
+
+
+
+        public static List<BackendCommand> backendCmdFilter = new List<BackendCommand>
+        {
+            BackendCommand.PingReq,
+            BackendCommand.PlayFootStepSoundReq,
+            BackendCommand.SpawnGroupItemReq,
+            BackendCommand.SpawnGroupRemovalsReq,
+        };
+
+        public static bool ShouldFilterInLog(BackendCommand cmd)
+        {
+            return backendCmdFilter.Contains(cmd);
+        }
     }
 }

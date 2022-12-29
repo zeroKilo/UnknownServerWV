@@ -10,9 +10,30 @@ namespace Server
 {
     public static class SpawnManager
     {
+        public class SpawnRange
+        {
+            public int start;
+            public int end;
+            public int count;
+
+            public SpawnRange(int s, int e, int c)
+            {
+                start = s;
+                end = e;
+                count = c;
+            }
+
+            public bool Contains(int x)
+            {
+                return x >= start && x <= end;
+            }
+        }
+
         public static List<SpawnGroupRemoveInfo> spawnGroupChanges = new List<SpawnGroupRemoveInfo>();
         public static List<DroppedItemInfo> droppedItems = new List<DroppedItemInfo>();
         public static List<ItemContainerInfo> itemContainers = new List<ItemContainerInfo>();
+        public static List<SpawnRange> itemSpawnRanges = new List<SpawnRange>();
+        public static int maxSpawnRange;
         private static Random rnd = new Random();
 
         public static void Reset()
@@ -20,7 +41,44 @@ namespace Server
             spawnGroupChanges = new List<SpawnGroupRemoveInfo>();
             droppedItems = new List<DroppedItemInfo>();
             itemContainers = new List<ItemContainerInfo>();
+            LoadSpawnRanges();
             Log.Print("RESET SpawnManager");
+        }
+
+        private static void LoadSpawnRanges()
+        {
+            string[] lines = File.ReadAllLines("spawn_table.txt");
+            Array values = Enum.GetValues(typeof(Item));
+            SpawnRange[] spawnRanges = new SpawnRange[values.Length - 1];
+            int idx = 0;
+            int pos = 0;
+            foreach(string line in lines)
+            {
+                string s = line;
+                if (s.Contains("//"))
+                    s = line.Substring(0, line.IndexOf("//"));
+                s = s.Trim();
+                if (s == "")
+                    continue;
+                if (!s.Contains(','))
+                    continue;
+                string[] parts = s.Split(',');
+                int size = Convert.ToInt32(parts[0].Trim());
+                int count = Convert.ToInt32(parts[1].Trim());
+                spawnRanges[idx++] = new SpawnRange(pos, pos + size - 1, count);
+                pos += size;
+            }
+            maxSpawnRange = pos;
+            itemSpawnRanges = new List<SpawnRange>(spawnRanges);
+        }
+
+        private static ItemSpawnInfo GetRandomItem()
+        {
+            int n = rnd.Next(0, maxSpawnRange);
+            for (int i = 0; i < itemSpawnRanges.Count; i++)
+                if (itemSpawnRanges[i].Contains(n))
+                    return new ItemSpawnInfo((Item)i, (uint)itemSpawnRanges[i].count);
+            return new ItemSpawnInfo(Item.UNDEFINED, 1);
         }
 
         public static void RegisterItemContainer(float[] pos, ItemContainerType type, string name, NetDefines.StateDefines.NetState_Inventory inventory)
@@ -69,7 +127,6 @@ namespace Server
                     info.location[1] == pos[1] &&
                     info.location[2] == pos[2])
                 {
-                    Log.Print("Removed index " + index);
                     info.removedIndicies.Add(index);
                     return;
                 }
@@ -128,23 +185,8 @@ namespace Server
         public static List<ItemSpawnInfo> GetRandomSpawn(SpawnTierLevel tier, uint count)
         {
             List<ItemSpawnInfo> resultList = new List<ItemSpawnInfo>();
-            List<ItemSpawnInfo> chooseFrom = new List<ItemSpawnInfo>()
-            {
-                //new ItemSpawnInfo(Item.AK47, 10),
-                //new ItemSpawnInfo(Item.M24, 10),
-                //new ItemSpawnInfo(Item.M416, 10),
-                //new ItemSpawnInfo(Item.M762, 10),
-                //new ItemSpawnInfo(Item.SCAR_L, 10),
-                //new ItemSpawnInfo(Item.QBZ, 10),
-                //new ItemSpawnInfo(Item.MK14, 10),
-                //new ItemSpawnInfo(Item.SKS, 10),
-                new ItemSpawnInfo(Item.Win1894, 10),
-                new ItemSpawnInfo(Item.Win1897, 10),
-            };
-            resultList.Add(chooseFrom[rnd.Next(0, chooseFrom.Count)]);
-            resultList.Add(new ItemSpawnInfo(Item.EnergyDrink, 10));
-            for (int i = 1; i < count - 1; i++)
-                resultList.Add(new ItemSpawnInfo(Item.AmmoBoxNato762mm, 12));
+            for (int i = 0; i < count; i++)
+                resultList.Add(GetRandomItem());
             return resultList;
         }
     }

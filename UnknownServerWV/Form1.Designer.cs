@@ -176,11 +176,11 @@ namespace UnknownServerWV
             // 
             // splitContainer2.Panel2
             // 
-            this.splitContainer2.Panel2.Controls.Add(this.panel_fem_mode);
             this.splitContainer2.Panel2.Controls.Add(this.label2);
-            this.splitContainer2.Panel2.Controls.Add(this.panel_dm_mode);
             this.splitContainer2.Panel2.Controls.Add(this.panel_br_mode);
             this.splitContainer2.Panel2.Controls.Add(this.panel_tdm_mode);
+            this.splitContainer2.Panel2.Controls.Add(this.panel_fem_mode);
+            this.splitContainer2.Panel2.Controls.Add(this.panel_dm_mode);
             this.splitContainer2.Size = new System.Drawing.Size(800, 303);
             this.splitContainer2.SplitterDistance = 266;
             this.splitContainer2.TabIndex = 0;
@@ -218,9 +218,9 @@ namespace UnknownServerWV
             this.panel_fem_mode.Controls.Add(this.comboBox5);
             this.panel_fem_mode.Controls.Add(this.label21);
             this.panel_fem_mode.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel_fem_mode.Location = new System.Drawing.Point(0, 25);
+            this.panel_fem_mode.Location = new System.Drawing.Point(0, 0);
             this.panel_fem_mode.Name = "panel_fem_mode";
-            this.panel_fem_mode.Size = new System.Drawing.Size(530, 278);
+            this.panel_fem_mode.Size = new System.Drawing.Size(530, 303);
             this.panel_fem_mode.TabIndex = 5;
             // 
             // comboBox6
@@ -414,7 +414,7 @@ namespace UnknownServerWV
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(530, 21);
             this.textBox2.TabIndex = 7;
-            this.textBox2.Text = "3";
+            this.textBox2.Text = "10";
             this.textBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label6
@@ -434,7 +434,7 @@ namespace UnknownServerWV
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(530, 21);
             this.textBox1.TabIndex = 5;
-            this.textBox1.Text = "10";
+            this.textBox1.Text = "1";
             this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label5

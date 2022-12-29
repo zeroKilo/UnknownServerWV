@@ -69,7 +69,7 @@ namespace Server
             MemoryStream m = new MemoryStream(msg);
             MemoryStream tmp = new MemoryStream();
             BackendCommand cmd = (BackendCommand)NetHelper.ReadU32(m);
-            if (cmd != BackendCommand.PingReq)
+            if (!Backend.ShouldFilterInLog(cmd))
                 Log.Print("BattleRoyaleMode: Client " + client.ID + " send CMD " + cmd);
             switch (cmd)
             {
