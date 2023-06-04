@@ -22,6 +22,8 @@ namespace Server
         private static long errorCounter;
         public static void Start()
         {
+            if (isRunning())
+                return;
             lock (_sync)
             {
                 _exit = false;

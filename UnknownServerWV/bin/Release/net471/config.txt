@@ -12,3 +12,6 @@ port_udp = 1235
 
 #server salt for profile hashes
 server_salt = blabla
+
+#server path to write status json
+path_status = status.json

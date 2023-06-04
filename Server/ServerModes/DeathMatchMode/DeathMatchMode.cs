@@ -39,12 +39,14 @@ namespace Server
             Backend.modeState = ServerModeState.DM_LobbyState;
             Backend.Start();
             MainServer.Start();
+            StatusServer.Start();
             DeathMatchServerLogic.Start();
         }
 
         public static void Stop()
         {
             Log.Print("Stopping death match mode...");
+            StatusServer.Stop();
             MainServer.Stop();
             Backend.Stop();
             DeathMatchServerLogic.Stop();

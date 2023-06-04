@@ -54,12 +54,14 @@ namespace Server
             Backend.modeState = ServerModeState.TDM_LobbyState;
             Backend.Start();
             MainServer.Start();
+            StatusServer.Start();
             TeamDeathMatchServerLogic.Start();
         }
 
         public static void Stop()
         {
             Log.Print("Stopping team death match mode...");
+            StatusServer.Stop();
             MainServer.Stop();
             Backend.Stop();
             TeamDeathMatchServerLogic.Stop();

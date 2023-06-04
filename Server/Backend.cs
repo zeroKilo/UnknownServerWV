@@ -26,6 +26,8 @@ namespace Server
 
         public static void Start()
         {
+            if (isRunning())
+                return;
             lock (_sync)
             {
                 _exit = false;

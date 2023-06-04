@@ -49,11 +49,13 @@ namespace Server
             Backend.modeState = ServerModeState.BR_LobbyState;
             Backend.Start();
             MainServer.Start();
+            StatusServer.Start();
             BattleRoyaleServerLogic.Start();
         }
         public static void Stop()
         {
             Log.Print("Stopping battle royale mode...");
+            StatusServer.Stop();
             MainServer.Stop();
             Backend.Stop();
             BattleRoyaleServerLogic.Stop();

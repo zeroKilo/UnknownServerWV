@@ -11,20 +11,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetDefines", "NetDefines\Ne
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{65DB5CAB-8533-4716-8A16-F65D9E0EC719}.Debug|Any CPU.ActiveCfg = Release|Any CPU
-		{65DB5CAB-8533-4716-8A16-F65D9E0EC719}.Debug|Any CPU.Build.0 = Release|Any CPU
 		{65DB5CAB-8533-4716-8A16-F65D9E0EC719}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{65DB5CAB-8533-4716-8A16-F65D9E0EC719}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CA690F92-9064-454B-A697-D3EEAC4F3BD0}.Debug|Any CPU.ActiveCfg = Release|Any CPU
-		{CA690F92-9064-454B-A697-D3EEAC4F3BD0}.Debug|Any CPU.Build.0 = Release|Any CPU
 		{CA690F92-9064-454B-A697-D3EEAC4F3BD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA690F92-9064-454B-A697-D3EEAC4F3BD0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4AA0D837-7AC1-43FD-B291-9146D545D3D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4AA0D837-7AC1-43FD-B291-9146D545D3D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4AA0D837-7AC1-43FD-B291-9146D545D3D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4AA0D837-7AC1-43FD-B291-9146D545D3D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection

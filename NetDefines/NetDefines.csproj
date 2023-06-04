@@ -2,6 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>net471</TargetFramework>
+    <Configurations>Release</Configurations>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <Optimize>false</Optimize>
   </PropertyGroup>
 
 </Project>

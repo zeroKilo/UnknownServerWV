@@ -43,12 +43,14 @@ namespace Server
             Backend.modeState = ServerModeState.FEM_LobbyState;
             Backend.Start();
             MainServer.Start();
+            StatusServer.Start();
             FreeExploreServerLogic.Start();
         }
 
         public static void Stop()
         {
             Log.Print("Stopping free explore mode...");
+            StatusServer.Stop();
             MainServer.Stop();
             Backend.Stop();
             FreeExploreServerLogic.Stop();
