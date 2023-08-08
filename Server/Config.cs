@@ -40,7 +40,7 @@ namespace Server
                 Log.Print("Error : cant find player profile folder");
                 return;
             }
-            string[] files = Directory.GetFiles("profiles");
+            string[] files = Directory.GetFiles(pathProfiles);
             foreach(string file in files)
             {
                 PlayerProfile p = new PlayerProfile(file);
