@@ -2,7 +2,7 @@
 name = Unknown Server by Warranty Voider
 
 #client ping timeout in ms
-timeout = 10000
+timeout = 30000
 
 #server backend tcp port
 port_tcp = 1234
@@ -10,3 +10,11 @@ port_tcp = 1234
 #server dedicated udp port
 port_udp = 1235
 
+#server salt for profile hashes
+server_salt = blabla
+
+#server path to write status json
+path_status = status.json
+
+#server path to find player profiles
+path_profiles = profiles

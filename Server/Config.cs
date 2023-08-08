@@ -1,9 +1,5 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Server
 {
@@ -34,7 +30,12 @@ namespace Server
             Log.Print("Config loaded:");
             foreach (KeyValuePair<string, string> pair in settings)
                 Log.Print(" - " + pair.Key + " = " + pair.Value);
-            if(!Directory.Exists("profiles"))
+            if (!settings.ContainsKey("path_profiles"))
+                return;
+            string pathProfiles = settings["path_profiles"];
+            if (!pathProfiles.EndsWith("\\"))
+                pathProfiles += "\\";
+            if(!Directory.Exists(pathProfiles))
             {
                 Log.Print("Error : cant find player profile folder");
                 return;

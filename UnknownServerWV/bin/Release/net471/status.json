@@ -1,1 +1,1 @@
-{"server":{"name":"Unknown Server by Warranty Voider","timeout ":"30000","port_tcp":"1234","port_udp":"1235"},"clients":{}}
+{"timestamp":"08.08.2023 10:50:40","server":{"name":"Unknown Server by Warranty Voider","timeout":"30000","port_tcp":"1234","port_udp":"1235","backend_mode":"BattleRoyaleMode","backend_mode_state":"BR_LobbyState"},"clients":{}}

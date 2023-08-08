@@ -3,10 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Server
@@ -24,7 +21,6 @@ namespace Server
         private static bool _running = false;
         private static Stopwatch sw = new Stopwatch();
         private static int minWaitTimeLobbyMs = 3000;
-        private static Random rnd = new Random();
         public static void Start()
         {
             _exit = false;

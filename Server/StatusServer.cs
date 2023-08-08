@@ -77,7 +77,9 @@ namespace Server
             sb.Append("\"name\":\"" + Config.settings["name"] + "\",");
             sb.Append("\"timeout\":\"" + Config.settings["timeout"] + "\",");
             sb.Append("\"port_tcp\":\"" + Config.settings["port_tcp"] + "\",");
-            sb.Append("\"port_udp\":\"" + Config.settings["port_udp"] + "\"");
+            sb.Append("\"port_udp\":\"" + Config.settings["port_udp"] + "\",");
+            sb.Append("\"backend_mode\":\"" + Backend.mode.ToString() + "\",");
+            sb.Append("\"backend_mode_state\":\"" + Backend.modeState.ToString() + "\"");
             sb.Append("},");
             sb.Append("\"clients\":{");
             for (int i = 0; i < Backend.clientList.Count; i++)

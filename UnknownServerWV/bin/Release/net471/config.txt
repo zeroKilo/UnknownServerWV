@@ -15,3 +15,6 @@ server_salt = blabla
 
 #server path to write status json
 path_status = status.json
+
+#server path to find player profiles
+path_profiles = profiles
