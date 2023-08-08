@@ -99,6 +99,7 @@ namespace UnknownServerWV
             switch (mode)
             {
                 case ServerMode.DeathMatchMode:
+                    Backend.currentMap =
                     DeathMatchMode.mapName = comboBox4.SelectedItem.ToString();
                     DeathMatchMode.Start();
                     DeathMatchServerLogic.neededPlayers = Convert.ToInt32(textBox10.Text);
@@ -107,6 +108,7 @@ namespace UnknownServerWV
                     DeathMatchServerLogic.killsToWin = Convert.ToInt32(textBox7.Text);
                     break;
                 case ServerMode.TeamDeathMatchMode:
+                    Backend.currentMap =
                     TeamDeathMatchMode.mapName = comboBox3.SelectedItem.ToString();
                     TeamDeathMatchMode.Start();
                     TeamDeathMatchServerLogic.neededPlayers = Convert.ToInt32(textBox4.Text);
@@ -115,6 +117,7 @@ namespace UnknownServerWV
                     TeamDeathMatchServerLogic.killsToWin = Convert.ToInt32(textBox6.Text);
                     break;
                 case ServerMode.BattleRoyaleMode:
+                    Backend.currentMap =
                     BattleRoyaleMode.mapName = comboBox1.SelectedItem.ToString();
                     BattleRoyaleMode.spawnLocIdx = comboBox2.SelectedIndex;
                     BattleRoyaleMode.spawnLocNames = BattleRoyaleMode.mapInfos[comboBox1.SelectedIndex].spawnLocations.ToArray();
@@ -123,6 +126,7 @@ namespace UnknownServerWV
                     BattleRoyaleServerLogic.countDownTime = Convert.ToInt32(textBox2.Text) * 1000;
                     break;
                 case ServerMode.FreeExploreMode:
+                    Backend.currentMap =
                     FreeExploreMode.mapName = comboBox5.SelectedItem.ToString();
                     FreeExploreMode.spawnLocIdx = comboBox6.SelectedIndex;
                     FreeExploreMode.spawnLocNames = FreeExploreMode.mapInfos[comboBox5.SelectedIndex].spawnLocations.ToArray();

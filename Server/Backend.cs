@@ -16,6 +16,7 @@ namespace Server
         public static string SERVER_SALT = "blabla";
         public static List<ClientInfo> clientList = new List<ClientInfo>();
         public static uint clientTeamIDCounter = 333;
+        public static string currentMap = "";
         private static readonly object _sync = new object();
         private static readonly object _syncBroadcast = new object();
         private static TcpListener tcp;
