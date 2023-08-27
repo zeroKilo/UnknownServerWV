@@ -52,10 +52,15 @@ namespace Server
         public static void Stop()
         {
             Log.Print("Stopping battle royale mode...");
+            Log.Print("Stopping status server...");
             StatusServer.Stop();
+            Log.Print("Stopping main server...");
             MainServer.Stop();
+            Log.Print("Stopping backend...");
             Backend.Stop();
+            Log.Print("Stopping logic...");
             BattleRoyaleServerLogic.Stop();
+            Log.Print("Stopping battle royale done");
         }
 
         public static void HandleMessage(byte[] msg, ClientInfo client)
@@ -86,7 +91,7 @@ namespace Server
                         key += (char)m.ReadByte();
                     PlayerProfile target = null;
                     foreach (PlayerProfile p in Config.profiles)
-                        if (p.key == key)
+                        if (p.publicKey == key)
                         {
                             target = p;
                             break;
@@ -101,7 +106,7 @@ namespace Server
                         Log.Print("Client ID=" + client.ID + " tries to login as " + target.name);
                         bool found = false;
                         foreach (ClientInfo c in Backend.clientList)
-                            if (c.profile != null && c.profile.key == key)
+                            if (c.profile != null && c.profile.publicKey == key)
                             {
                                 found = true;
                                 break;
@@ -123,6 +128,7 @@ namespace Server
                             foreach (char c in target.name)
                                 m.WriteByte((byte)c);
                             NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.LoginSuccessRes, m.ToArray(), client._sync);
+                            NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.RefreshPlayerListReq, new byte[0], client._sync);
                             Backend.BroadcastCommandExcept((uint)BackendCommand.RefreshPlayerListReq, new byte[0], client);
                         }
                     }

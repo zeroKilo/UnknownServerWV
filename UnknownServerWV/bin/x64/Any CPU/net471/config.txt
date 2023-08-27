@@ -1,0 +1,20 @@
+#server name
+name = Unknown Server by Warranty Voider
+
+#client ping timeout in ms
+timeout = 30000
+
+#server backend tcp port
+port_tcp = 1234
+
+#server dedicated udp port
+port_udp = 1235
+
+#min/max waiting time in lobby in ms
+min_lobby_wait = 3000
+max_lobby_wait = 10000
+
+#game data server
+gds_ip = 127.0.0.1
+gds_port = 4321
+gds_wait = 10

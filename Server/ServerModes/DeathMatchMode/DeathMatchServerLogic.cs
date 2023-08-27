@@ -19,7 +19,9 @@ namespace Server
         private static bool _exit = false;
         private static bool _running = false;
         private static Stopwatch sw = new Stopwatch();
+        private static Stopwatch swLobby = new Stopwatch();
         private static int minWaitTimeLobbyMs = 3000;
+        private static int maxWaitTimeLobbyMs = 60000;
         public static void Start()
         {
             _exit = false;
@@ -53,6 +55,9 @@ namespace Server
             playerScores = new List<PlayerScoreEntry>();
             Log.Print("SERVERLOGIC main loop running...");
             sw.Start();
+            swLobby.Start();
+            minWaitTimeLobbyMs = int.Parse(Config.settings["min_lobby_wait"]);
+            maxWaitTimeLobbyMs = int.Parse(Config.settings["max_lobby_wait"]);
             while (true)
             {
                 lock (_sync)
@@ -63,6 +68,11 @@ namespace Server
                 switch (Backend.modeState)
                 {
                     case ServerModeState.DM_LobbyState:
+                        if (swLobby.ElapsedMilliseconds > maxWaitTimeLobbyMs)
+                        {
+                            ShutDown();
+                            break;
+                        }
                         if (Backend.clientList.Count != neededPlayers)
                             sw.Stop();
                         else
@@ -137,31 +147,34 @@ namespace Server
                             }
                         }
                         if (Backend.clientList.Count == 0)
-                        {
-                            Backend.BroadcastServerStateChange(ServerMode.DeathMatchMode, ServerModeState.DM_LobbyState);
-                            DoorManager.Reset();
-                            SpawnManager.Reset();
-                            ObjectManager.Reset();
-                            sw.Restart();
-                        }
+                            ShutDown();
                         break;
                     case ServerModeState.DM_RoundEndState:
                         if (sw.ElapsedMilliseconds > 15000)
-                        {
-                            Backend.BroadcastServerStateChange(ServerMode.DeathMatchMode, ServerModeState.DM_LobbyState);
-                            DoorManager.Reset();
-                            SpawnManager.Reset();
-                            ObjectManager.Reset();
-                            sw.Restart();
-                            playerIDs = new List<uint>();
-                            playerScores = new List<PlayerScoreEntry>();
-                        }
+                                ShutDown();
                         break;
                 }
                 Thread.Sleep(10);
             }
             Log.Print("SERVERLOGIC main loop stopped...");
             _running = false;
+        }
+
+        private static void ShutDown()
+        {
+            Backend.BroadcastServerStateChange(ServerMode.DeathMatchMode, ServerModeState.Offline);
+            DoorManager.Reset();
+            SpawnManager.Reset();
+            ObjectManager.Reset();
+            playerIDs = new List<uint>();
+            playerScores = new List<PlayerScoreEntry>();
+            sw.Stop();
+            swLobby.Stop();
+            lock (_sync)
+            {
+                _exit = true;
+                _running = false;
+            }
         }
     }
 }

@@ -59,10 +59,15 @@ namespace Server
         public static void Stop()
         {
             Log.Print("Stopping team death match mode...");
+            Log.Print("Stopping status server...");
             StatusServer.Stop();
+            Log.Print("Stopping main server...");
             MainServer.Stop();
+            Log.Print("Stopping backend...");
             Backend.Stop();
+            Log.Print("Stopping logic...");
             TeamDeathMatchServerLogic.Stop();
+            Log.Print("Stopping team death match mode done");
         }
 
         public static void HandleMessage(byte[] msg, ClientInfo client)
@@ -93,7 +98,7 @@ namespace Server
                         key += (char)m.ReadByte();
                     PlayerProfile target = null;
                     foreach (PlayerProfile p in Config.profiles)
-                        if (p.key == key)
+                        if (p.publicKey == key)
                         {
                             target = p;
                             break;
@@ -108,7 +113,7 @@ namespace Server
                         Log.Print("Client ID=" + client.ID + " tries to login as " + target.name);
                         bool found = false;
                         foreach (ClientInfo c in Backend.clientList)
-                            if (c.profile != null && c.profile.key == key)
+                            if (c.profile != null && c.profile.publicKey == key)
                             {
                                 found = true;
                                 break;

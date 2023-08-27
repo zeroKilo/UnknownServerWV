@@ -7,7 +7,7 @@
     <Compile Update="ObjectViewer.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="UserManager.cs">
+    <Compile Update="PlaylistEntryEditor.cs">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>

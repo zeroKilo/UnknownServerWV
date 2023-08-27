@@ -149,9 +149,9 @@ namespace Server
             lock (_sync)
             {
                 _exit = true;
+                if (udp != null)
+                    udp.Close();
             }
-            if (udp != null)
-                udp.Close();
             while (true)
             {
                 lock (_sync)

@@ -15,13 +15,18 @@ namespace Server
         private static bool _exit = false;
         private static bool _running = false;
         private static Stopwatch sw = new Stopwatch();
+        private static Stopwatch swLobby = new Stopwatch();
         private static int minWaitTimeLobbyMs = 3000;
+        private static int maxWaitTimeLobbyMs = 60000;
         private static Random rnd = new Random();
         public static void tMain()
         {
             _running = true;
             Log.Print("SERVERLOGIC main loop running...");
             sw.Start();
+            swLobby.Start();
+            minWaitTimeLobbyMs = int.Parse(Config.settings["min_lobby_wait"]);
+            maxWaitTimeLobbyMs = int.Parse(Config.settings["max_lobby_wait"]);
             while (true)
             {
                 lock(_sync)
@@ -32,6 +37,11 @@ namespace Server
                 switch (Backend.modeState)
                 {
                     case ServerModeState.BR_LobbyState:
+                        if(swLobby.ElapsedMilliseconds > maxWaitTimeLobbyMs)
+                        {
+                            ShutDown();
+                            break;
+                        }
                         if (Backend.clientList.Count != neededPlayers)
                             sw.Stop();
                         else
@@ -83,13 +93,7 @@ namespace Server
                     case ServerModeState.BR_MainGameState:
                         BlueZoneManager.Update();
                         if (Backend.clientList.Count == 0)
-                        {
-                            Backend.BroadcastServerStateChange(ServerMode.BattleRoyaleMode, ServerModeState.BR_LobbyState);
-                            DoorManager.Reset();
-                            SpawnManager.Reset();
-                            ObjectManager.Reset();
-                            sw.Restart();
-                        }
+                            ShutDown();
                         break;
                 }
                 Thread.Sleep(10);
@@ -102,6 +106,7 @@ namespace Server
         {
             _exit = false;
             _running = false;
+            swLobby.Restart();
             new Thread(tMain).Start();
         }
 
@@ -120,6 +125,21 @@ namespace Server
                 }
                 Thread.Sleep(10);
                 Application.DoEvents();
+            }
+        }
+
+        private static void ShutDown()
+        {
+            Backend.BroadcastServerStateChange(ServerMode.BattleRoyaleMode, ServerModeState.Offline);
+            DoorManager.Reset();
+            SpawnManager.Reset();
+            ObjectManager.Reset();
+            sw.Stop();
+            swLobby.Stop();
+            lock (_sync)
+            {
+                _exit = true;
+                _running = false;
             }
         }
     }

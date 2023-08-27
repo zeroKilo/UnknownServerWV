@@ -13,7 +13,6 @@ namespace Server
     {
         public static ServerMode mode;
         public static ServerModeState modeState;
-        public static string SERVER_SALT = "blabla";
         public static List<ClientInfo> clientList = new List<ClientInfo>();
         public static uint clientTeamIDCounter = 333;
         public static string currentMap = "";
@@ -35,7 +34,6 @@ namespace Server
                 _running = true;
             }
             clientTimeout = Convert.ToUInt32(Config.settings["timeout"]);
-            SERVER_SALT = Config.settings["server_salt"].Trim();
             new Thread(tMain).Start();
         }
 

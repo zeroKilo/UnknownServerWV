@@ -3,15 +3,17 @@
   <PropertyGroup>
     <TargetFramework>net471</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
-    <Configurations>Release</Configurations>
+    <Configurations>Any CPU</Configurations>
     <OutputType>WinExe</OutputType>
     <NoWin32Manifest>true</NoWin32Manifest>
 	<ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+	<Platforms>x64</Platforms>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Any CPU|x64'">
     <Optimize>false</Optimize>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>

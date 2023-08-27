@@ -20,7 +20,9 @@ namespace Server
         private static bool _exit = false;
         private static bool _running = false;
         private static Stopwatch sw = new Stopwatch();
+        private static Stopwatch swLobby = new Stopwatch();
         private static int minWaitTimeLobbyMs = 3000;
+        private static int maxWaitTimeLobbyMs = 60000;
         public static void Start()
         {
             _exit = false;
@@ -53,6 +55,9 @@ namespace Server
             long lastTick = 0;
             Log.Print("SERVERLOGIC main loop running...");
             sw.Start();
+            swLobby.Start();
+            minWaitTimeLobbyMs = int.Parse(Config.settings["min_lobby_wait"]);
+            maxWaitTimeLobbyMs = int.Parse(Config.settings["max_lobby_wait"]);
             while (true)
             {
                 lock (_sync)
@@ -63,6 +68,11 @@ namespace Server
                 switch (Backend.modeState)
                 {
                     case ServerModeState.TDM_LobbyState:
+                        if (swLobby.ElapsedMilliseconds > maxWaitTimeLobbyMs)
+                        {
+                            ShutDown();
+                            break;
+                        }
                         if (Backend.clientList.Count != neededPlayers)
                             sw.Stop();
                         else
@@ -145,31 +155,33 @@ namespace Server
                             }
                         }
                         if (Backend.clientList.Count == 0)
-                        {
-                            Backend.BroadcastServerStateChange(ServerMode.TeamDeathMatchMode, ServerModeState.TDM_LobbyState);
-                            DoorManager.Reset();
-                            SpawnManager.Reset();
-                            ObjectManager.Reset();
-                            TeamDeathMatchMode.ResetPlayerSpawnLocations();
-                            sw.Restart();
-                        }
+                            ShutDown();
                         break;
                     case ServerModeState.TDM_RoundEndState:
                         if(sw.ElapsedMilliseconds > 60000)
-                        {
-                            Backend.BroadcastServerStateChange(ServerMode.TeamDeathMatchMode, ServerModeState.TDM_LobbyState);
-                            DoorManager.Reset();
-                            SpawnManager.Reset();
-                            ObjectManager.Reset();
-                            TeamDeathMatchMode.ResetPlayerSpawnLocations();
-                            sw.Restart();
-                        }
+                            ShutDown();
                         break;
                 }
                 Thread.Sleep(10);
             }
             Log.Print("SERVERLOGIC main loop stopped...");
             _running = false;
+        }
+
+        private static void ShutDown()
+        {
+            Backend.BroadcastServerStateChange(ServerMode.TeamDeathMatchMode, ServerModeState.Offline);
+            DoorManager.Reset();
+            SpawnManager.Reset();
+            ObjectManager.Reset();
+            TeamDeathMatchMode.ResetPlayerSpawnLocations();
+            sw.Stop();
+            swLobby.Stop();
+            lock (_sync)
+            {
+                _exit = true;
+                _running = false;
+            }
         }
     }
 }

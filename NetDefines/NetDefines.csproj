@@ -2,11 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>net471</TargetFramework>
-    <Configurations>Release</Configurations>
+    <Configurations>Any CPU</Configurations>
+    <Platforms>x64</Platforms>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Any CPU|x64'">
     <Optimize>false</Optimize>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
 </Project>

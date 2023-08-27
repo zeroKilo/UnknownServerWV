@@ -1,9 +1,13 @@
 ﻿using System;
 using System.IO;
+using System.Security.Cryptography;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.Serialization.Json;
+using System.Xml;
+using System.Xml.Linq;
 
 namespace NetDefines
 {
@@ -12,6 +16,7 @@ namespace NetDefines
     {
         private static readonly object _client_sync = new object();
         public static Random rnd = new Random();
+        public static SHA256 sha = SHA256.Create();
         public static ushort ReadU16(Stream s)
         {
             byte[] buff = new byte[2];
@@ -65,12 +70,53 @@ namespace NetDefines
             foreach (char c in str)
                 s.WriteByte((byte)c);
         }
+        public static void WriteArray(Stream s, byte[] data)
+        {
+            WriteU32(s, (uint)data.Length);
+            s.Write(data, 0, data.Length);
+        }
+
+        public static byte[] ReadArray(Stream s)
+        {
+            int len = (int)ReadU32(s);
+            byte[] result = new byte[len];
+            s.Read(result, 0, len);
+            return result;
+        }
+
+        public static byte[] ReadAll(Stream s)
+        {
+            MemoryStream m = new MemoryStream();
+            int size = 1024;
+            byte[] buff = new byte[size];
+            int count = s.Read(buff, 0, size);
+            m.Write(buff, 0, count);
+            while (count == size)
+            {
+                count = s.Read(buff, 0, size);
+                m.Write(buff, 0, count);
+            }
+            return m.ToArray();
+        }
+
+        public static string MakeHexString(byte[] data)
+        {
+            return BitConverter.ToString(data).Replace("-", "");
+        }
+
+        public static byte[] HexStringToArray(string data)
+        {
+            return Enumerable.Range(0, data.Length)
+                        .Where(x => x % 2 == 0)
+                        .Select(x => Convert.ToByte(data.Substring(x, 2), 16))
+                        .ToArray();
+        }
 
         public static string CreateMD5(string input)
         {
-            using (System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create())
+            using (MD5 md5 = MD5.Create())
             {
-                byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(input);
+                byte[] inputBytes = Encoding.ASCII.GetBytes(input);
                 byte[] hashBytes = md5.ComputeHash(inputBytes);
                 StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < hashBytes.Length; i++)
@@ -78,6 +124,66 @@ namespace NetDefines
                 return sb.ToString();
             }
         }
+        public static string[] MakeSigningKeys()
+        {
+            RSACryptoServiceProvider rsa = new RSACryptoServiceProvider(2048);
+            RSAParameters rsaKeyInfo = rsa.ExportParameters(true);
+            MemoryStream m = new MemoryStream();
+            WriteArray(m, rsaKeyInfo.Exponent);
+            WriteArray(m, rsaKeyInfo.Modulus);
+            string pubKey = MakeHexString(m.ToArray());
+            m = new MemoryStream();
+            WriteArray(m, rsaKeyInfo.D);
+            WriteArray(m, rsaKeyInfo.DP);
+            WriteArray(m, rsaKeyInfo.DQ);
+            WriteArray(m, rsaKeyInfo.InverseQ);
+            WriteArray(m, rsaKeyInfo.P);
+            WriteArray(m, rsaKeyInfo.Q);
+            string privKey = MakeHexString(m.ToArray());
+            return new string[] { pubKey, privKey };
+        }
+
+        public static RSAParameters LoadSigningKeys(string pubKeyHex, string privKeyHex = null)
+        {
+            if (privKeyHex == null)
+                return LoadSigningKeys(HexStringToArray(pubKeyHex));
+            else
+                return LoadSigningKeys(HexStringToArray(pubKeyHex), HexStringToArray(privKeyHex));
+        }
+
+        public static RSAParameters LoadSigningKeys(byte[] pubKey, byte[] privKey = null)
+        {
+            RSAParameters result = new RSAParameters();
+            MemoryStream m = new MemoryStream(pubKey);
+            result.Exponent = ReadArray(m);
+            result.Modulus = ReadArray(m);
+            if (privKey != null)
+            {
+                m = new MemoryStream(privKey);
+                result.D = ReadArray(m);
+                result.DP = ReadArray(m);
+                result.DQ = ReadArray(m);
+                result.InverseQ = ReadArray(m);
+                result.P = ReadArray(m);
+                result.Q = ReadArray(m);
+            }
+            return result;
+        }
+
+        public static byte[] MakeSignature(byte[] data, RSAParameters p)
+        {
+            RSACryptoServiceProvider provider = new RSACryptoServiceProvider();
+            provider.ImportParameters(p);
+            return provider.SignData(data, sha);
+        }
+
+        public static bool VerifySignature(byte[] data, byte[] signature, RSAParameters Key)
+        {
+            RSACryptoServiceProvider provider = new RSACryptoServiceProvider();
+            provider.ImportParameters(Key);
+            return provider.VerifyData(data, sha, signature);
+        }
+
         public static void ClientSendCMDPacket(Stream s, uint cmd, byte[] data)
         {
             lock (_client_sync)
@@ -112,6 +218,12 @@ namespace NetDefines
             s.Seek(4, 0);
             s.Read(result, 0, result.Length);
             return result;
+        }
+
+        public static XElement StringToJSON(string s)
+        {
+            XmlDictionaryReader jsonReader = JsonReaderWriterFactory.CreateJsonReader(Encoding.UTF8.GetBytes(s), new XmlDictionaryReaderQuotas());
+            return XElement.Load(jsonReader);
         }
     }
 }
