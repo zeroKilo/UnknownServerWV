@@ -19,7 +19,7 @@ namespace Server
         {
             _exit = false;
             _running = false;
-            sw.Start();
+            sw.Restart();
             new Thread(tMain).Start();
         }
 
@@ -46,6 +46,8 @@ namespace Server
             _running = true;
             playerIDs = new List<uint>();
             Log.Print("SERVERLOGIC main loop running...");
+            Backend.modeState = ServerModeState.FEM_LobbyState;
+            Backend.BroadcastServerStateChange(ServerMode.FreeExploreMode, ServerModeState.FEM_LobbyState);
             while (true)
             {
                 lock (_sync)
