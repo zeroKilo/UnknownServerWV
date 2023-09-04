@@ -169,6 +169,9 @@ namespace GameDataServer
                 case "/server_list":
                     response = HandleGetServerList();
                     break;
+                case "/status_list":
+                    response = HandleGetStatusList();
+                    break;
                 default:
                     throw new Exception();
             }
@@ -215,6 +218,25 @@ namespace GameDataServer
             return MakeHeaderJSON(sb.ToString());
         }
 
+        public static string HandleGetStatusList()
+        {
+            Log.Print("HandleGetStatusList: sending status");
+            GameServer[] gameServers = DBManager.GetServerProfiles();
+            StringBuilder sb = new StringBuilder();
+            sb.Append("{\"list\":[");
+            for (int i = 0; i < gameServers.Length; i++)
+            {
+                GameServer gs = gameServers[i];
+                sb.Append("{\"status\":\"" + Helper.Base64Encode(gs.Status) + "\"}");
+                if (i < gameServers.Length - 1)
+                    sb.Append(",");
+            }
+            sb.Append("]}");
+            return MakeHeaderJSON(sb.ToString());
+        }
+
+
+
         private static GameServer CheckServerSignature(List<string> headers, string content)
         {
             string signature = headers[0].Split(':')[1].Trim();
@@ -233,6 +255,7 @@ namespace GameDataServer
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("HTTP/1.1 200 OK");
+            sb.AppendLine("Access-Control-Allow-Origin: *");
             sb.AppendLine("Content-Type: application/json; charset=utf-8");
             sb.AppendLine("Content-Length: " + content.Length);
             sb.AppendLine();

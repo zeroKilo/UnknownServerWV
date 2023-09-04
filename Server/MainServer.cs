@@ -64,8 +64,9 @@ namespace Server
                 return;
             }
             ushort port = Convert.ToUInt16(Config.settings["port_udp"]);
-            Log.Print("MAINSERVER Binding to 0.0.0.0:" + port + "...");        
-            udp = new UdpClient(new IPEndPoint(IPAddress.Any, port));
+            string ip = Config.settings["bind_ip"];
+            Log.Print("MAINSERVER Binding to " + ip + ":" + port + "...");
+            udp = new UdpClient(new IPEndPoint(IPAddress.Parse(ip), port));
             Log.Print("MAINSERVER Started listening");
             while (true)
             {

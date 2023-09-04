@@ -56,8 +56,9 @@ namespace Server
                 return;
             }
             ushort port = Convert.ToUInt16(Config.settings["port_tcp"]);
-            Log.Print("BACKEND Binding to 0.0.0.0:" + port + "...");
-            tcp = new TcpListener(IPAddress.Any, port);
+            string ip = Config.settings["bind_ip"];
+            Log.Print("BACKEND Binding to " + ip + ":" + port + "...");
+            tcp = new TcpListener(IPAddress.Parse(ip), port);
             tcp.Start();
             Log.Print("BACKEND Started listening");
             while (true)
