@@ -54,8 +54,8 @@ namespace Server
             _running = true;
             long lastTick = 0;
             Log.Print("SERVERLOGIC main loop running...");
-            sw.Start();
-            swLobby.Start();
+            sw.Restart();
+            swLobby.Restart();
             minWaitTimeLobbyMs = int.Parse(Config.settings["min_lobby_wait"]);
             maxWaitTimeLobbyMs = int.Parse(Config.settings["max_lobby_wait"]);
             while (true)
@@ -70,7 +70,7 @@ namespace Server
                     case ServerModeState.TDM_LobbyState:
                         if (swLobby.ElapsedMilliseconds > maxWaitTimeLobbyMs)
                         {
-                            ShutDown();
+                            ShutDown("Lobby timeout");
                             break;
                         }
                         if (Backend.clientList.Count != neededPlayers)
@@ -155,11 +155,11 @@ namespace Server
                             }
                         }
                         if (Backend.clientList.Count == 0)
-                            ShutDown();
+                            ShutDown("All player left");
                         break;
                     case ServerModeState.TDM_RoundEndState:
                         if(sw.ElapsedMilliseconds > 60000)
-                            ShutDown();
+                            ShutDown("Round ended");
                         break;
                 }
                 Thread.Sleep(10);
@@ -168,8 +168,9 @@ namespace Server
             _running = false;
         }
 
-        private static void ShutDown()
+        private static void ShutDown(string reason)
         {
+            Log.Print("Shutting down, reason: " + reason);
             Backend.BroadcastServerStateChange(ServerMode.TeamDeathMatchMode, ServerModeState.Offline);
             DoorManager.Reset();
             SpawnManager.Reset();

@@ -15,7 +15,7 @@ port_udp = 1235
 
 #min/max waiting time in lobby in ms
 min_lobby_wait = 3000
-max_lobby_wait = 10000
+max_lobby_wait = 300000
 
 #game data server
 gds_ip = 127.0.0.1
