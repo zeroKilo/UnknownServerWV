@@ -111,6 +111,17 @@ namespace NetDefines
 
         //Stocks
         TacticalStock,
+        SniperStock,
+        UziStock,
+        ShotgunBulletLoop,
+        SniperBulletLoop,
+
+        //Grips
+        AngledGrip,
+        HalfGrip,
+        LightGrip,
+        ThumbGrip,
+        VerticalGrip,
 
         //Health
         Bandage,
