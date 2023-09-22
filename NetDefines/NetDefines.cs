@@ -97,7 +97,17 @@ namespace NetDefines
         Scope8X,
 
         //Muzzle
-        Suppressor,
+        Choke,
+        Large_Compensator,
+        Large_FlashHider,
+        Large_Suppressor,
+        Mid_Compensator,
+        Mid_FlashHider,
+        Mid_Suppressor,
+        Small_Suppressor,
+        Sniper_Compensator,
+        Sniper_FlashHider,
+        Sniper_Suppressor,
 
         //Stocks
         TacticalStock,
