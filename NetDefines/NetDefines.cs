@@ -89,6 +89,7 @@ namespace NetDefines
         Pan,
 
         //Scopes
+        ScopeHD,
         ScopeRedDot,
         Scope2X,
         Scope3X,
@@ -98,6 +99,7 @@ namespace NetDefines
 
         //Muzzle
         Choke,
+        DuckBill,
         Large_Compensator,
         Large_FlashHider,
         Large_Suppressor,
