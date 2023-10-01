@@ -14,5 +14,14 @@ namespace GameDataServer
         {
             return Encoding.UTF8.GetString(Convert.FromBase64String(s));
         }
+
+        public static bool ValidName(string name)
+        {
+            string allowed = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_.";
+            foreach (char c in name)
+                if (allowed.IndexOf(c) == -1)
+                    return false;
+            return true;
+        }
     }
 }

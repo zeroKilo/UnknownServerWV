@@ -138,6 +138,9 @@ namespace GameDataServer
             string content = sr.ReadToEnd();
             switch(url)
             {
+                case "/register_player":
+                    response = HandlePostRegisterPlayer(headers, content);
+                    break;
                 case "/server_status":
                     response = HandlePostServerStatus(headers, content);
                     break;
@@ -145,6 +148,49 @@ namespace GameDataServer
                     throw new Exception();
             }
             return response;
+        }
+
+        public static string HandlePostRegisterPlayer(List<string> headers, string content)
+        {
+            string result = "";
+            try
+            {
+                StringReader sr = new StringReader(content);
+                string nameLine = sr.ReadLine();
+                string keyLine = sr.ReadLine();
+                if (!nameLine.Contains("=") || !keyLine.Contains("="))
+                    throw new Exception();
+                string[] nameParts = nameLine.Split('=');
+                string[] keyParts = keyLine.Split('=');
+                if (nameParts.Length != 2 || keyParts.Length != 2)
+                    throw new Exception();
+                if (nameParts[0].Trim() != "name" || keyParts[0].Trim() != "pubKey")
+                    throw new Exception();
+                string name = nameParts[1].Trim();
+                string pubkey = keyParts[1].Trim();
+                if (!Helper.ValidName(name) || pubkey.Length != 534)
+                    throw new Exception();
+                PlayerProfile[] list = DBManager.GetPlayerProfiles();
+                foreach (PlayerProfile p in list)
+                    if (p.Name == name)
+                    {
+                        result = "Name already taken!";
+                        Log.Print("HandlePostRegisterPlayer: " + result + " (" + name +")");
+                        break;
+                    }
+                if(result == "")
+                {
+                    DBManager.AddPlayerProfile(new PlayerProfile(0, pubkey, name));
+                    result = "Successfully added!";
+                    Log.Print("HandlePostRegisterPlayer: " + result + " (" + name + ")");
+                }
+            }
+            catch
+            {
+                result = "Error processing!";
+                Log.Print("HandlePostRegisterPlayer: " + result);
+            }
+            return MakeHeaderJSON("{\"result\":\"" + result + "\"}");
         }
 
         public static string HandlePostServerStatus(List<string> headers, string content)
