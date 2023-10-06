@@ -1,9 +1,12 @@
 ﻿using NetDefines;
 using System;
+using System.IO;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using System.Xml.Linq;
+using System.Xml.XPath;
 
 namespace Server
 {
@@ -125,7 +128,26 @@ namespace Server
             NetworkStream ns = client.GetStream();
             byte[] data = Encoding.ASCII.GetBytes(sb.ToString());
             ns.Write(data, 0, data.Length);
+            while (!ns.DataAvailable)
+                Thread.Sleep(100);
+            sb = new StringBuilder();
+            int b;
+            while ((b = ns.ReadByte()) != -1)
+                sb.Append((char)b);
             client.Close();
+            StringReader sr = new StringReader(sb.ToString());
+            while (sr.ReadLine() != "")
+                ;
+            string reply = sr.ReadToEnd();
+            XElement json = NetHelper.StringToJSON(reply);
+            XElement countElement = json.XPathSelectElement("playerCount");
+            int count = int.Parse(countElement.Value);
+            if (Config.profiles.Count != count)
+            {
+                Log.Print("STATUSSRV detected new players, reloading profiles");
+                Config.ReloadPlayerProfiles();
+                Log.Print("STATUSSRV loaded " + Config.profiles.Count + " profiles");
+            }
         }
 
         public static void Stop()

@@ -26,6 +26,12 @@ namespace UnknownServerWV
             Config.Init();
             PlaylistManager.Init();
             RefreshPlaylist();
+            if (Config.settings.ContainsKey("autostart"))
+            {
+                string v = Config.settings["autostart"];
+                if (v == "1")
+                    OnStart();
+            }
         }
 
         public void RefreshPlaylist()

@@ -5,7 +5,6 @@ using NetDefines;
 using System.Security.Cryptography;
 using System.Net.Sockets;
 using System;
-using System.Runtime.Serialization.Json;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
@@ -41,7 +40,7 @@ namespace Server
             foreach (KeyValuePair<string, string> pair in settings)
                 Log.Print(" - " + pair.Key + " = " + pair.Value);            
             LoadServerKeys();
-            LoadPlayerProfiles();
+            ReloadPlayerProfiles();
             Log.Print("CONFIG Player profiles loaded:");
             foreach (PlayerProfile p in profiles)
                 Log.Print(" - " + p.publicKey.Substring(23, 10) + "... " + p.name);
@@ -64,8 +63,9 @@ namespace Server
             rsaParams = NetHelper.LoadSigningKeys(pubKey, privKey);
         }
 
-        private static void LoadPlayerProfiles()
+        public static void ReloadPlayerProfiles()
         {
+            profiles = new List<PlayerProfile>();
             if (!settings.ContainsKey("gds_ip") || !settings.ContainsKey("gds_port"))
                 return;
             try

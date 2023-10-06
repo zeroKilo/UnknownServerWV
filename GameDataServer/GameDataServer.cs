@@ -131,6 +131,7 @@ namespace GameDataServer
             client.Close();
         }
 
+
         public static string HandlePOST(string url, StringReader sr)
         {
             string response;
@@ -199,7 +200,7 @@ namespace GameDataServer
             gs.Status = content;
             DBManager.UpdateGameServer(gs);
             Log.Print("HandlePostServerStatus: updated status of server");
-            return MakeHeaderJSON("");
+            return MakeHeaderJSON("{\"playerCount\" : " + DBManager.GetPlayerProfiles().Length + "}");
         }
 
         public static string HandleGET(string url, StringReader sr)

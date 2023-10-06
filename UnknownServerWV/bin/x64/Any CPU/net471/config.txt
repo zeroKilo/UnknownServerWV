@@ -1,6 +1,9 @@
 #server name
 name = Unknown Server by Warranty Voider
 
+#start server on load, 1 or 0
+autostart = 1
+
 #client ping timeout in ms
 timeout = 30000
 

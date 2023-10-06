@@ -29,6 +29,12 @@ namespace GameDataServer
             }
             DBManager.Init(Config.settings[key]);
             RefreshAll();
+            if (Config.settings.ContainsKey("autostart"))
+            {
+                string v = Config.settings["autostart"];
+                if (v == "1")
+                    startToolStripMenuItem_Click(null, null);
+            }
         }
 
         private void startToolStripMenuItem_Click(object sender, EventArgs e)
