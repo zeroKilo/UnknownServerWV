@@ -140,6 +140,9 @@ namespace Server
                         }
                     }
                     break;
+                case BackendCommand.GetWeaponConfigReq:
+                    NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.GetWeaponConfigRes, Encoding.UTF8.GetBytes(WeaponManager.weaponSettingsJson), client._sync);
+                    break;
                 case BackendCommand.GetMapReq:
                     NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.GetMapRes, Encoding.UTF8.GetBytes(mapName), client._sync);
                     break;

@@ -1,9 +1,5 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NetDefines
 {
@@ -153,6 +149,8 @@ namespace NetDefines
         LoginReq,
         LoginSuccessRes,
         LoginFailRes,
+        GetWeaponConfigReq,
+        GetWeaponConfigRes,
         GetMapReq,
         GetMapRes,
         GetSpawnLocReq,

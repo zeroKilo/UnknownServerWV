@@ -3,6 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using NetDefines;
+using System.Xml.Linq;
 
 namespace Server
 {
@@ -10,12 +11,14 @@ namespace Server
     {
         public class SpawnRange
         {
+            public Item item;
             public int start;
             public int end;
             public int count;
 
-            public SpawnRange(int s, int e, int c)
+            public SpawnRange(Item i, int s, int e, int c)
             {
+                item = i;
                 start = s;
                 end = e;
                 count = c;
@@ -45,29 +48,19 @@ namespace Server
 
         private static void LoadSpawnRanges()
         {
-            string[] lines = File.ReadAllLines("spawn_table.txt");
-            Array values = Enum.GetValues(typeof(Item));
-            SpawnRange[] spawnRanges = new SpawnRange[values.Length - 1];
-            int idx = 0;
+            XElement root = NetHelper.StringToJSON(File.ReadAllText("spawn_table.json"));
             int pos = 0;
-            foreach(string line in lines)
+            itemSpawnRanges = new List<SpawnRange>();
+            foreach (XElement child in root.Nodes())
             {
-                string s = line;
-                if (s.Contains("//"))
-                    s = line.Substring(0, line.IndexOf("//"));
-                s = s.Trim();
-                if (s == "")
-                    continue;
-                if (!s.Contains(','))
-                    continue;
-                string[] parts = s.Split(',');
-                int size = Convert.ToInt32(parts[0].Trim());
-                int count = Convert.ToInt32(parts[1].Trim());
-                spawnRanges[idx++] = new SpawnRange(pos, pos + size - 1, count);
+                XNode[] list = child.Nodes().ToArray();
+                Item item = (Item)int.Parse(((XElement)list[0]).Value);
+                int size = int.Parse(((XElement)list[1]).Value);
+                int count = int.Parse(((XElement)list[2]).Value);
+                itemSpawnRanges.Add(new SpawnRange(item, pos, pos + size - 1, count));
                 pos += size;
             }
             maxSpawnRange = pos;
-            itemSpawnRanges = new List<SpawnRange>(spawnRanges);
         }
 
         private static ItemSpawnInfo GetRandomItem()
@@ -75,7 +68,7 @@ namespace Server
             int n = rnd.Next(0, maxSpawnRange);
             for (int i = 0; i < itemSpawnRanges.Count; i++)
                 if (itemSpawnRanges[i].Contains(n))
-                    return new ItemSpawnInfo((Item)i, (uint)itemSpawnRanges[i].count);
+                    return new ItemSpawnInfo(itemSpawnRanges[i].item, (uint)itemSpawnRanges[i].count);
             return new ItemSpawnInfo(Item.UNDEFINED, 1);
         }
 

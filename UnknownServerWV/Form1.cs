@@ -24,6 +24,7 @@ namespace UnknownServerWV
         {
             Log.Init(rtb1);
             Config.Init();
+            WeaponManager.Init();
             PlaylistManager.Init();
             RefreshPlaylist();
             if (Config.settings.ContainsKey("autostart"))
