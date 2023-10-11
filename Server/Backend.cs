@@ -140,7 +140,7 @@ namespace Server
                     Log.Print("BACKEND : stopped thread for client ID=" + cInfo.ID);
                     break;
                 }
-                if (cInfo.ns.DataAvailable)
+                if (!cInfo.cleanUp && cInfo.ns.DataAvailable)
                 {
                     uint magic = NetHelper.ReadU32(cInfo.ns);
                     if(magic != NetConstants.PACKET_MAGIC)
@@ -194,6 +194,17 @@ namespace Server
                     Log.Print("BACKEND Error : client ID=" + cInfo.ID + " timed out, abort");
                     break;
                 }
+                if(cInfo.cleanUp)
+                {
+                    Log.Print("BACKEND Cleanup : client ID=" + cInfo.ID + " removed");
+                    for (int i = 0; i < clientList.Count; i++)
+                        if (clientList[i].ID == cInfo.ID)
+                        {
+                            clientList.RemoveAt(i);
+                            break;
+                        }
+                    break;
+                }
                 Thread.Sleep(1);
             }
             cInfo.tcp.Close();
@@ -234,7 +245,8 @@ namespace Server
                 if (client != except)
                     try
                     {
-                        NetHelper.ServerSendCMDPacket(client.ns, cmd, data, client._sync);
+                        if(!client.cleanUp)
+                            NetHelper.ServerSendCMDPacket(client.ns, cmd, data, client._sync);
                     }
                     catch (Exception ex)
                     {

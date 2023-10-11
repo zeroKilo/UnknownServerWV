@@ -18,5 +18,6 @@ namespace Server
         public List<uint> objIDs = new List<uint>();
         public readonly object _sync = new object();
         public bool isReady = false;
+        public bool cleanUp = false;
     }
 }
