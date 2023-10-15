@@ -223,5 +223,14 @@ namespace NetDefines
             XmlDictionaryReader jsonReader = JsonReaderWriterFactory.CreateJsonReader(Encoding.UTF8.GetBytes(s), new XmlDictionaryReaderQuotas());
             return XElement.Load(jsonReader);
         }
+
+        public static string XMLToJSONString(XElement root)
+        {
+            MemoryStream m = new MemoryStream();
+            XmlDictionaryWriter jsonWriter = JsonReaderWriterFactory.CreateJsonWriter(m, Encoding.UTF8);
+            root.Save(jsonWriter);
+            jsonWriter.Flush();
+            return Encoding.UTF8.GetString(m.ToArray());
+        }
     }
 }
