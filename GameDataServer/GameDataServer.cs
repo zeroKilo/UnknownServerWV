@@ -8,6 +8,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace GameDataServer
 {
@@ -145,6 +146,9 @@ namespace GameDataServer
                 case "/server_status":
                     response = HandlePostServerStatus(headers, content);
                     break;
+                case "/set_player_meta":
+                    response = HandlePostSetPlayerMeta(headers, content);
+                    break;
                 default:
                     throw new Exception();
             }
@@ -181,7 +185,8 @@ namespace GameDataServer
                     }
                 if(result == "")
                 {
-                    DBManager.AddPlayerProfile(new PlayerProfile(0, pubkey, name));
+                    string metaData = "{\"creationDate\":" + DateTimeOffset.Now.ToUnixTimeSeconds() + "}";
+                    DBManager.AddPlayerProfile(new PlayerProfile(0, pubkey, name, metaData));
                     result = "Successfully added!";
                     Log.Print("HandlePostRegisterPlayer: " + result + " (" + name + ")");
                 }
@@ -200,7 +205,71 @@ namespace GameDataServer
             gs.Status = content;
             DBManager.UpdateGameServer(gs);
             Log.Print("HandlePostServerStatus: updated status of server");
-            return MakeHeaderJSON("{\"playerCount\" : " + DBManager.GetPlayerProfiles().Length + "}");
+            return MakeHeaderJSON("{\"playerUpdateCount\" : " + DBManager.GetPlayerProfileUpdateCounter() + "}");
+        }
+
+        public static string HandlePostSetPlayerMeta(List<string> headers, string content)
+        {
+            try
+            {
+                GameServer gs = CheckServerSignature(headers, content);
+                StringReader sr = new StringReader(content);
+                int profileId = int.Parse(sr.ReadLine());
+                string data = sr.ReadToEnd();
+                Log.Print("HandlePostSetPlayerMeta: updating specific metadata for profile id " + profileId);
+                PlayerProfile[] profiles = DBManager.GetPlayerProfiles();
+                PlayerProfile p = null;
+                foreach (PlayerProfile profile in profiles)
+                    if (profile.Id == profileId)
+                    {
+                        p = profile;
+                        break;
+                    }
+                if (p == null)
+                    throw new Exception();
+                bool found = false;
+                XElement rootData = NetHelper.StringToJSON(data);
+                foreach (XNode node in rootData.Nodes())
+                {
+                    XElement x = (XElement)node;
+                    if (x.Name.LocalName == "serverKey" && gs.PublicKey == x.Value)
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+                if(!found)
+                    throw new Exception();
+                XElement root = NetHelper.StringToJSON(p.MetaData);
+                foreach (XNode node in root.Nodes())
+                {
+                    XElement x = (XElement)node;
+                    if (x.Name.LocalName == "specificData")
+                    {
+                        found = false;
+                        foreach (XNode node2 in ((XElement)node).Nodes())
+                        {
+                            XElement x2 = (XElement)node2;
+                            if (x2.Name.LocalName == "serverKey" && gs.PublicKey == x2.Value)
+                            {
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found)
+                            continue;
+                        x.RemoveNodes();
+                        foreach (XNode n in rootData.Nodes())
+                            x.Add(n);
+                        break;
+                    }
+                }
+                p.MetaData = NetHelper.XMLToJSONString(root);
+                DBManager.UpdatePlayerProfile(p);
+                DBManager.Update();
+            }
+            catch { }
+            return MakeHeaderJSON("");
         }
 
         public static string HandleGET(string url, StringReader sr)
@@ -219,6 +288,9 @@ namespace GameDataServer
                 case "/status_list":
                     response = HandleGetStatusList();
                     break;
+                case "/get_player_meta":
+                    response = HandleGetPlayerMeta(headers, content);
+                    break;
                 default:
                     throw new Exception();
             }
@@ -234,7 +306,8 @@ namespace GameDataServer
             int count = 0;
             foreach(PlayerProfile p in profiles)
             {
-                sb.Append("{\"name\":\"" + p.Name + "\",");
+                sb.Append("{\"id\":" + p.Id + ",");
+                sb.Append("\"name\":\"" + p.Name + "\",");
                 sb.Append("\"public_key\":\"" + p.PublicKey + "\"}");
                 if (++count < profiles.Length)
                     sb.Append(",");
@@ -279,6 +352,39 @@ namespace GameDataServer
                     sb.Append(",");
             }
             sb.Append("]}");
+            return MakeHeaderJSON(sb.ToString());
+        }
+
+        public static string HandleGetPlayerMeta(List<string> headers, string content)
+        {
+            CheckServerSignature(headers, content);
+            Log.Print("HandleGetPlayerMeta: sending player metadata to server");
+            string[] ids = content.Replace(" ", "").Split(',');
+            StringBuilder sb = new StringBuilder();
+            sb.Append("{");
+            PlayerProfile[] profiles = DBManager.GetPlayerProfiles();
+            List<string> results = new List<string>();
+            foreach(string id in ids)
+            {
+                int n = int.Parse(id);
+                PlayerProfile p = null;
+                foreach(PlayerProfile profile in profiles)
+                    if(profile.Id == n)
+                    {
+                        p = profile;
+                        break;
+                    }
+                if (p == null)
+                    continue;
+                results.Add("\"" + id + "\":" + p.MetaData);
+            }
+            for(int i = 0; i < results.Count; i++)
+            {
+                sb.Append(results[i]);
+                if (i < results.Count - 1)
+                    sb.Append(",");
+            }
+            sb.Append("}");
             return MakeHeaderJSON(sb.ToString());
         }
 

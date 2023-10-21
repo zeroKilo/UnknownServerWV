@@ -17,6 +17,7 @@ namespace Server
         public static RSAParameters rsaParams;
         public static string pubKey, privKey;
         public static string itemSettingsJson = "";
+        public static uint playerProfileUpdateCounter = 0;
 
         public static void Init()
         {
@@ -42,6 +43,7 @@ namespace Server
                 Log.Print(" - " + pair.Key + " = " + pair.Value);
             LoadItemSettings();
             LoadServerKeys();
+            StatusServer.Init();
             ReloadPlayerProfiles();
             Log.Print("CONFIG Player profiles loaded:");
             foreach (PlayerProfile p in profiles)
@@ -85,31 +87,19 @@ namespace Server
                 return;
             try
             {
-                byte[] signature = NetHelper.MakeSignature(new byte[0], rsaParams);
-                StringBuilder sb = new StringBuilder();
-                sb.AppendLine("GET /profile_list HTTP/1.1");
-                sb.AppendLine("Signature: " + NetHelper.MakeHexString(signature));
-                sb.AppendLine("Public-Key: " + pubKey);
-                sb.AppendLine();
-                TcpClient client = new TcpClient(settings["gds_ip"], Convert.ToInt32(settings["gds_port"]));
-                NetworkStream ns = client.GetStream();
-                byte[] data = Encoding.ASCII.GetBytes(sb.ToString());
-                ns.Write(data, 0, data.Length);
-                byte[] response = NetHelper.ReadAll(ns);
-                client.Close();
-                string content = Encoding.ASCII.GetString(response);
-                StringReader sr = new StringReader(content);
-                while (sr.ReadLine() != "") ;
-                XElement json = NetHelper.StringToJSON(sr.ReadToEnd());
+                string reply = StatusServer.MakeRESTRequest("GET /profile_list", "");
+                XElement json = NetHelper.StringToJSON(reply);
                 XElement list = json.XPathSelectElement("profiles");
                 if (list != null)
                     foreach (XElement entry in list.Elements())
                     {
+                        XElement id = entry.XPathSelectElement("id");
                         XElement name = entry.XPathSelectElement("name");
                         XElement public_key = entry.XPathSelectElement("public_key");
                         if (name != null && public_key != null)
                         {
                             PlayerProfile p = new PlayerProfile();
+                            p.id = int.Parse(id.Value);
                             p.name = name.Value;
                             p.publicKey = public_key.Value;
                             profiles.Add(p);

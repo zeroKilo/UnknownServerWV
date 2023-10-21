@@ -5,6 +5,7 @@
         private int id;
         private string name;
         private string pubKey;
+        private string metaData;
         private bool needsUpdate = false;
 
         public int Id {
@@ -18,6 +19,12 @@
             set { name = value; needsUpdate = true; }
         }
 
+        public string MetaData
+        {
+            get { return metaData; }
+            set { metaData = value; needsUpdate = true; }
+        }
+
         public string PublicKey
         {
             get { return pubKey; }
@@ -29,16 +36,17 @@
             get { return needsUpdate; }
         }
 
-        public PlayerProfile(int id, string pubKey, string name)
+        public PlayerProfile(int id, string pubKey, string name, string metaData)
         {
             this.id = id;
             this.name = name;
             this.pubKey = pubKey;
+            this.metaData = metaData;
         }
 
         public PlayerProfile Clone()
         {
-            return new PlayerProfile(id, pubKey, name);
+            return new PlayerProfile(id, pubKey, name, metaData);
         }
 
         public void Reset()

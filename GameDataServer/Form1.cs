@@ -164,7 +164,8 @@ namespace GameDataServer
             if (d.ShowDialog() == DialogResult.OK)
             {
                 string[] lines = File.ReadAllLines(d.FileName);
-                PlayerProfile p = new PlayerProfile(-1, lines[1].Split('=')[1].Trim(), lines[0].Split('=')[1].Trim());
+                string metaData = "{\"creationDate\":" + DateTimeOffset.Now.ToUnixTimeSeconds() + "}";
+                PlayerProfile p = new PlayerProfile(-1, lines[1].Split('=')[1].Trim(), lines[0].Split('=')[1].Trim(), metaData);
                 DBManager.AddPlayerProfile(p);
                 RefreshAll();
             }
@@ -206,7 +207,7 @@ namespace GameDataServer
             int n = listBox2.SelectedIndex;
             if (n == -1)
                 return;
-            rtb3.Text = "Public Key: " + profiles[n].PublicKey;
+            rtb3.Text = "Public Key: " + profiles[n].PublicKey + "\n" + profiles[n].MetaData;
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)

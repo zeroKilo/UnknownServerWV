@@ -16,6 +16,8 @@ namespace GameDataServer
         private static string table_profiles = "profiles";
 
         private static bool needsUpdate = false;
+
+        private static uint playerProfileUpdateCounter = 1;
         public static void Init(string path)
         {
             db_path = path;
@@ -55,7 +57,7 @@ namespace GameDataServer
                     break;
                 case "profiles":
                     sql = "CREATE TABLE " + table_profiles + " (id INTEGER PRIMARY KEY,public_key TEXT NOT NULL," +
-                          "name TEXT NOT NULL)";
+                          "name TEXT NOT NULL, meta_data TEXT NOT NULL)";
                     break;
                 default:
                     return;
@@ -87,7 +89,7 @@ namespace GameDataServer
             r.Read();
             while (r.HasRows)
             {
-                PlayerProfile p = new PlayerProfile(r.GetInt32(0), r.GetString(1), r.GetString(2));
+                PlayerProfile p = new PlayerProfile(r.GetInt32(0), r.GetString(1), r.GetString(2), r.GetString(3));
                 profiles.Add(p);
                 r.Read();
             }
@@ -144,11 +146,12 @@ namespace GameDataServer
         {
             lock (_sync)
             {
-                string sql = "INSERT INTO " + table_profiles + " (public_key, name) VALUES (@public_key, @name)";
+                string sql = "INSERT INTO " + table_profiles + " (public_key, name, meta_data) VALUES (@public_key, @name, @meta_data)";
                 SQLiteCommand cmd = connection.CreateCommand();
                 cmd.CommandText = sql;
                 cmd.Parameters.AddWithValue("@public_key", p.PublicKey);
                 cmd.Parameters.AddWithValue("@name", p.Name);
+                cmd.Parameters.AddWithValue("@meta_data", p.MetaData);
                 cmd.ExecuteNonQuery();
                 cmd.CommandText = "select last_insert_rowid()";
                 long newId = (long)cmd.ExecuteScalar();
@@ -215,7 +218,7 @@ namespace GameDataServer
             }
         }
 
-        private static void SaveGameServer(GameServer gs)
+        static void SaveGameServer(GameServer gs)
         {
             string sql = "SELECT * FROM " + table_servers + " WHERE id=" + gs.Id;
             SQLiteDataReader r = ExecuteSQL(sql);
@@ -250,12 +253,14 @@ namespace GameDataServer
             {
                 sql = "UPDATE " + table_profiles + " SET ";
                 sql += "public_key=@public_key,";
-                sql += "name=@name";
+                sql += "name=@name,";
+                sql += "meta_data=@meta_data";
                 sql += " WHERE id=" + p.Id;
                 SQLiteCommand cmd = connection.CreateCommand();
                 cmd.CommandText = sql;
                 cmd.Parameters.AddWithValue("@public_key", p.PublicKey);
                 cmd.Parameters.AddWithValue("@name", p.Name);
+                cmd.Parameters.AddWithValue("@meta_data", p.MetaData);
                 cmd.ExecuteNonQuery();
                 p.Reset();
             }
@@ -290,12 +295,29 @@ namespace GameDataServer
             needsUpdate = false;
             lock (_sync)
             {
+                bool foundPlayerUpdate = false;
                 foreach (GameServer gs in servers)
                     if (gs.NeedsUpdate)
                         SaveGameServer(gs);
                 foreach (PlayerProfile p in profiles)
                     if (p.NeedsUpdate)
-                        SavePlayerProfile(p);                
+                    {
+                        SavePlayerProfile(p);
+                        foundPlayerUpdate = true;
+                    }
+                if (foundPlayerUpdate)
+                    lock (_sync)
+                    {
+                        playerProfileUpdateCounter++;
+                    }
+            }
+        }
+
+        public static uint GetPlayerProfileUpdateCounter()
+        {
+            lock (_sync)
+            {
+                return playerProfileUpdateCounter;
             }
         }
 

@@ -19,10 +19,8 @@ namespace Server
         private static string gdsPort;
         private static int gdsWait;
 
-        public static void Start()
+        public static void Init()
         {
-            if (isRunning())
-                return;
             string[] keys = { "gds_ip", "gds_port", "gds_wait" };
             foreach (string key in keys)
                 if (!Config.settings.ContainsKey(key))
@@ -36,6 +34,12 @@ namespace Server
             gdsWait = int.Parse(Config.settings[keys[2]]);
             if (gdsWait < 10)
                 gdsWait = 10;
+        }
+
+        public static void Start()
+        {
+            if (isRunning())
+                return;            
             lock (_sync)
             {
                 _exit = false;
@@ -74,7 +78,15 @@ namespace Server
                         {
                             Log.Print("STATUSSRV failed to send status!");
                         }
-                        Thread.Sleep(gdsWait * 1000);
+                    }
+                    for (int i = 0; i < 100; i++)
+                    {
+                        Thread.Sleep(gdsWait * 10);
+                        lock (_sync)
+                        {
+                            if (_exit)
+                                break;
+                        }
                     }
                 }
                 catch
@@ -115,36 +127,14 @@ namespace Server
             }
             sb.Append("}");
             sb.Append("}");
-            string s = sb.ToString();
-            byte[] content = Encoding.ASCII.GetBytes(s);            
-            byte[] signature = NetHelper.MakeSignature(content, Config.rsaParams);
-            sb = new StringBuilder();
-            sb.AppendLine("POST /server_status HTTP/1.1");
-            sb.AppendLine("Signature: " + NetHelper.MakeHexString(signature));
-            sb.AppendLine("Public-Key: " + Config.pubKey);
-            sb.AppendLine();
-            sb.Append(s);
-            TcpClient client = new TcpClient(gdsIP, Convert.ToInt32(gdsPort));
-            NetworkStream ns = client.GetStream();
-            byte[] data = Encoding.ASCII.GetBytes(sb.ToString());
-            ns.Write(data, 0, data.Length);
-            while (!ns.DataAvailable)
-                Thread.Sleep(100);
-            sb = new StringBuilder();
-            int b;
-            while ((b = ns.ReadByte()) != -1)
-                sb.Append((char)b);
-            client.Close();
-            StringReader sr = new StringReader(sb.ToString());
-            while (sr.ReadLine() != "")
-                ;
-            string reply = sr.ReadToEnd();
+            string reply = MakeRESTRequest("POST /server_status", sb.ToString());
             XElement json = NetHelper.StringToJSON(reply);
-            XElement countElement = json.XPathSelectElement("playerCount");
-            int count = int.Parse(countElement.Value);
-            if (Config.profiles.Count != count)
+            XElement countElement = json.XPathSelectElement("playerUpdateCount");
+            uint count = uint.Parse(countElement.Value);
+            if (Config.playerProfileUpdateCounter != count)
             {
-                Log.Print("STATUSSRV detected new players, reloading profiles");
+                Config.playerProfileUpdateCounter = count;
+                Log.Print("STATUSSRV detected player changes, reloading profiles");
                 Config.ReloadPlayerProfiles();
                 Log.Print("STATUSSRV loaded " + Config.profiles.Count + " profiles");
             }
@@ -166,6 +156,32 @@ namespace Server
                 Thread.Sleep(10);
                 Application.DoEvents();
             }
+        }
+
+        public static string MakeRESTRequest(string url, string contentData)
+        {
+            byte[] content = Encoding.ASCII.GetBytes(contentData);
+            byte[] signature = NetHelper.MakeSignature(content, Config.rsaParams);
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(url + " HTTP/1.1");
+            sb.AppendLine("Signature: " + NetHelper.MakeHexString(signature));
+            sb.AppendLine("Public-Key: " + Config.pubKey);
+            sb.AppendLine();
+            sb.Append(contentData);
+            TcpClient client = new TcpClient(gdsIP, Convert.ToInt32(gdsPort));
+            NetworkStream ns = client.GetStream();
+            byte[] data = Encoding.ASCII.GetBytes(sb.ToString());
+            ns.Write(data, 0, data.Length);
+            while (!ns.DataAvailable)
+                Thread.Sleep(100);
+            sb = new StringBuilder();
+            int b;
+            while ((b = ns.ReadByte()) != -1)
+                sb.Append((char)b);
+            client.Close();
+            StringReader sr = new StringReader(sb.ToString());
+            while (sr.ReadLine() != "") ;
+            return sr.ReadToEnd();
         }
     }
 }
