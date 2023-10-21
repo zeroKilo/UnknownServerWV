@@ -16,6 +16,7 @@ namespace Server
         public static List<PlayerProfile> profiles = new List<PlayerProfile>();
         public static RSAParameters rsaParams;
         public static string pubKey, privKey;
+        public static string itemSettingsJson = "";
 
         public static void Init()
         {
@@ -38,12 +39,26 @@ namespace Server
                 }
             Log.Print("CONFIG settings loaded:");
             foreach (KeyValuePair<string, string> pair in settings)
-                Log.Print(" - " + pair.Key + " = " + pair.Value);            
+                Log.Print(" - " + pair.Key + " = " + pair.Value);
+            LoadItemSettings();
             LoadServerKeys();
             ReloadPlayerProfiles();
             Log.Print("CONFIG Player profiles loaded:");
             foreach (PlayerProfile p in profiles)
                 Log.Print(" - " + p.publicKey.Substring(23, 10) + "... " + p.name);
+        }
+
+        public static void LoadItemSettings()
+        {
+            try
+            {
+                itemSettingsJson = File.ReadAllText("item_settings.json");
+                Log.Print("CONFIG Item settings loaded");
+            }
+            catch (Exception ex)
+            {
+                Log.Print("CONFIG Error loading item settings: " + ex.Message + "\n" + ex.InnerException.Message);
+            }
         }
 
         private static void LoadServerKeys()
