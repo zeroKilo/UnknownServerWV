@@ -12,8 +12,9 @@ namespace GameDataServer
         private static List<GameServer> servers = new List<GameServer>();
         private static readonly object _sync = new object();
 
-        private static string table_servers = "servers";
-        private static string table_profiles = "profiles";
+        private const string table_servers = "servers";
+        private const string table_profiles = "profiles";
+        private const string table_stats = "stats";
 
         private static bool needsUpdate = false;
 
@@ -31,7 +32,7 @@ namespace GameDataServer
 
         private static bool CheckAllTablesPresent()
         {
-            List<string> names = new List<string>(new string[] { table_servers, table_profiles });
+            List<string> names = new List<string>(new string[] { table_servers, table_profiles, table_stats });
             foreach (string name in names)
             {
                 SQLiteDataReader r = ExecuteSQL("SELECT COUNT(name) FROM sqlite_master WHERE type='table' AND name='" + name + "';");
@@ -50,14 +51,17 @@ namespace GameDataServer
             string sql;
             switch(name)
             {
-                case "servers":
+                case table_servers:
                     sql = "CREATE TABLE "+ table_servers + " (id INTEGER PRIMARY KEY,public_key TEXT NOT NULL," +
                           "name TEXT NOT NULL,ip TEXT NOT NULL,port_udp TEXT NOT NULL," +
                           "port_tcp TEXT NOT NULL,status TEXT NOT NULL)";
                     break;
-                case "profiles":
+                case table_profiles:
                     sql = "CREATE TABLE " + table_profiles + " (id INTEGER PRIMARY KEY,public_key TEXT NOT NULL," +
                           "name TEXT NOT NULL, meta_data TEXT NOT NULL)";
+                    break;
+                case table_stats:
+                    sql = "CREATE TABLE " + table_stats + " (id INTEGER PRIMARY KEY,name TEXT NOT NULL,data TEXT NOT NULL)";
                     break;
                 default:
                     return;
@@ -117,6 +121,32 @@ namespace GameDataServer
                     result.Add(p.Clone());
             }
             return result.ToArray();
+        }
+
+        public static ulong GetPageViews()
+        {
+            ulong result = 1;
+            lock (_sync)
+            {
+                SQLiteDataReader r = ExecuteSQL("SELECT * FROM " + table_stats + " WHERE name = 'pageViews'");
+                r.Read();
+                if (r.HasRows)
+                {
+                    string s = r.GetString(2);
+                    result = ulong.Parse(s) + 1;
+                    r.Close();
+                }
+                else
+                {
+                    r.Close();
+                    ExecuteSimpleSQL("INSERT INTO stats (name, data) VALUES ('pageViews','0')");                    
+                }
+                SQLiteCommand cmd = connection.CreateCommand();
+                cmd.CommandText = "UPDATE stats SET data=@data WHERE name='pageViews'";
+                cmd.Parameters.AddWithValue("@data", result.ToString());
+                cmd.ExecuteNonQuery();
+            }
+            return result;
         }
 
         public static void AddGameServer(GameServer g)

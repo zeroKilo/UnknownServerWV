@@ -279,6 +279,9 @@ namespace GameDataServer
             string content = sr.ReadToEnd();
             switch (url)
             {
+                case "/stats":
+                    response = HandleGetStats();
+                    break;
                 case "/profile_list":
                     response = HandleGetProfileList(headers, content);
                     break;
@@ -296,6 +299,7 @@ namespace GameDataServer
             }
             return response;
         }
+
         public static string HandleGetProfileList(List<string> headers, string content)
         {
             CheckServerSignature(headers, content);
@@ -388,7 +392,15 @@ namespace GameDataServer
             return MakeHeaderJSON(sb.ToString());
         }
 
-
+        public static string HandleGetStats()
+        {
+            Log.Print("HandleGetStats: sending server stats");
+            StringBuilder sb = new StringBuilder();
+            sb.Append("{\"registeredPlayer\":" + DBManager.GetPlayerProfiles().Length + ",");
+            sb.Append("\"registeredServer\":" + DBManager.GetServerProfiles().Length + ",");
+            sb.Append("\"pageViews\":" + DBManager.GetPageViews() + "}");
+            return MakeHeaderJSON(sb.ToString());
+        }
 
         private static GameServer CheckServerSignature(List<string> headers, string content)
         {
