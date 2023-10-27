@@ -9,7 +9,6 @@ namespace GameDataServer
     {
         public static RichTextBox box = null;
         private static readonly object _sync = new object();
-        private static FileStream fs;
         private static readonly string log_file_name = "log_gds.txt";
 
         public static void Init(RichTextBox rtb)
@@ -17,7 +16,8 @@ namespace GameDataServer
             box = rtb;
             if (File.Exists(log_file_name))
                 File.Delete(log_file_name);
-            fs = File.Create(log_file_name);
+            FileStream fs = File.Create(log_file_name);
+            fs.Close();
             Print("Log initialized");
         }
 
@@ -26,9 +26,7 @@ namespace GameDataServer
             string line = DateTime.Now.ToLongTimeString() + " " + s + "\n";
             lock (_sync)
             {
-                byte[] data = Encoding.UTF8.GetBytes(line);
-                fs.Write(data, 0, data.Length);
-                fs.Flush();
+                File.AppendAllText(log_file_name, line);
             }
             if (box == null)
                 return;

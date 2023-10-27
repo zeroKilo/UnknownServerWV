@@ -226,7 +226,10 @@ namespace GameDataServer
                         break;
                     }
                 if (p == null)
+                {
+                    Log.Print("HandlePostSetPlayerMeta: Error, cant find the player profile id " + profileId);
                     throw new Exception();
+                }
                 bool found = false;
                 XElement rootData = NetHelper.StringToJSON(data);
                 foreach (XNode node in rootData.Nodes())
@@ -238,15 +241,18 @@ namespace GameDataServer
                         break;
                     }
                 }
-                if(!found)
+                if (!found)
+                {
+                    Log.Print("HandlePostSetPlayerMeta: Error, cant find server key");
                     throw new Exception();
+                }
                 XElement root = NetHelper.StringToJSON(p.MetaData);
+                found = false;
                 foreach (XNode node in root.Nodes())
                 {
                     XElement x = (XElement)node;
                     if (x.Name.LocalName == "specificData")
                     {
-                        found = false;
                         foreach (XNode node2 in ((XElement)node).Nodes())
                         {
                             XElement x2 = (XElement)node2;
@@ -264,9 +270,18 @@ namespace GameDataServer
                         break;
                     }
                 }
+                if (!found)
+                {
+                    XElement x = new XElement("specificData");
+                    x.SetAttributeValue("type", "object");
+                    foreach (XNode n in rootData.Nodes())
+                        x.Add(n);
+                    root.Add(x);
+                }
                 p.MetaData = NetHelper.XMLToJSONString(root);
                 DBManager.UpdatePlayerProfile(p);
                 DBManager.Update();
+                Log.Print("HandlePostSetPlayerMeta: updated profile id " + profileId);
             }
             catch { }
             return MakeHeaderJSON("");
