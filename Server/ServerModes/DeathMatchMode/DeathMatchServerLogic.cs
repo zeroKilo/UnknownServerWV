@@ -54,8 +54,8 @@ namespace Server
             playerIDs = new List<uint>();
             playerScores = new List<PlayerScoreEntry>();
             Log.Print("SERVERLOGIC main loop running...");
-            sw.Start();
-            swLobby.Start();
+            sw.Restart();
+            swLobby.Restart();
             minWaitTimeLobbyMs = int.Parse(Config.settings["min_lobby_wait"]);
             maxWaitTimeLobbyMs = int.Parse(Config.settings["max_lobby_wait"]);
             while (true)

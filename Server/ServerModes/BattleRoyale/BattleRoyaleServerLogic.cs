@@ -23,8 +23,8 @@ namespace Server
         {
             _running = true;
             Log.Print("SERVERLOGIC main loop running...");
-            sw.Start();
-            swLobby.Start();
+            sw.Restart();
+            swLobby.Restart();
             minWaitTimeLobbyMs = int.Parse(Config.settings["min_lobby_wait"]);
             maxWaitTimeLobbyMs = int.Parse(Config.settings["max_lobby_wait"]);
             while (true)
