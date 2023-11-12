@@ -32,15 +32,15 @@ namespace Server
                 return;
             try
             {
-                box.Invoke(new Action(delegate
+                lock (_sync)
                 {
-                    lock (_sync)
+                    box.Invoke(new Action(delegate
                     {
                         box.AppendText(line);
                         if (box.Text.Length > 20000)
                             box.Text = box.Text.Substring(box.Text.Length - 19000, 19000);
-                    }
-                }));
+                    }));
+                }
             }
             catch { }
         }

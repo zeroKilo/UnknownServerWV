@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Windows.Forms;
 using NetDefines;
+using System.ComponentModel;
 
 namespace Server
 {
@@ -67,7 +68,7 @@ namespace Server
                 {
                     if (_exit)
                     {
-                        Log.Print("BACKEND main loop is exiting...");
+                        Log.Print("BACKEND main loop is exiting normally...");
                         break;
                     }
                 }
@@ -81,9 +82,15 @@ namespace Server
                     clientList.Add(cInfo);
                     new Thread(tClient).Start(cInfo);
                 }
-                catch
+                catch(Exception ex)
                 {
-                    Log.Print("BACKEND main loop is exiting...");
+                    if(ex is Win32Exception)
+                    {
+                        uint code = (uint)((Win32Exception)ex).HResult;
+                        if (code == 0x80004005) //ignore error on tcp accept
+                            break;
+                    }
+                    Log.Print("BACKEND Exception error: " + ex);
                     break;
                 }
             }
@@ -115,6 +122,14 @@ namespace Server
                 for (int i = 0; i < clientList.Count; i++)
                     if (clientList[i].ID == c.ID)
                     {
+                        try
+                        {
+                            clientList[i].tcp.Close();
+                        }
+                        catch
+                        {
+                            Log.Print("BACKEND: Error exiting client #" + clientList[i].ID);
+                        }
                         clientList.RemoveAt(i);
                         break;
                     }
@@ -218,6 +233,18 @@ namespace Server
             {
                 _exit = true;
             }
+            foreach (ClientInfo client in clientList)
+            {
+                try
+                {
+                    client.tcp.Close();
+                }
+                catch
+                {
+                    Log.Print("BACKEND: Error exiting client #" + client.ID);
+                }
+            }
+            clientList.Clear();
             if (tcp != null)
                 tcp.Stop();
             while(true)
@@ -230,7 +257,6 @@ namespace Server
                 Thread.Sleep(10);
                 Application.DoEvents();
             }
-            clientList.Clear();
         }
 
         public static void BroadcastCommand(uint cmd, byte[] data)

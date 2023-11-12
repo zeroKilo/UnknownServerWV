@@ -74,7 +74,7 @@ namespace Server
                 {
                     if (_exit)
                     {
-                        Log.Print("MAINSERVER main loop is exiting...");
+                        Log.Print("MAINSERVER main loop is exiting normally...");
                         udp.Close();
                         break;
                     }
@@ -102,7 +102,7 @@ namespace Server
                     }
                     else
                     {
-                        Log.Print("MAINSERVER error: " + ex);
+                        Log.Print("MAINSERVER SocketException error: " + ex);
                         udp.Close();
                         break;
                     }
@@ -110,7 +110,7 @@ namespace Server
                 catch(Exception ex)
                 {
 
-                    Log.Print("MAINSERVER error error: " + ex);
+                    Log.Print("MAINSERVER Exception error: " + ex);
                     udp.Close();
                     break;
                 }
