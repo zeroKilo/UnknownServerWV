@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Server
@@ -32,15 +31,12 @@ namespace Server
                 return;
             try
             {
-                lock (_sync)
+                box.Invoke(new Action(delegate
                 {
-                    box.Invoke(new Action(delegate
-                    {
-                        box.AppendText(line);
-                        if (box.Text.Length > 20000)
-                            box.Text = box.Text.Substring(box.Text.Length - 19000, 19000);
-                    }));
-                }
+                    box.AppendText(line);
+                    if (box.Text.Length > 20000)
+                        box.Text = box.Text.Substring(box.Text.Length - 19000, 19000);
+                }));
             }
             catch { }
         }

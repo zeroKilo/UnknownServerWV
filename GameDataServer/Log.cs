@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Text;
 using System.Windows.Forms;
 
 namespace GameDataServer
@@ -34,12 +33,9 @@ namespace GameDataServer
             {
                 box.Invoke(new Action(delegate
                 {
-                    lock (_sync)
-                    {
-                        box.AppendText(line);
-                        if (box.Text.Length > 20000)
-                            box.Text = box.Text.Substring(box.Text.Length - 19000, 19000);
-                    }
+                    box.AppendText(line);
+                    if (box.Text.Length > 20000)
+                        box.Text = box.Text.Substring(box.Text.Length - 19000, 19000);
                 }));
             }
             catch { }

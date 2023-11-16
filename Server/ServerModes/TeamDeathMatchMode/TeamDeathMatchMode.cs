@@ -81,7 +81,7 @@ namespace Server
             MemoryStream tmp;
             BackendCommand cmd = (BackendCommand)NetHelper.ReadU32(m);
             if (!Backend.ShouldFilterInLog(cmd))
-                Log.Print("TeamDeathMatchMode: Client " + client.ID + " send CMD " + cmd);
+                Log.Print("TeamDeathMatchMode Client " + client.ID + " send CMD " + cmd);
             switch (cmd)
             {
                 //Requests

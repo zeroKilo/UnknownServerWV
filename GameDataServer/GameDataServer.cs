@@ -39,8 +39,6 @@ namespace GameDataServer
             {
                 _exit = true;
             }
-            if (tcp != null)
-                tcp.Stop();
             while (true)
             {
                 lock (_sync)
@@ -50,6 +48,14 @@ namespace GameDataServer
                 }
                 Thread.Sleep(10);
                 Application.DoEvents();
+            }
+        }
+
+        public static bool isRunning()
+        {
+            lock (_sync)
+            {
+                return _running;
             }
         }
 
@@ -71,18 +77,24 @@ namespace GameDataServer
             Log.Print("GDS Started listening");
             while (true)
             {
+                bool exit;
                 lock (_sync)
                 {
-                    if (_exit)
-                    {
-                        Log.Print("GDS main loop is exiting...");
-                        break;
-                    }
+                    exit = _exit;
+                }
+                if (exit)
+                {
+                    Log.Print("GDS main loop is exiting normally...");
+                    break;
                 }
                 try
                 {
-                    TcpClient client = tcp.AcceptTcpClient();
-                    new Thread(tClient).Start(client);
+                    if (!tcp.Pending())
+                    {
+                        Thread.Sleep(100);
+                        continue;
+                    }
+                    new Thread(tClient).Start(tcp.AcceptTcpClient());
                 }
                 catch
                 {
@@ -92,12 +104,18 @@ namespace GameDataServer
             }
             try
             {
-                tcp.Stop();
+                Log.Print("GDS stopping listener...");
+                if (tcp != null)
+                    tcp.Stop();
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Log.Print("GDS error stopping listener:" + ex.ToString());
+            }
             Log.Print("GDS main loop stopped");
             _running = false;
         }
+
         public static void tClient(object obj)
         {
             TcpClient client = (TcpClient)obj;
@@ -131,7 +149,6 @@ namespace GameDataServer
             } catch { }
             client.Close();
         }
-
 
         public static string HandlePOST(string url, StringReader sr)
         {
@@ -431,6 +448,7 @@ namespace GameDataServer
                     return gs;            
             throw new Exception();
         }
+
         private static string MakeHeaderJSON(string content)
         {
             StringBuilder sb = new StringBuilder();
@@ -455,14 +473,6 @@ namespace GameDataServer
                 result.Add(line);
             }
             return result;
-        }
-
-        public static bool isRunning()
-        {
-            lock (_sync)
-            {
-                return _running;
-            }
         }
     }
 }

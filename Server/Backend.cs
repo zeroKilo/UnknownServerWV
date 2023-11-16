@@ -38,6 +38,24 @@ namespace Server
             new Thread(tMain).Start();
         }
 
+        public static void Stop()
+        {
+            lock (_sync)
+            {
+                _exit = true;
+            }
+            while (true)
+            {
+                lock (_sync)
+                {
+                    if (!_running)
+                        break;
+                }
+                Thread.Sleep(10);
+                Application.DoEvents();
+            }
+        }
+
         public static bool isRunning()
         {
             lock(_sync)
@@ -64,16 +82,23 @@ namespace Server
             Log.Print("BACKEND Started listening");
             while (true)
             {
+                bool exit;
                 lock (_sync)
                 {
-                    if (_exit)
-                    {
-                        Log.Print("BACKEND main loop is exiting normally...");
-                        break;
-                    }
+                    exit = _exit;
+                }
+                if(exit)
+                {
+                    Log.Print("BACKEND main loop is exiting normally...");
+                    break;
                 }
                 try
                 {
+                    if (!tcp.Pending())
+                    {
+                        Thread.Sleep(100);
+                        continue;
+                    }
                     ClientInfo cInfo = new ClientInfo();
                     cInfo.tcp = tcp.AcceptTcpClient();
                     cInfo.ns = cInfo.tcp.GetStream();
@@ -90,17 +115,122 @@ namespace Server
                         if (code == 0x80004005) //ignore error on tcp accept
                             break;
                     }
-                    Log.Print("BACKEND Exception error: " + ex);
+                    Log.Print("BACKEND mainloop error: " + ex);
                     break;
                 }
             }
             try
             {
-                tcp.Stop();
+                Log.Print("BACKEND kicking clients...");
+                foreach (ClientInfo client in clientList)
+                    try
+                    {
+                        client.tcp.Close();
+                    }
+                    catch
+                    {
+                        Log.Print("BACKEND: Error kicking client #" + client.ID);
+                    }
+                clientList.Clear();
+                Log.Print("BACKEND stopping listener...");
+                if (tcp != null)
+                    tcp.Stop();
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Log.Print("BACKEND error stopping listener:" + ex.ToString());
+            }
             Log.Print("BACKEND main loop stopped");
             _running = false;
+        }
+
+        public static void tClient(object obj)
+        {
+            ClientInfo cInfo = (ClientInfo)obj;
+            Log.Print("BACKEND Client connected with ID=" + cInfo.ID);
+            NetHelper.ServerSendCMDPacket(cInfo.ns, (uint)mode, BitConverter.GetBytes((uint)modeState), cInfo._sync);
+            while (true)
+            {
+                bool exit;
+                lock (_sync)
+                {
+                    exit = _exit;
+                }
+                if (exit)
+                {
+                    Log.Print("BACKEND stopped thread for client ID=" + cInfo.ID);
+                    break;
+                }
+                if (!cInfo.cleanUp && cInfo.ns.DataAvailable)
+                {
+                    uint magic = NetHelper.ReadU32(cInfo.ns);
+                    if (magic != NetConstants.PACKET_MAGIC)
+                    {
+                        Log.Print("BACKEND Error client ID=" + cInfo.ID + " send invalid message, abort");
+                        break;
+                    }
+                    uint size = NetHelper.ReadU32(cInfo.ns);
+                    if (size > 0x100000)//1MB
+                    {
+                        Log.Print("BACKEND Error client ID=" + cInfo.ID + " send too big message, abort");
+                        break;
+                    }
+                    byte[] buff = new byte[size];
+                    for (uint i = 0; i < size; i++)
+                    {
+                        int v = cInfo.ns.ReadByte();
+                        if (v == -1)
+                        {
+                            Log.Print("BACKEND Error client ID=" + cInfo.ID + " send not enough data, abort");
+                            break;
+                        }
+                        buff[i] = (byte)v;
+                    }
+                    try
+                    {
+                        switch (mode)
+                        {
+                            case ServerMode.DeathMatchMode:
+                                DeathMatchMode.HandleMessage(buff, cInfo);
+                                break;
+                            case ServerMode.TeamDeathMatchMode:
+                                TeamDeathMatchMode.HandleMessage(buff, cInfo);
+                                break;
+                            case ServerMode.BattleRoyaleMode:
+                                BattleRoyaleMode.HandleMessage(buff, cInfo);
+                                break;
+                            case ServerMode.FreeExploreMode:
+                                FreeExploreMode.HandleMessage(buff, cInfo);
+                                break;
+                        }
+                    }
+                    catch
+                    {
+                        Log.Print("BACKEND Error client ID=" + cInfo.ID + " send bad data, abort");
+                        break;
+                    }
+                }
+                if (cInfo.sw.ElapsedMilliseconds > clientTimeout)
+                {
+                    Log.Print("BACKEND Error client ID=" + cInfo.ID + " timed out, abort");
+                    break;
+                }
+                if (cInfo.cleanUp)
+                {
+                    Log.Print("BACKEND Cleanup client ID=" + cInfo.ID + " removed");
+                    for (int i = 0; i < clientList.Count; i++)
+                        if (clientList[i].ID == cInfo.ID)
+                        {
+                            clientList.RemoveAt(i);
+                            break;
+                        }
+                    break;
+                }
+                Thread.Sleep(1);
+            }
+            cInfo.tcp.Close();
+            RemoveClient(cInfo);
+            Log.Print("BACKEND Client disconnected with ID=" + cInfo.ID);
         }
 
         private static void RemoveClient(ClientInfo c)
@@ -138,127 +268,6 @@ namespace Server
             }
         }
 
-        public static void tClient(object obj)
-        {
-            ClientInfo cInfo = (ClientInfo)obj;
-            Log.Print("BACKEND Client connected with ID=" + cInfo.ID);
-            NetHelper.ServerSendCMDPacket(cInfo.ns, (uint)mode, BitConverter.GetBytes((uint)modeState), cInfo._sync); 
-            while (true)
-            {
-                bool exit = false;
-                lock (_sync)
-                {
-                    exit = _exit;
-                }
-                if(exit)
-                {
-                    Log.Print("BACKEND : stopped thread for client ID=" + cInfo.ID);
-                    break;
-                }
-                if (!cInfo.cleanUp && cInfo.ns.DataAvailable)
-                {
-                    uint magic = NetHelper.ReadU32(cInfo.ns);
-                    if(magic != NetConstants.PACKET_MAGIC)
-                    {
-                        Log.Print("BACKEND Error : client ID=" + cInfo.ID + " send invalid message, abort");
-                        break;
-                    }
-                    uint size = NetHelper.ReadU32(cInfo.ns);
-                    if(size > 0x100000)//1MB
-                    {
-                        Log.Print("BACKEND Error : client ID=" + cInfo.ID + " send too big message, abort");
-                        break;
-                    }
-                    byte[] buff = new byte[size];
-                    for(uint i = 0; i < size; i++)
-                    {
-                        int v = cInfo.ns.ReadByte();
-                        if (v == -1)
-                        {
-                            Log.Print("BACKEND Error : client ID=" + cInfo.ID + " send not enough data, abort");
-                            break;
-                        }
-                        buff[i] = (byte)v;
-                    }
-                    try
-                    {
-                        switch (mode)
-                        {
-                            case ServerMode.DeathMatchMode:
-                                DeathMatchMode.HandleMessage(buff, cInfo);
-                                break;
-                            case ServerMode.TeamDeathMatchMode:
-                                TeamDeathMatchMode.HandleMessage(buff, cInfo);
-                                break;
-                            case ServerMode.BattleRoyaleMode:
-                                BattleRoyaleMode.HandleMessage(buff, cInfo);
-                                break;
-                            case ServerMode.FreeExploreMode:
-                                FreeExploreMode.HandleMessage(buff, cInfo);
-                                break;
-                        }
-                    }
-                    catch
-                    {
-                        Log.Print("BACKEND Error : client ID=" + cInfo.ID + " send bad data, abort");
-                        break;
-                    }
-                }
-                if(cInfo.sw.ElapsedMilliseconds > clientTimeout)
-                {
-                    Log.Print("BACKEND Error : client ID=" + cInfo.ID + " timed out, abort");
-                    break;
-                }
-                if(cInfo.cleanUp)
-                {
-                    Log.Print("BACKEND Cleanup : client ID=" + cInfo.ID + " removed");
-                    for (int i = 0; i < clientList.Count; i++)
-                        if (clientList[i].ID == cInfo.ID)
-                        {
-                            clientList.RemoveAt(i);
-                            break;
-                        }
-                    break;
-                }
-                Thread.Sleep(1);
-            }
-            cInfo.tcp.Close();
-            RemoveClient(cInfo);
-            Log.Print("BACKEND Client disconnected with ID=" + cInfo.ID);
-        }
-
-        public static void Stop()
-        {
-            lock (_sync)
-            {
-                _exit = true;
-            }
-            foreach (ClientInfo client in clientList)
-            {
-                try
-                {
-                    client.tcp.Close();
-                }
-                catch
-                {
-                    Log.Print("BACKEND: Error exiting client #" + client.ID);
-                }
-            }
-            clientList.Clear();
-            if (tcp != null)
-                tcp.Stop();
-            while(true)
-            {
-                lock(_sync)
-                {
-                    if (!_running)
-                        break;
-                }
-                Thread.Sleep(10);
-                Application.DoEvents();
-            }
-        }
-
         public static void BroadcastCommand(uint cmd, byte[] data)
         {
             BroadcastCommandExcept(cmd, data, null);
@@ -293,13 +302,15 @@ namespace Server
         }
 
 
-
         public static List<BackendCommand> backendCmdFilter = new List<BackendCommand>
         {
             BackendCommand.PingReq,
             BackendCommand.PlayFootStepSoundReq,
             BackendCommand.SpawnGroupItemReq,
             BackendCommand.SpawnGroupRemovalsReq,
+            BackendCommand.ImpactTriggeredReq,
+            BackendCommand.ShotTriggeredReq,
+            BackendCommand.ReloadTriggeredReq
         };
 
         public static bool ShouldFilterInLog(BackendCommand cmd)
