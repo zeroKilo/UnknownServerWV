@@ -113,6 +113,8 @@ namespace Server
                         }
                         ProcessData(sender, data);
                     }
+                    else
+                        Thread.Sleep(1);
                 }
                 catch (SocketException ex)
                 {
