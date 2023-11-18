@@ -30,6 +30,26 @@ namespace Server
             new Thread(tMain).Start();
         }
 
+        public static void Stop()
+        {
+            if (!isRunning())
+                return;
+            lock (_sync)
+            {
+                _exit = true;
+            }            
+            while (true)
+            {
+                lock (_sync)
+                {
+                    if (!_running)
+                        break;
+                }
+                Thread.Sleep(10);
+                Application.DoEvents();
+            }
+        }
+
         public static bool isRunning()
         {
             lock (_sync)
@@ -45,6 +65,7 @@ namespace Server
                 return dataCounter;
             }
         }
+
         public static long getErrorCount()
         {
             lock (_sync)
@@ -70,24 +91,28 @@ namespace Server
             Log.Print("MAINSERVER Started listening");
             while (true)
             {
+                bool exit;
                 lock (_sync)
                 {
-                    if (_exit)
-                    {
-                        Log.Print("MAINSERVER main loop is exiting normally...");
-                        udp.Close();
-                        break;
-                    }
+                    exit = _exit;
+                }
+                if (exit)
+                {
+                    Log.Print("MAINSERVER main loop is exiting normally...");
+                    break;
                 }
                 IPEndPoint sender = new IPEndPoint(IPAddress.Any, 0);
                 try
                 {
-                    byte[] data = udp.Receive(ref sender);  
-                    lock(_sync)
+                    if (udp.Available > 0)
                     {
-                        dataCounter += data.Length;
+                        byte[] data = udp.Receive(ref sender);
+                        lock (_sync)
+                        {
+                            dataCounter += data.Length;
+                        }
+                        ProcessData(sender, data);
                     }
-                    ProcessData(sender, data);
                 }
                 catch (SocketException ex)
                 {
@@ -97,13 +122,13 @@ namespace Server
                         {
                             errorCounter++;
                         }
-                        udp.Close();
+                        if(udp != null)
+                            udp.Close();
                         udp = new UdpClient(new IPEndPoint(IPAddress.Any, port));
                     }
                     else
                     {
                         Log.Print("MAINSERVER SocketException error: " + ex);
-                        udp.Close();
                         break;
                     }
                 }
@@ -111,10 +136,12 @@ namespace Server
                 {
 
                     Log.Print("MAINSERVER Exception error: " + ex);
-                    udp.Close();
                     break;
                 }
             }
+            Log.Print("MAINSERVER closing listener...");
+            if (udp != null)
+                udp.Close();
             Log.Print("MAINSERVER main loop stopped");
             _running = false;
         }
@@ -143,25 +170,6 @@ namespace Server
                         continue;
                     udp.Send(m.ToArray(), (int)m.Length, client.udp);
                 }
-            }
-        }
-        public static void Stop()
-        {
-            lock (_sync)
-            {
-                _exit = true;
-                if (udp != null)
-                    udp.Close();
-            }
-            while (true)
-            {
-                lock (_sync)
-                {
-                    if (!_running)
-                        break;
-                }
-                Thread.Sleep(10);
-                Application.DoEvents();
             }
         }
     }

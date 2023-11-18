@@ -273,6 +273,7 @@ namespace UnknownServerWV
             {
                 _isRunning = false;
             }
+            Log.Print("Server main loop exited");
         }
 
         private void OnStop()
