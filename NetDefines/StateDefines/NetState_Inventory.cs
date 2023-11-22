@@ -1,9 +1,5 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NetDefines.StateDefines
 {
@@ -11,7 +7,7 @@ namespace NetDefines.StateDefines
     {
         public class State_Weapon
         {
-            public uint item;
+            public uint item = (uint)Item.UNDEFINED;
             public uint[] modSlots;
         }
 
@@ -29,7 +25,11 @@ namespace NetDefines.StateDefines
             for (int i = 0; i < 5; i++)
                 weaponSlots[i] = new State_Weapon();
             foreach (State_Weapon w in weaponSlots)
+            {
                 w.modSlots = new uint[6];
+                for(int i = 0; i < 6; i++)
+                    w.modSlots[i] = (uint)Item.UNDEFINED;
+            }
             activeWeaponIndex = -1;
             bagContent = new List<ItemSpawnInfo>();
             clothContent = new List<ItemSpawnInfo>();

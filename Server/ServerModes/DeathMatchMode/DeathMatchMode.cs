@@ -239,7 +239,7 @@ namespace Server
                         {
                             m = new MemoryStream();
                             NetHelper.WriteU32(m, (uint)loc);
-                            NetHelper.WriteU32(m, (uint)client.ID);
+                            NetHelper.WriteU32(m, client.ID);
                             NetHelper.ServerSendCMDPacket(other.ns, (uint)BackendCommand.PlayerHitReq, m.ToArray(), other._sync);
                             break;
                         }
