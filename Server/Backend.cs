@@ -17,6 +17,7 @@ namespace Server
         public static List<ClientInfo> clientList = new List<ClientInfo>();
         public static uint clientTeamIDCounter = 333;
         public static string currentMap = "";
+        public static ushort port;
         private static readonly object _sync = new object();
         private static readonly object _syncBroadcast = new object();
         private static TcpListener tcp;
@@ -63,18 +64,24 @@ namespace Server
                 return _running;
             }
         }
+        public static ushort GetNextPort()
+        {
+            int min = Convert.ToInt32(Config.settings["port_tcp_min"]);
+            int range = Convert.ToInt32(Config.settings["port_tcp_range"]);
+            return (ushort)NetHelper.rnd.Next(min, min + range);
+        }
 
         public static void tMain(object obj)
         {
             Log.Print("BACKEND main loop running...");
-            if(!Config.settings.ContainsKey("port_tcp"))
+            if(!Config.settings.ContainsKey("port_tcp_min") || !Config.settings.ContainsKey("port_tcp_range"))
             {
                 _running = false;
-                Log.Print("BACKEND Error : cant find setting port_tcp!");
+                Log.Print("BACKEND Error : cant find settings for port_tcp!");
                 Log.Print("BACKEND main loop stopped");
                 return;
             }
-            ushort port = Convert.ToUInt16(Config.settings["port_tcp"]);
+            port = GetNextPort();
             string ip = Config.settings["bind_ip"];
             Log.Print("BACKEND Binding to " + ip + ":" + port + "...");
             tcp = new TcpListener(IPAddress.Parse(ip), port);

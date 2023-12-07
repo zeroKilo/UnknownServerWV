@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Xml.Linq;
 
 namespace GameDataServer
 {
@@ -82,6 +78,32 @@ namespace GameDataServer
         public void Reset()
         {
             needsUpdate = false;
+        }
+
+        public void ProcessStatusUpdate()
+        {
+            try
+            {
+                XElement root = NetDefines.NetHelper.StringToJSON(status);
+                foreach (XElement child in root.Elements())
+                    if (child.Name == "server")
+                    {
+                        foreach (XElement child2 in child.Elements())
+                        {
+                            switch(child2.Name.ToString())
+                            {
+                                case "port_tcp":
+                                    portTCP = child2.Value;
+                                    break;
+                                case "port_udp":
+                                    portUDP = child2.Value;
+                                    break;
+                            }
+                        }
+                        break;
+                    }
+            }
+            catch { }
         }
     }
 }

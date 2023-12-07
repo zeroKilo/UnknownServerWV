@@ -220,6 +220,7 @@ namespace GameDataServer
         {
             GameServer gs = CheckServerSignature(headers, content);
             gs.Status = content;
+            gs.ProcessStatusUpdate();
             DBManager.UpdateGameServer(gs);
             Log.Print("HandlePostServerStatus: updated status of server");
             return MakeHeaderJSON("{\"playerUpdateCount\" : " + DBManager.GetPlayerProfileUpdateCounter() + "}");

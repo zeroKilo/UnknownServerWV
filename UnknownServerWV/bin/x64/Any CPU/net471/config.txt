@@ -10,11 +10,13 @@ timeout = 30000
 #server bind ip
 bind_ip = 127.0.0.1
 
-#server backend tcp port
-port_tcp = 1234
+#server backend tcp port (from [min] to [min+range])
+port_tcp_min = 1234
+port_tcp_range = 1000
 
-#server dedicated udp port
-port_udp = 1235
+#server dedicated udp port (from [min] to [min+range])
+port_udp_min = 1235
+port_udp_range = 1000
 
 #min/max waiting time in lobby in ms
 min_lobby_wait = 3000

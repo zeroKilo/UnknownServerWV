@@ -10,6 +10,7 @@ namespace Server
 {
     public static class MainServer
     {
+        public static ushort port;
         private static readonly object _sync = new object();
         private static bool _running = false;
         private static bool _exit = false;
@@ -74,17 +75,24 @@ namespace Server
             }
         }
 
+        public static ushort GetNextPort()
+        {
+            int min = Convert.ToInt32(Config.settings["port_udp_min"]);
+            int range = Convert.ToInt32(Config.settings["port_udp_range"]);
+            return (ushort)NetHelper.rnd.Next(min, min + range);
+        }
+
         public static void tMain(object obj)
         {
             Log.Print("MAINSERVER main loop running...");
-            if (!Config.settings.ContainsKey("port_udp"))
+            if (!Config.settings.ContainsKey("port_udp_min") || !Config.settings.ContainsKey("port_udp_range"))
             {
                 _running = false;
-                Log.Print("MAINSERVER Error : cant find setting port_udp!");
+                Log.Print("MAINSERVER Error : cant find settings for port_udp!");
                 Log.Print("MAINSERVER main loop stopped");
                 return;
             }
-            ushort port = Convert.ToUInt16(Config.settings["port_udp"]);
+            port = GetNextPort();
             string ip = Config.settings["bind_ip"];
             Log.Print("MAINSERVER Binding to " + ip + ":" + port + "...");
             udp = new UdpClient(new IPEndPoint(IPAddress.Parse(ip), port));
