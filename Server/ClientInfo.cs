@@ -26,6 +26,7 @@ namespace Server
         public List<XElement> specificMetaData = new List<XElement>();
 
         public string lastSeen = "";
+        public long loginCount = 0;
 
         public void RequestMetaData()
         {
@@ -71,11 +72,14 @@ namespace Server
                     }
                 }
             lastSeen = DateTimeOffset.Now.ToUnixTimeSeconds().ToString();
-            foreach (XElement el in metaData)
+            foreach (XElement el in specificMetaData)
                 switch (el.Name.LocalName)
                 {
                     case "lastSeen":
                         lastSeen = el.Value;
+                        break;
+                    case "loginCount":
+                        loginCount = long.Parse(el.Value);
                         break;
                 }
         }
@@ -87,8 +91,8 @@ namespace Server
             sb.AppendLine(profile.id.ToString());
             sb.Append("{");
             sb.Append("\"serverKey\":\"" + myKey + "\",");
-            sb.Append("\"lastSeen\":" + lastSeen + "");
-            sb.Append("}");
+            sb.Append("\"lastSeen\":" + lastSeen + ",");
+            sb.Append("\"loginCount\":" + loginCount + "}");
             StatusServer.MakeRESTRequest("POST /set_player_meta", sb.ToString());
         }
     }

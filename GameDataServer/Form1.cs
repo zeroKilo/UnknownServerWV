@@ -207,7 +207,8 @@ namespace GameDataServer
             int n = listBox2.SelectedIndex;
             if (n == -1)
                 return;
-            rtb3.Text = "Public Key: " + profiles[n].PublicKey + "\n" + profiles[n].MetaData;
+            //rtb3.Text = "Public Key: " + profiles[n].PublicKey + "\n" + profiles[n].MetaData;
+            rtb3.Text = profiles[n].TryParseMetaData(servers);
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)

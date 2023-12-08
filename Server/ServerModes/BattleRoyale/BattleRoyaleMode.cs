@@ -122,6 +122,7 @@ namespace Server
                             client.profile = target;
                             client.teamID = Backend.clientTeamIDCounter++;
                             client.RequestMetaData();
+                            client.loginCount++;
                             client.UpdateSpecificMetaData();
                             m = new MemoryStream();
                             NetHelper.WriteU32(m, client.ID);
