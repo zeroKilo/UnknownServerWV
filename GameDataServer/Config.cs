@@ -5,7 +5,7 @@ namespace GameDataServer
 {
     public static class Config
     {
-        public static Dictionary<string, string> settings = new Dictionary<string, string>();
+        public static Dictionary<string, string> settings;
 
         public static void Init()
         {
@@ -14,6 +14,7 @@ namespace GameDataServer
                 Log.Print("Error : config.txt not found!");
                 return;
             }
+            settings = new Dictionary<string, string>();
             string[] lines = File.ReadAllLines("config.txt");
             foreach (string line in lines)
                 if (line.Trim() != "" && !line.StartsWith("#") && line.Contains("="))

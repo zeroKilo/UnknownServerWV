@@ -34,6 +34,7 @@ namespace GameDataServer
             this.startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -41,7 +42,6 @@ namespace GameDataServer
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.contextMenuServers = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.addToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.editToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.removeToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.rtb2 = new System.Windows.Forms.RichTextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -54,6 +54,7 @@ namespace GameDataServer
             this.rtb3 = new System.Windows.Forms.RichTextBox();
             this.rtb1 = new System.Windows.Forms.RichTextBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.setupAndAddToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -79,7 +80,8 @@ namespace GameDataServer
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.startToolStripMenuItem,
             this.stopToolStripMenuItem,
-            this.refreshToolStripMenuItem});
+            this.refreshToolStripMenuItem,
+            this.settingsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(800, 24);
@@ -110,6 +112,13 @@ namespace GameDataServer
             this.refreshToolStripMenuItem.Size = new System.Drawing.Size(63, 20);
             this.refreshToolStripMenuItem.Text = "Refresh";
             this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
+            // 
+            // settingsToolStripMenuItem
+            // 
+            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(70, 20);
+            this.settingsToolStripMenuItem.Text = "Settings...";
+            this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
             // 
             // splitContainer1
             // 
@@ -186,11 +195,11 @@ namespace GameDataServer
             // contextMenuServers
             // 
             this.contextMenuServers.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.setupAndAddToolStripMenuItem,
             this.addToolStripMenuItem1,
-            this.editToolStripMenuItem1,
             this.removeToolStripMenuItem1});
             this.contextMenuServers.Name = "contextMenuServers";
-            this.contextMenuServers.Size = new System.Drawing.Size(118, 70);
+            this.contextMenuServers.Size = new System.Drawing.Size(181, 92);
             // 
             // addToolStripMenuItem1
             // 
@@ -198,13 +207,6 @@ namespace GameDataServer
             this.addToolStripMenuItem1.Size = new System.Drawing.Size(117, 22);
             this.addToolStripMenuItem1.Text = "Add";
             this.addToolStripMenuItem1.Click += new System.EventHandler(this.addServer_Click);
-            // 
-            // editToolStripMenuItem1
-            // 
-            this.editToolStripMenuItem1.Name = "editToolStripMenuItem1";
-            this.editToolStripMenuItem1.Size = new System.Drawing.Size(117, 22);
-            this.editToolStripMenuItem1.Text = "Edit";
-            this.editToolStripMenuItem1.Click += new System.EventHandler(this.editServer_Click);
             // 
             // removeToolStripMenuItem1
             // 
@@ -332,6 +334,14 @@ namespace GameDataServer
             this.timer1.Interval = 30000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // setupAndAddToolStripMenuItem
+            // 
+            this.setupAndAddToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.setupAndAddToolStripMenuItem.Name = "setupAndAddToolStripMenuItem";
+            this.setupAndAddToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.setupAndAddToolStripMenuItem.Text = "Setup and Add...";
+            this.setupAndAddToolStripMenuItem.Click += new System.EventHandler(this.setupAndAddToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -388,12 +398,13 @@ namespace GameDataServer
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.ContextMenuStrip contextMenuServers;
         private System.Windows.Forms.ToolStripMenuItem addToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem removeToolStripMenuItem1;
         private System.Windows.Forms.ContextMenuStrip contextMenuProfiles;
         private System.Windows.Forms.ToolStripMenuItem addToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem removeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem setupAndAddToolStripMenuItem;
     }
 }
 

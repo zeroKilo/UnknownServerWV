@@ -98,46 +98,49 @@ namespace GameDataServer
             OpenFileDialog d = new OpenFileDialog();
             d.Filter = "server.info|server.info";
             if (d.ShowDialog() == DialogResult.OK)
+                AddServer(d.FileName);
+        }
+
+        private void AddServer(string path)
+        {
+            string[] lines = File.ReadAllLines(path);
+            string pubKey = null, name = null, ip = null, portUDP = null, portTCP = null;
+            foreach (string line in lines)
             {
-                string[] lines = File.ReadAllLines(d.FileName);
-                string pubKey = null, name = null, ip = null, portUDP = null, portTCP = null;
-                foreach (string line in lines)
+                if (!line.Contains("="))
+                    continue;
+                string[] parts = line.Split('=');
+                if (parts.Length != 2)
+                    continue;
+                string value = parts[1].Trim();
+                switch (parts[0].Trim().ToLower())
                 {
-                    if (!line.Contains("="))
-                        continue;
-                    string[] parts = line.Split('=');
-                    if (parts.Length != 2)
-                        continue;
-                    string value = parts[1].Trim();
-                    switch (parts[0].Trim().ToLower())
-                    {
-                        case "public":
-                            pubKey = value;
-                            break;
-                        case "name":
-                            name = value;
-                            break;
-                        case "port_udp":
-                            portUDP = value;
-                            break;
-                        case "port_tcp":
-                            portTCP = value;
-                            break;
-                        case "ip":
-                            ip = value;
-                            break;
-                    }
+                    case "pubkey":
+                        pubKey = value;
+                        break;
+                    case "name":
+                        name = value;
+                        break;
+                    case "port_udp":
+                        portUDP = value;
+                        break;
+                    case "port_tcp":
+                        portTCP = value;
+                        break;
+                    case "ip":
+                        ip = value;
+                        break;
                 }
-                if (pubKey != null &&
-                    name != null &&
-                    portUDP != null &&
-                    portTCP != null &&
-                    ip != null)
-                {
-                    GameServer gs = new GameServer(-1, pubKey, name, ip, portUDP, portTCP, "{}");
-                    DBManager.AddGameServer(gs);
-                    RefreshAll();
-                }
+            }
+            if (pubKey != null &&
+                name != null &&
+                portUDP != null &&
+                portTCP != null &&
+                ip != null)
+            {
+                GameServer gs = new GameServer(-1, pubKey, name, ip, portUDP, portTCP, "{}");
+                DBManager.AddGameServer(gs);
+                RefreshAll();
             }
         }
 
@@ -214,6 +217,95 @@ namespace GameDataServer
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             GameDataServer.Stop();
+        }
+
+        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ConfigDialog d = new ConfigDialog();
+            if (File.Exists("config.txt"))
+                d.rtb1.Text = File.ReadAllText("config.txt");
+            else
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine("#start server on load, 1 or 0");
+                sb.AppendLine("autostart = 1");
+                sb.AppendLine();
+                sb.AppendLine("#client ping timeout in ms");
+                sb.AppendLine("timeout = 30000");
+                sb.AppendLine();
+                sb.AppendLine("#server bind ip");
+                sb.AppendLine("ip = 127.0.0.1");
+                sb.AppendLine();
+                sb.AppendLine("#server tcp port");
+                sb.AppendLine("port_tcp = 4321");
+                sb.AppendLine();
+                sb.AppendLine("#database path");
+                sb.AppendLine("path_db = data.db");
+                d.rtb1.Text = sb.ToString();
+            }
+            if(d.ShowDialog() == DialogResult.OK)
+            {
+                File.WriteAllText("config.txt", d.rtb1.Text);
+                Config.Init();
+            }
+        }
+
+        private void setupAndAddToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog d = new OpenFileDialog();
+            d.Filter = "UnknownServerWV.exe|UnknownServerWV.exe";
+            if(d.ShowDialog() == DialogResult.OK)
+            {
+                string path = Path.GetDirectoryName(d.FileName) + "\\";
+                ServerSetupDialog d2 = new ServerSetupDialog();
+                if(d2.ShowDialog() == DialogResult.OK)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    sb.AppendLine("#server name");
+                    sb.AppendLine("name = " + d2.textBox1.Text);
+                    sb.AppendLine();
+                    sb.AppendLine("#start server on load, 1 or 0");
+                    sb.AppendLine("autostart = " + d2.textBox2.Text);
+                    sb.AppendLine();
+                    sb.AppendLine("#client ping timeout in ms");
+                    sb.AppendLine("timeout = " + d2.textBox3.Text);
+                    sb.AppendLine();
+                    sb.AppendLine("#server bind ip");
+                    sb.AppendLine("bind_ip = " + d2.textBox4.Text);
+                    sb.AppendLine();
+                    sb.AppendLine("#server backend tcp port (from [min] to [min+range])");
+                    sb.AppendLine("port_tcp_min = " + d2.textBox5.Text);
+                    sb.AppendLine("port_tcp_range = " + d2.textBox6.Text);
+                    sb.AppendLine();
+                    sb.AppendLine("#server dedicated udp port (from [min] to [min+range])");
+                    sb.AppendLine("port_udp_min = " + d2.textBox7.Text);
+                    sb.AppendLine("port_udp_range = " + d2.textBox8.Text);
+                    sb.AppendLine();
+                    sb.AppendLine("#min/max waiting time in lobby in ms");
+                    sb.AppendLine("min_lobby_wait = " + d2.textBox9.Text);
+                    sb.AppendLine("max_lobby_wait = " + d2.textBox10.Text);
+                    sb.AppendLine();
+                    sb.AppendLine("#game data server");
+                    sb.AppendLine("gds_ip = " + Config.settings["ip"]);
+                    sb.AppendLine("gds_port = " + Config.settings["port_tcp"]);
+                    sb.AppendLine("gds_wait = 10");
+                    File.WriteAllText(path + "config.txt", sb.ToString());
+                    string[] keys = NetHelper.MakeSigningKeys();
+                    sb = new StringBuilder();
+                    sb.AppendLine("public=" + keys[0]);
+                    sb.AppendLine("private=" + keys[1]);
+                    File.WriteAllText(path + "server.keys", sb.ToString());
+                    sb = new StringBuilder();
+                    sb.AppendLine("pubKey=" + keys[0]);
+                    sb.AppendLine("name=" + d2.textBox1.Text);
+                    sb.AppendLine("ip=" + d2.textBox4.Text);
+                    sb.AppendLine("port_udp=0");
+                    sb.AppendLine("port_tcp=0");
+                    File.WriteAllText(path + "server.info", sb.ToString());
+                    AddServer(path + "server.info");
+                    MessageBox.Show("Done.");
+                }
+            }
         }
     }
 }
