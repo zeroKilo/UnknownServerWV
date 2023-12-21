@@ -293,6 +293,7 @@ namespace Server
                     catch (Exception ex)
                     {
                         Log.Print("BACKEND Broadcast failed with : " + ex.Message);
+                        client.cleanUp = true;
                     }
             }
         }

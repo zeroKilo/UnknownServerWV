@@ -218,17 +218,20 @@ namespace NetDefines
         Mid,
         High
     }
+
     public enum ItemContainerType
     {
         PlayerCrate,
         CarePackage
     }
+
     public enum BlueZoneState
     {
         Waiting,
         Shrinking,
         Stop
     }
+
     public enum ServerMode
     {
         Offline,
@@ -318,6 +321,7 @@ namespace NetDefines
             indicies.Add(index);
         }
     }
+
     public class DroppedItemInfo
     {
         public float[] location = new float[3];
@@ -328,6 +332,7 @@ namespace NetDefines
             spawnInfo = info;
         }
     }
+
     public class ItemContainerInfo
     {
         public float[] location = new float[3];
@@ -377,6 +382,7 @@ namespace NetDefines
                 removedIndicies.Add((int)NetHelper.ReadU32(s));
         }
     }
+
     public class BlueZoneStateStep
     {
         public BlueZoneState state;

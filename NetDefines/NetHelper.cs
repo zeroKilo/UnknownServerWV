@@ -6,15 +6,17 @@ using System.Text;
 using System.Runtime.Serialization.Json;
 using System.Xml;
 using System.Xml.Linq;
+using System.Net.Sockets;
+using System.Threading;
 
 namespace NetDefines
 {
-
     public static class NetHelper
     {
         private static readonly object _client_sync = new object();
         public static Random rnd = new Random();
         public static SHA256 sha = SHA256.Create();
+        public static readonly string version = "5";
         public static ushort ReadU16(Stream s)
         {
             byte[] buff = new byte[2];
@@ -82,17 +84,26 @@ namespace NetDefines
             return result;
         }
 
-        public static byte[] ReadAll(Stream s)
+        public static byte[] ReadAll(NetworkStream s, int retries = 5, int retryDelay = 100)
         {
             MemoryStream m = new MemoryStream();
             int size = 1024;
             byte[] buff = new byte[size];
-            int count = s.Read(buff, 0, size);
-            m.Write(buff, 0, count);
-            while (count == size)
+            while (true)
             {
-                count = s.Read(buff, 0, size);
+                int count = s.Read(buff, 0, size);
+                if (count == 0)
+                    break;
                 m.Write(buff, 0, count);
+                if (!s.DataAvailable)
+                    for (int i = 0; i < retries; i++)
+                    {
+                        Thread.Sleep(retryDelay);
+                        if (s.DataAvailable)
+                            break;
+                    }
+                if (!s.DataAvailable)
+                    break;
             }
             return m.ToArray();
         }

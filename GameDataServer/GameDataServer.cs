@@ -120,6 +120,7 @@ namespace GameDataServer
         {
             TcpClient client = (TcpClient)obj;
             NetworkStream ns = client.GetStream();
+            ns.ReadTimeout = 1000;
             try
             {
                 byte[] data = NetHelper.ReadAll(ns);
@@ -145,8 +146,10 @@ namespace GameDataServer
                 {
                     data = Encoding.ASCII.GetBytes(response);
                     ns.Write(data, 0, data.Length);
+                    ns.Flush();
                 }
-            } catch { }
+            }
+            catch { }
             client.Close();
         }
 

@@ -172,6 +172,7 @@ namespace Server
             NetworkStream ns = client.GetStream();
             byte[] data = Encoding.ASCII.GetBytes(sb.ToString());
             ns.Write(data, 0, data.Length);
+            ns.Flush();
             while (!ns.DataAvailable)
                 Thread.Sleep(100);
             sb = new StringBuilder();
