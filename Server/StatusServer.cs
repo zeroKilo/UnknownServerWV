@@ -217,14 +217,9 @@ namespace Server
             byte[] data = Encoding.ASCII.GetBytes(sb.ToString());
             ns.Write(data, 0, data.Length);
             ns.Flush();
-            while (!ns.DataAvailable)
-                Thread.Sleep(100);
-            sb = new StringBuilder();
-            int b;
-            while ((b = ns.ReadByte()) != -1)
-                sb.Append((char)b);
+            data = NetHelper.ReadAll(ns);
             client.Close();
-            StringReader sr = new StringReader(sb.ToString());
+            StringReader sr = new StringReader(Encoding.UTF8.GetString(data));
             while (sr.ReadLine() != "") ;
             return sr.ReadToEnd();
         }
