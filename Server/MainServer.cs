@@ -11,20 +11,60 @@ namespace Server
     public static class MainServer
     {
         public static ushort port;
-        private static readonly object _sync = new object();
-        private static bool _running = false;
-        private static bool _exit = false;
+        private static readonly object _syncMain = new object();
+        private static readonly object _syncExit = new object();
+        private static readonly object _syncRunning = new object();
         private static UdpClient udp;
         private static long dataCounter;
         private static long errorCounter;
+        private static bool _running = false;
+        private static bool _exit = false;
+        public static bool IsRunning
+        {
+            get
+            {
+                bool result = false;
+                lock (_syncRunning)
+                {
+                    result = _running;
+                }
+                return result;
+            }
+            set
+            {
+                lock (_syncRunning)
+                {
+                    _running = value;
+                }
+            }
+        }
+        public static bool ShouldExit
+        {
+            get
+            {
+                bool result = false;
+                lock (_syncExit)
+                {
+                    result = _exit;
+                }
+                return result;
+            }
+            set
+            {
+                lock (_syncExit)
+                {
+                    _exit = value;
+                }
+            }
+        }
         public static void Start()
         {
-            if (isRunning())
+            if (IsRunning)
                 return;
-            lock (_sync)
+            ShouldExit = false;
+            IsRunning = true;
+            lock (_syncMain)
             {
-                _exit = false;
-                _running = true;
                 dataCounter = 0;
                 errorCounter = 0;
             }
@@ -33,35 +73,21 @@ namespace Server
 
         public static void Stop()
         {
-            if (!isRunning())
+            if (!IsRunning)
                 return;
-            lock (_sync)
-            {
-                _exit = true;
-            }            
+            ShouldExit = true;
             while (true)
             {
-                lock (_sync)
-                {
-                    if (!_running)
-                        break;
-                }
+                if (!IsRunning)
+                    break;
                 Thread.Sleep(10);
                 Application.DoEvents();
             }
         }
 
-        public static bool isRunning()
-        {
-            lock (_sync)
-            {
-                return _running;
-            }
-        }
-
         public static long getDataCount()
         {
-            lock(_sync)
+            lock(_syncMain)
             {
                 return dataCounter;
             }
@@ -69,7 +95,7 @@ namespace Server
 
         public static long getErrorCount()
         {
-            lock (_sync)
+            lock (_syncMain)
             {
                 return errorCounter;
             }
@@ -99,12 +125,7 @@ namespace Server
             Log.Print("MAINSERVER Started listening");
             while (true)
             {
-                bool exit;
-                lock (_sync)
-                {
-                    exit = _exit;
-                }
-                if (exit)
+                if (ShouldExit)
                 {
                     Log.Print("MAINSERVER main loop is exiting normally...");
                     break;
@@ -115,7 +136,7 @@ namespace Server
                     if (udp.Available > 0)
                     {
                         byte[] data = udp.Receive(ref sender);
-                        lock (_sync)
+                        lock (_syncMain)
                         {
                             dataCounter += data.Length;
                         }
@@ -128,7 +149,7 @@ namespace Server
                 {
                     if (ex.SocketErrorCode == SocketError.ConnectionReset || (uint)ex.HResult == 0x80004005)
                     {
-                        lock(_sync)
+                        lock(_syncMain)
                         {
                             errorCounter++;
                         }
@@ -153,7 +174,7 @@ namespace Server
             if (udp != null)
                 udp.Close();
             Log.Print("MAINSERVER main loop stopped");
-            _running = false;
+            IsRunning = false;
         }
 
         public static void ProcessData(IPEndPoint sender, byte[] data)

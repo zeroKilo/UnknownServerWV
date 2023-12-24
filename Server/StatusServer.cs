@@ -12,16 +12,16 @@ namespace Server
 {
     public static class StatusServer
     {
-        private static bool _running = false;
-        private static bool _exit = false;
-        private static readonly object _sync = new object();
         private static readonly object _syncLogin = new object();
+        private static readonly object _syncExit = new object();
+        private static readonly object _syncRunning = new object();
         private static string gdsIP;
         private static string gdsPort;
         private static int gdsWait;
         private static int lastDay = DateTime.Now.Day;
-        private static int loginCount = 0;
-
+        private static int _loginCount = 0;
+        private static bool _running = false;
+        private static bool _exit = false;
         public static int LoginCount
         {
             get 
@@ -29,7 +29,7 @@ namespace Server
                 int result = 0;
                 lock(_syncLogin)
                 {
-                    result = loginCount;
+                    result = _loginCount;
                 }
                 return result;
             }
@@ -37,7 +37,45 @@ namespace Server
             {
                 lock (_syncLogin)
                 {
-                    loginCount = value;
+                    _loginCount = value;
+                }
+            }
+        }
+        public static bool IsRunning
+        {
+            get
+            {
+                bool result = false;
+                lock(_syncRunning)
+                {
+                    result = _running;
+                }
+                return result;
+            }
+            set
+            {
+                lock (_syncRunning)
+                {
+                    _running = value;
+                }
+            }
+        }
+        public static bool ShouldExit
+        {
+            get
+            {
+                bool result = false;
+                lock (_syncExit)
+                {
+                    result = _exit;
+                }
+                return result;
+            }
+            set
+            {
+                lock (_syncExit)
+                {
+                    _exit = value;
                 }
             }
         }
@@ -61,22 +99,11 @@ namespace Server
 
         public static void Start()
         {
-            if (isRunning())
-                return;            
-            lock (_sync)
-            {
-                _exit = false;
-                _running = true;
-            }
+            if (IsRunning)
+                return;
+            IsRunning = true;
+            ShouldExit = false;
             new Thread(tMain).Start();
-        }
-
-        public static bool isRunning()
-        {
-            lock (_sync)
-            {
-                return _running;
-            }
         }
 
         public static void tMain(object obj)
@@ -86,40 +113,34 @@ namespace Server
             {
                 try
                 {
-                    lock (_sync)
+                    if (ShouldExit)
                     {
-                        if (_exit)
-                        {
-                            Log.Print("STATUSSRV main loop is exiting...");
-                            break;
-                        }
-                        try
-                        {
-                            SendStatus();
-                        }
-                        catch
-                        {
-                            Log.Print("STATUSSRV failed to send status!");
-                        }
+                        Log.Print("STATUSSRV main loop is exiting...");
+                        break;
+                    }
+                    try
+                    {
+                        SendStatus();
+                    }
+                    catch
+                    {
+                        Log.Print("STATUSSRV failed to send status!");
                     }
                     for (int i = 0; i < 100; i++)
                     {
                         Thread.Sleep(gdsWait * 10);
-                        lock (_sync)
-                        {
-                            if (_exit)
-                                break;
-                        }
+                        if (ShouldExit)
+                            break;
                     }
                 }
                 catch
                 {
-                    _exit = true;
+                    ShouldExit = true;
                     break;
                 }
             }
             Log.Print("STATUSSRV main loop stopped");
-            _running = false;
+            IsRunning = false;
         }
 
         private static void SendStatus()
@@ -171,17 +192,11 @@ namespace Server
 
         public static void Stop()
         {
-            lock (_sync)
-            {
-                _exit = true;
-            }
+            ShouldExit = true;
             while (true)
             {
-                lock (_sync)
-                {
-                    if (!_running)
-                        break;
-                }
+                if (!IsRunning)
+                    break;
                 Thread.Sleep(10);
                 Application.DoEvents();
             }

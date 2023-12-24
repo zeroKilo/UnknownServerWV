@@ -309,7 +309,7 @@ namespace UnknownServerWV
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            bool running = Backend.isRunning();
+            bool running = Backend.IsRunning;
             splitContainer1.Panel1.Enabled = !running;
             toolStripMenuItem1.Enabled = !running;
             toolStripMenuItem2.Enabled = running;

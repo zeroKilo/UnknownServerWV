@@ -18,50 +18,72 @@ namespace Server
         public static uint clientTeamIDCounter = 333;
         public static string currentMap = "";
         public static ushort port;
-        private static readonly object _sync = new object();
         private static readonly object _syncBroadcast = new object();
+        private static readonly object _syncExit = new object();
+        private static readonly object _syncRunning = new object();
         private static TcpListener tcp;
-        private static bool _running = false;
-        private static bool _exit = false;
         private static uint clientIDCounter = 0;
         private static uint clientTimeout = 0;
+        private static bool _running = false;
+        private static bool _exit = false;
+        public static bool IsRunning
+        {
+            get
+            {
+                bool result = false;
+                lock (_syncRunning)
+                {
+                    result = _running;
+                }
+                return result;
+            }
+            set
+            {
+                lock (_syncRunning)
+                {
+                    _running = value;
+                }
+            }
+        }
+        public static bool ShouldExit
+        {
+            get
+            {
+                bool result = false;
+                lock (_syncExit)
+                {
+                    result = _exit;
+                }
+                return result;
+            }
+            set
+            {
+                lock (_syncExit)
+                {
+                    _exit = value;
+                }
+            }
+        }
 
         public static void Start()
         {
-            if (isRunning())
+            if (IsRunning)
                 return;
-            lock (_sync)
-            {
-                _exit = false;
-                _running = true;
-            }
+            IsRunning = true;
+            ShouldExit = false;
             clientTimeout = Convert.ToUInt32(Config.settings["timeout"]);
             new Thread(tMain).Start();
         }
 
         public static void Stop()
         {
-            lock (_sync)
-            {
-                _exit = true;
-            }
+            ShouldExit = true;
             while (true)
             {
-                lock (_sync)
-                {
-                    if (!_running)
-                        break;
-                }
+                if (!IsRunning)
+                    break;
                 Thread.Sleep(10);
                 Application.DoEvents();
-            }
-        }
-
-        public static bool isRunning()
-        {
-            lock(_sync)
-            {
-                return _running;
             }
         }
         public static ushort GetNextPort()
@@ -76,7 +98,7 @@ namespace Server
             Log.Print("BACKEND main loop running...");
             if(!Config.settings.ContainsKey("port_tcp_min") || !Config.settings.ContainsKey("port_tcp_range"))
             {
-                _running = false;
+                IsRunning = false;
                 Log.Print("BACKEND Error : cant find settings for port_tcp!");
                 Log.Print("BACKEND main loop stopped");
                 return;
@@ -89,12 +111,7 @@ namespace Server
             Log.Print("BACKEND Started listening");
             while (true)
             {
-                bool exit;
-                lock (_sync)
-                {
-                    exit = _exit;
-                }
-                if(exit)
+                if(ShouldExit)
                 {
                     Log.Print("BACKEND main loop is exiting normally...");
                     break;
@@ -148,7 +165,7 @@ namespace Server
                 Log.Print("BACKEND error stopping listener:" + ex.ToString());
             }
             Log.Print("BACKEND main loop stopped");
-            _running = false;
+            IsRunning = false;
         }
 
         public static void tClient(object obj)
@@ -158,12 +175,7 @@ namespace Server
             NetHelper.ServerSendCMDPacket(cInfo.ns, (uint)mode, BitConverter.GetBytes((uint)modeState), cInfo._sync);
             while (true)
             {
-                bool exit;
-                lock (_sync)
-                {
-                    exit = _exit;
-                }
-                if (exit)
+                if (ShouldExit)
                 {
                     Log.Print("BACKEND stopped thread for client ID=" + cInfo.ID);
                     break;
