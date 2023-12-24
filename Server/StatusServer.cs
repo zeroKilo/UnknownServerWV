@@ -15,9 +15,32 @@ namespace Server
         private static bool _running = false;
         private static bool _exit = false;
         private static readonly object _sync = new object();
+        private static readonly object _syncLogin = new object();
         private static string gdsIP;
         private static string gdsPort;
         private static int gdsWait;
+        private static int lastDay = DateTime.Now.Day;
+        private static int loginCount = 0;
+
+        public static int LoginCount
+        {
+            get 
+            {
+                int result = 0;
+                lock(_syncLogin)
+                {
+                    result = loginCount;
+                }
+                return result;
+            }
+            set
+            {
+                lock (_syncLogin)
+                {
+                    loginCount = value;
+                }
+            }
+        }
 
         public static void Init()
         {
@@ -101,6 +124,11 @@ namespace Server
 
         private static void SendStatus()
         {
+            if(DateTime.Now.Day != lastDay)
+            {
+                LoginCount = 0;
+                lastDay = DateTime.Now.Day;
+            }
             StringBuilder sb = new StringBuilder();
             sb.Append("{");
             sb.Append("\"timestamp\":\"" + DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToLongTimeString() + "\",");
@@ -110,6 +138,7 @@ namespace Server
             sb.Append("\"port_tcp\":\"" + Backend.port + "\",");
             sb.Append("\"port_udp\":\"" + MainServer.port + "\",");
             sb.Append("\"map_name\":\"" + Backend.currentMap + "\",");
+            sb.Append("\"login_count\":\"" + LoginCount + "\",");
             sb.Append("\"backend_mode\":\"" + Backend.mode.ToString() + "\",");
             sb.Append("\"backend_mode_state\":\"" + Backend.modeState.ToString() + "\"");
             sb.Append("},");

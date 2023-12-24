@@ -316,10 +316,12 @@ namespace UnknownServerWV
             if (running)
             {
                 listBox1.SelectedIndex = playlistIndex;
-                status.Text = "Status : UDP Data=0x" + MainServer.getDataCount().ToString("X")
-                            + " UDP Errors=" + MainServer.getErrorCount()
-                            + " ServerMode=" + Backend.mode
-                            + " ServerState=" + Backend.modeState;
+                status.Text = "Status : UDP=0x" + MainServer.getDataCount().ToString("X")
+                            + " UDPErr=" + MainServer.getErrorCount()
+                            + " Mode=" + Backend.mode
+                            + " State=" + Backend.modeState
+                            + " Clients=" + Backend.clientList.Count 
+                            + " Logins=" + StatusServer.LoginCount;
             }
         }
 

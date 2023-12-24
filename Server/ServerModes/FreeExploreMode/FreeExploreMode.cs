@@ -130,6 +130,7 @@ namespace Server
                             NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.LoginSuccessRes, m.ToArray(), client._sync);
                             NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.RefreshPlayerListReq, new byte[0], client._sync);
                             Backend.BroadcastCommandExcept((uint)BackendCommand.RefreshPlayerListReq, new byte[0], client);
+                            StatusServer.LoginCount++;
                         }
                     }
                     break;

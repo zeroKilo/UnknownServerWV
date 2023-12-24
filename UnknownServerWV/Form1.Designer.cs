@@ -253,10 +253,12 @@ namespace UnknownServerWV
             // 
             // status
             // 
+            this.status.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.status.Font = new System.Drawing.Font("Courier New", 8.25F);
             this.status.Name = "status";
-            this.status.Size = new System.Drawing.Size(56, 17);
-            this.status.Text = "Status:";
+            this.status.Overflow = System.Windows.Forms.ToolStripItemOverflow.Always;
+            this.status.Size = new System.Drawing.Size(63, 17);
+            this.status.Text = "Status :";
             // 
             // toolStrip1
             // 

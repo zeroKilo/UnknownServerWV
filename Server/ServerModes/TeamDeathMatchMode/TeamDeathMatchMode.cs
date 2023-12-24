@@ -144,6 +144,7 @@ namespace Server
                             m.WriteByte((byte)c);
                         NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.LoginSuccessRes, m.ToArray(), client._sync);
                         Backend.BroadcastCommandExcept((uint)BackendCommand.RefreshPlayerListReq, new byte[0], client);
+                        StatusServer.LoginCount++;
                     }
                     break;
                 case BackendCommand.GetItemConfigReq:
