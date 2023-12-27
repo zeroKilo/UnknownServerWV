@@ -219,9 +219,14 @@ namespace Server
             ns.Flush();
             data = NetHelper.ReadAll(ns);
             client.Close();
-            StringReader sr = new StringReader(Encoding.UTF8.GetString(data));
-            while (sr.ReadLine() != "") ;
-            return sr.ReadToEnd();
+            if (data.Length > 0)
+            {
+                StringReader sr = new StringReader(Encoding.UTF8.GetString(data));
+                while (sr.ReadLine() != "") ;
+                return sr.ReadToEnd();
+            }
+            else
+                return "";
         }
     }
 }
