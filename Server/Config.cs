@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 using NetDefines;
 using System.Security.Cryptography;
-using System.Net.Sockets;
 using System;
 using System.Xml.Linq;
 using System.Xml.XPath;
+using System.Net.Http;
 
 namespace Server
 {
@@ -80,6 +80,11 @@ namespace Server
             rsaParams = NetHelper.LoadSigningKeys(pubKey, privKey);
         }
 
+        public static string GetGdsBaseAddress()
+        {
+            return settings["gds_ip"] + ":" + settings["gds_port"];
+        }
+
         public static void ReloadPlayerProfiles()
         {
             profiles = new List<PlayerProfile>();
@@ -87,7 +92,7 @@ namespace Server
                 return;
             try
             {
-                string reply = StatusServer.MakeRESTRequest("GET /profile_list", "");
+                string reply = HttpServerWV.GetResponseData(HttpServerWV.SendSignedRestRequest(rsaParams, pubKey, HttpMethod.Get, GetGdsBaseAddress(), "/profile_list", ""));
                 XElement json = NetHelper.StringToJSON(reply);
                 XElement list = json.XPathSelectElement("profiles");
                 if (list != null)
@@ -106,7 +111,7 @@ namespace Server
                         }
                     }
             } 
-            catch
+            catch (Exception ex)
             {
                 Log.Print("CONFIG Error : failed to receive player profiles!");
             }

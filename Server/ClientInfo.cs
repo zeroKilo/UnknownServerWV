@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using System;
 using System.Text;
+using NetDefines;
+using System.Net.Http;
 
 namespace Server
 {
@@ -31,8 +33,8 @@ namespace Server
         public void RequestMetaData()
         {
             string id = profile.id.ToString();
-            string data = StatusServer.MakeRESTRequest("GET /get_player_meta", id);
-            XElement root = NetDefines.NetHelper.StringToJSON(data);
+            string data = HttpServerWV.GetResponseData(HttpServerWV.SendSignedRestRequest(Config.rsaParams, Config.pubKey, HttpMethod.Post, Config.GetGdsBaseAddress(), "/get_player_meta", id, null, "text/plain"));
+            XElement root = NetHelper.StringToJSON(data);
             metaData = new List<XElement>();
             foreach(XNode node in root.Nodes())
             {
@@ -93,7 +95,7 @@ namespace Server
             sb.Append("\"serverKey\":\"" + myKey + "\",");
             sb.Append("\"lastSeen\":" + lastSeen + ",");
             sb.Append("\"loginCount\":" + loginCount + "}");
-            StatusServer.MakeRESTRequest("POST /set_player_meta", sb.ToString());
+            HttpServerWV.SendSignedRestRequest(Config.rsaParams, Config.pubKey, HttpMethod.Post, Config.GetGdsBaseAddress(), "/set_player_meta", sb.ToString());
         }
     }
 }

@@ -1,10 +1,9 @@
 ﻿using NetDefines;
-using Microsoft.VisualBasic;
 using System;
 using System.IO;
-using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace GameDataServer
 {
@@ -40,6 +39,7 @@ namespace GameDataServer
         private void startToolStripMenuItem_Click(object sender, EventArgs e)
         {
             GameDataServer.Start();
+            Thread.Sleep(100);
             if (GameDataServer.isRunning())
             {
                 startToolStripMenuItem.Enabled = false;
@@ -50,6 +50,7 @@ namespace GameDataServer
         private void stopToolStripMenuItem_Click(object sender, EventArgs e)
         {
             GameDataServer.Stop();
+            Thread.Sleep(100);
             if (!GameDataServer.isRunning())
             {
                 startToolStripMenuItem.Enabled = true;

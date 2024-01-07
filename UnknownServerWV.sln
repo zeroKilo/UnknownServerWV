@@ -11,8 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetDefines", "NetDefines\Ne
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameDataServer", "GameDataServer\GameDataServer.csproj", "{FE83C463-B4EC-4A5A-B648-D79C2D09960D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MakeNewPlayerFiles", "MakeNewPlayerFiles\MakeNewPlayerFiles.csproj", "{34618E17-CBF1-4CBD-A7D6-B1CEB3BC4129}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Any CPU|x64 = Any CPU|x64
@@ -26,8 +24,6 @@ Global
 		{4AA0D837-7AC1-43FD-B291-9146D545D3D9}.Any CPU|x64.Build.0 = Any CPU|x64
 		{FE83C463-B4EC-4A5A-B648-D79C2D09960D}.Any CPU|x64.ActiveCfg = Any CPU|x64
 		{FE83C463-B4EC-4A5A-B648-D79C2D09960D}.Any CPU|x64.Build.0 = Any CPU|x64
-		{34618E17-CBF1-4CBD-A7D6-B1CEB3BC4129}.Any CPU|x64.ActiveCfg = Any CPU|x64
-		{34618E17-CBF1-4CBD-A7D6-B1CEB3BC4129}.Any CPU|x64.Build.0 = Any CPU|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

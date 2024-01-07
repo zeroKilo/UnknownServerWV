@@ -1,7 +1,6 @@
 ﻿using NetDefines;
 using System;
-using System.IO;
-using System.Net.Sockets;
+using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -177,7 +176,7 @@ namespace Server
             }
             sb.Append("}");
             sb.Append("}");
-            string reply = MakeRESTRequest("POST /server_status", sb.ToString());
+            string reply = HttpServerWV.GetResponseData(HttpServerWV.SendSignedRestRequest(Config.rsaParams, Config.pubKey, HttpMethod.Post, Config.GetGdsBaseAddress(), "/server_status", sb.ToString()));
             XElement json = NetHelper.StringToJSON(reply);
             XElement countElement = json.XPathSelectElement("playerUpdateCount");
             uint count = uint.Parse(countElement.Value);
@@ -200,33 +199,6 @@ namespace Server
                 Thread.Sleep(10);
                 Application.DoEvents();
             }
-        }
-
-        public static string MakeRESTRequest(string url, string contentData)
-        {
-            byte[] content = Encoding.ASCII.GetBytes(contentData);
-            byte[] signature = NetHelper.MakeSignature(content, Config.rsaParams);
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine(url + " HTTP/1.1");
-            sb.AppendLine("Signature: " + NetHelper.MakeHexString(signature));
-            sb.AppendLine("Public-Key: " + Config.pubKey);
-            sb.AppendLine();
-            sb.Append(contentData);
-            TcpClient client = new TcpClient(gdsIP, Convert.ToInt32(gdsPort));
-            NetworkStream ns = client.GetStream();
-            byte[] data = Encoding.ASCII.GetBytes(sb.ToString());
-            ns.Write(data, 0, data.Length);
-            ns.Flush();
-            data = NetHelper.ReadAll(ns);
-            client.Close();
-            if (data.Length > 0)
-            {
-                StringReader sr = new StringReader(Encoding.UTF8.GetString(data));
-                while (sr.ReadLine() != "") ;
-                return sr.ReadToEnd();
-            }
-            else
-                return "";
         }
     }
 }

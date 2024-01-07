@@ -16,7 +16,7 @@ namespace NetDefines
         private static readonly object _client_sync = new object();
         public static Random rnd = new Random();
         public static SHA256 sha = SHA256.Create();
-        public static readonly string version = "5";
+        public static readonly string version = "6";
         public static ushort ReadU16(Stream s)
         {
             byte[] buff = new byte[2];
