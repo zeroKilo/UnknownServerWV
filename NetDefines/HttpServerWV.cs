@@ -126,6 +126,7 @@ namespace NetDefines
             res.StatusCode = (int)status;
             res.ContentType = type;
             res.Headers["Server"] = "";
+            res.Headers["Access-Control-Allow-Origin"] = "*";
             byte[] buff = Encoding.UTF8.GetBytes(content);
             res.OutputStream.Write(buff, 0, content.Length);
             res.OutputStream.Close();
