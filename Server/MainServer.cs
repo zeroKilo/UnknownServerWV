@@ -113,7 +113,7 @@ namespace Server
             Log.Print("MAINSERVER main loop running...");
             if (!Config.settings.ContainsKey("port_udp_min") || !Config.settings.ContainsKey("port_udp_range"))
             {
-                _running = false;
+                IsRunning = false;
                 Log.Print("MAINSERVER Error : cant find settings for port_udp!");
                 Log.Print("MAINSERVER main loop stopped");
                 return;

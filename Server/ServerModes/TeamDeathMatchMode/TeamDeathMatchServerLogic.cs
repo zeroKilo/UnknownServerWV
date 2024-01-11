@@ -15,34 +15,67 @@ namespace Server
         public static int killsToWin;
         public static List<uint[]> playersPerLocation;
         public static List<PlayerScoreEntry[]> playerScoresPerLocation;
-        private static readonly object _sync = new object();
-        private static bool _exit = false;
-        private static bool _running = false;
         private static Stopwatch sw = new Stopwatch();
         private static Stopwatch swLobby = new Stopwatch();
         private static int minWaitTimeLobbyMs = 3000;
         private static int maxWaitTimeLobbyMs = 60000;
+        private static readonly object _syncExit = new object();
+        private static readonly object _syncRunning = new object();
+        private static bool _running = false;
+        private static bool _exit = false;
+        public static bool IsRunning
+        {
+            get
+            {
+                bool result = false;
+                lock (_syncRunning)
+                {
+                    result = _running;
+                }
+                return result;
+            }
+            set
+            {
+                lock (_syncRunning)
+                {
+                    _running = value;
+                }
+            }
+        }
+        public static bool ShouldExit
+        {
+            get
+            {
+                bool result = false;
+                lock (_syncExit)
+                {
+                    result = _exit;
+                }
+                return result;
+            }
+            set
+            {
+                lock (_syncExit)
+                {
+                    _exit = value;
+                }
+            }
+        }
         public static void Start()
         {
-            _exit = false;
-            _running = false;
+            ShouldExit = false;
+            IsRunning = false;
             TeamDeathMatchMode.ResetPlayerSpawnLocations();
             new Thread(tMain).Start();
         }
 
         public static void Stop()
         {
-            lock (_sync)
-            {
-                _exit = true;
-            }
+            ShouldExit = true;
             while (true)
             {
-                lock (_sync)
-                {
-                    if (!_running)
-                        break;
-                }
+                if (!IsRunning)
+                    break;
                 Thread.Sleep(10);
                 Application.DoEvents();
             }
@@ -50,7 +83,7 @@ namespace Server
 
         public static void tMain()
         {
-            _running = true;
+            IsRunning = true;
             long lastTick = 0;
             Log.Print("SERVERLOGIC main loop running...");
             sw.Restart();
@@ -59,11 +92,8 @@ namespace Server
             maxWaitTimeLobbyMs = int.Parse(Config.settings["max_lobby_wait"]);
             while (true)
             {
-                lock (_sync)
-                {
-                    if (_exit)
-                        break;
-                }
+                if (ShouldExit)
+                    break;
                 switch (Backend.modeState)
                 {
                     case ServerModeState.TDM_LobbyState:
@@ -164,7 +194,7 @@ namespace Server
                 Thread.Sleep(10);
             }
             Log.Print("SERVERLOGIC main loop stopped...");
-            _running = false;
+            IsRunning = false;
         }
 
         private static void ShutDown(string reason)
@@ -177,11 +207,8 @@ namespace Server
             TeamDeathMatchMode.ResetPlayerSpawnLocations();
             sw.Stop();
             swLobby.Stop();
-            lock (_sync)
-            {
-                _exit = true;
-                _running = false;
-            }
+            ShouldExit = true;
+            IsRunning = false;
         }
     }
 }

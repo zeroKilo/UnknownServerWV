@@ -10,11 +10,50 @@ namespace UnknownServerWV
 {
     public partial class Form1 : Form
     {
-        private static readonly object _sync = new object();
-        private bool _isRunning = false;
-        private bool _exit = false;
         private int playlistIndex;
         private int playlistCount;
+        private static readonly object _syncExit = new object();
+        private static readonly object _syncRunning = new object();
+        private static bool _running = false;
+        private static bool _exit = false;
+        public static bool IsRunning
+        {
+            get
+            {
+                bool result = false;
+                lock (_syncRunning)
+                {
+                    result = _running;
+                }
+                return result;
+            }
+            set
+            {
+                lock (_syncRunning)
+                {
+                    _running = value;
+                }
+            }
+        }
+        public static bool ShouldExit
+        {
+            get
+            {
+                bool result = false;
+                lock (_syncExit)
+                {
+                    result = _exit;
+                }
+                return result;
+            }
+            set
+            {
+                lock (_syncExit)
+                {
+                    _exit = value;
+                }
+            }
+        }
         public Form1()
         {
             InitializeComponent();
@@ -168,12 +207,7 @@ namespace UnknownServerWV
                 else
                     return;
             }
-            bool isRunning;
-            lock(_sync)
-            {
-                isRunning = _isRunning;
-            }
-            if (isRunning)
+            if (IsRunning)
                 return;
             playlistIndex = listBox1.SelectedIndex;
             playlistCount = listBox1.Items.Count;
@@ -182,11 +216,8 @@ namespace UnknownServerWV
 
         private void tRun(object obj)
         {
-            lock (_sync)
-            {
-                _isRunning = true;
-                _exit = false;
-            }
+            IsRunning = true;
+            ShouldExit = false;
             while (true)
             {
                 ObjectManager.Reset();
@@ -237,11 +268,8 @@ namespace UnknownServerWV
 
                 while (true)
                 {
-                    lock (_sync)
-                    {
-                        if (_exit)
-                            break;
-                    }
+                    if (ShouldExit)
+                        break;
                     if (Backend.modeState == ServerModeState.Offline)
                         break;
                     Thread.Sleep(1000);
@@ -262,26 +290,17 @@ namespace UnknownServerWV
                         FreeExploreMode.Stop();
                         break;
                 }
-                lock (_sync)
-                {
-                    if (_exit)
-                        break;
-                }
+                if (ShouldExit)
+                    break;
                 playlistIndex = (playlistIndex + 1) % playlistCount;
             }
-            lock (_sync)
-            {
-                _isRunning = false;
-            }
+            IsRunning = false;
             Log.Print("Server main loop exited");
         }
 
         private void OnStop()
         {
-            lock (_sync)
-            {
-                _exit = true;
-            }
+            ShouldExit = true;
         }
 
         private void OnObjectViewer()

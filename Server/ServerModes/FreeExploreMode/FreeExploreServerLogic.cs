@@ -10,32 +10,65 @@ namespace Server
     {
         public static List<uint> playerIDs = new List<uint>();
         public static int roundTime;
-        private static readonly object _sync = new object();
-        private static bool _exit = false;
-        private static bool _running = false;
         private static Stopwatch sw = new Stopwatch();
+        private static readonly object _syncExit = new object();
+        private static readonly object _syncRunning = new object();
+        private static bool _running = false;
+        private static bool _exit = false;
+        public static bool IsRunning
+        {
+            get
+            {
+                bool result = false;
+                lock (_syncRunning)
+                {
+                    result = _running;
+                }
+                return result;
+            }
+            set
+            {
+                lock (_syncRunning)
+                {
+                    _running = value;
+                }
+            }
+        }
+        public static bool ShouldExit
+        {
+            get
+            {
+                bool result = false;
+                lock (_syncExit)
+                {
+                    result = _exit;
+                }
+                return result;
+            }
+            set
+            {
+                lock (_syncExit)
+                {
+                    _exit = value;
+                }
+            }
+        }
 
         public static void Start()
         {
-            _exit = false;
-            _running = false;
+            ShouldExit = false;
+            IsRunning = false;
             sw.Restart();
             new Thread(tMain).Start();
         }
 
         public static void Stop()
         {
-            lock (_sync)
-            {
-                _exit = true;
-            }
+            ShouldExit = true;
             while (true)
             {
-                lock (_sync)
-                {
-                    if (!_running)
-                        break;
-                }
+                if (!IsRunning)
+                    break;
                 Thread.Sleep(10);
                 Application.DoEvents();
             }
@@ -43,18 +76,15 @@ namespace Server
 
         public static void tMain()
         {
-            _running = true;
+            IsRunning = true;
             playerIDs = new List<uint>();
             Log.Print("SERVERLOGIC main loop running...");
             Backend.modeState = ServerModeState.FEM_LobbyState;
             Backend.BroadcastServerStateChange(ServerMode.FreeExploreMode, ServerModeState.FEM_LobbyState);
             while (true)
             {
-                lock (_sync)
-                {
-                    if (_exit)
-                        break;
-                }
+                if (ShouldExit)
+                    break;
                 switch (Backend.modeState)
                 {
                     case ServerModeState.FEM_LobbyState:
@@ -62,18 +92,15 @@ namespace Server
                         {
                             Backend.BroadcastServerStateChange(ServerMode.FreeExploreMode, ServerModeState.Offline);
                             sw.Stop();
-                            lock (_sync)
-                            {
-                                _exit = true;
-                                _running = false;
-                            }
+                            ShouldExit = true;
+                            IsRunning = false;
                         }
                         break;
                 }
                 Thread.Sleep(10);
             }
             Log.Print("SERVERLOGIC main loop stopped...");
-            _running = false;
+            IsRunning = false;
         }
     }
 }
