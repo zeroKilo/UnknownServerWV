@@ -294,19 +294,26 @@ namespace Server
 
         public static void BroadcastCommandExcept(uint cmd, byte[] data, ClientInfo except)
         {
-            foreach (ClientInfo client in clientList)
+            try
             {
-                if (client != except)
-                    try
-                    {
-                        if(!client.cleanUp)
-                            NetHelper.ServerSendCMDPacket(client.ns, cmd, data, client._sync);
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.Print("BACKEND Broadcast failed with : " + ex.Message);
-                        client.cleanUp = true;
-                    }
+                foreach (ClientInfo client in clientList)
+                {
+                    if (client != except)
+                        try
+                        {
+                            if (!client.cleanUp)
+                                NetHelper.ServerSendCMDPacket(client.ns, cmd, data, client._sync);
+                        }
+                        catch (Exception ex)
+                        {
+                            Log.Print("BACKEND Broadcast failed for client with : " + ex.Message);
+                            client.cleanUp = true;
+                        }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Print("BACKEND Broadcast failed with : " + ex.Message);
             }
         }
 
