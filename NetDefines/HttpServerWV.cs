@@ -25,8 +25,8 @@ namespace NetDefines
         private readonly object _syncRunning = new object();
         private bool _isRunning = false;
         private bool _shouldStop = false;
-        private Dictionary<string, Func<HttpListenerContext, int>> _handlerGET = new Dictionary<string, Func<HttpListenerContext, int>>();
-        private Dictionary<string, Func<HttpListenerContext, int>> _handlerPOST = new Dictionary<string, Func<HttpListenerContext, int>>();
+        private readonly Dictionary<string, Func<HttpListenerContext, int>> _handlerGET = new Dictionary<string, Func<HttpListenerContext, int>>();
+        private readonly Dictionary<string, Func<HttpListenerContext, int>> _handlerPOST = new Dictionary<string, Func<HttpListenerContext, int>>();
         #endregion
 
         #region thread safe public getter/setters
@@ -86,7 +86,7 @@ namespace NetDefines
             if (IsRunning)
                 return;
             ShouldStop = false;
-            new Thread(tMainLoop).Start();
+            new Thread(ThreadMainLoop).Start();
         }
 
         public void Stop()
@@ -166,8 +166,10 @@ namespace NetDefines
 
         public static HttpResponseMessage SendRestRequest(HttpMethod type, string baseAddress, string path, string content, Dictionary<string,string> extraHeader = null, string contentType= "application/json")
         {
-            HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("http://" + baseAddress + "/");
+            HttpClient client = new HttpClient
+            {
+                BaseAddress = new Uri("http://" + baseAddress + "/")
+            };
             HttpRequestMessage request = new HttpRequestMessage(type, path);
             if (extraHeader != null)
                 foreach (KeyValuePair<string, string> pair in extraHeader)
@@ -183,8 +185,10 @@ namespace NetDefines
         {
             byte[] buff = Encoding.ASCII.GetBytes(content);
             byte[] signature = NetHelper.MakeSignature(buff, rsa);
-            HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("http://" + baseAddress + "/");
+            HttpClient client = new HttpClient
+            {
+                BaseAddress = new Uri("http://" + baseAddress + "/")
+            };
             HttpRequestMessage request = new HttpRequestMessage(type, path);
             request.Headers.Add("Signature", NetHelper.MakeHexString(signature));
             request.Headers.Add("Public-Key", pubKey);
@@ -198,7 +202,7 @@ namespace NetDefines
             return task.Result;
         }
 
-        private void tMainLoop(object obj)
+        private void ThreadMainLoop(object obj)
         {
             httpListener = new HttpListener();
             httpListener.Prefixes.Add("http://" + bindAddress + ":" + bindPort + "/");
@@ -209,7 +213,7 @@ namespace NetDefines
                 while (true)
                 {
                     HttpListenerContext ctx = httpListener.GetContext();
-                    new Thread(tClientHandler).Start(ctx);
+                    new Thread(ThreadClientHandler).Start(ctx);
                     if (ShouldStop)
                         break;
                 }
@@ -218,7 +222,7 @@ namespace NetDefines
             IsRunning = false;
         }
 
-        private void tClientHandler(object obj)
+        private void ThreadClientHandler(object obj)
         {
             HttpListenerContext ctx = (HttpListenerContext)obj;
             HttpListenerRequest req = ctx.Request;
@@ -243,7 +247,7 @@ namespace NetDefines
                         break;
                 }
             }
-            catch (Exception ex)
+            catch
             {
                 SendBadRequestResponse(ctx);
             }

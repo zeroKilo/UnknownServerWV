@@ -10,5 +10,11 @@
     <Compile Update="PlaylistEntryEditor.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="SpawnEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="SpawnEditorDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
 </Project>

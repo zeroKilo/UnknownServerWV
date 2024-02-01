@@ -83,10 +83,12 @@ namespace UnknownServerWV
                 listBox1.SelectedIndex = 0;
         }
 
-        private void loadPlaylistToolStripMenuItem_Click(object sender, EventArgs e)
+        private void LoadPlaylistToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OpenFileDialog d = new OpenFileDialog();
-            d.Filter = "*.txt|*.txt";
+            OpenFileDialog d = new OpenFileDialog
+            {
+                Filter = "*.txt|*.txt"
+            };
             if (d.ShowDialog() == DialogResult.OK)
             {
                 string data = File.ReadAllText(d.FileName);
@@ -96,10 +98,12 @@ namespace UnknownServerWV
             }
         }
 
-        private void exportPlaylistToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ExportPlaylistToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SaveFileDialog d = new SaveFileDialog();
-            d.Filter = "*.txt|*.txt";
+            SaveFileDialog d = new SaveFileDialog
+            {
+                Filter = "*.txt|*.txt"
+            };
             if (d.ShowDialog() == DialogResult.OK)
             {
                 StringBuilder sb = new StringBuilder();
@@ -110,10 +114,12 @@ namespace UnknownServerWV
             }
         }
 
-        private void addEntryToolStripMenuItem_Click(object sender, EventArgs e)
+        private void AddEntryToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            PlaylistEntryEditor ed = new PlaylistEntryEditor();
-            ed.entry = new PlaylistManager.PlaylistEntry();
+            PlaylistEntryEditor ed = new PlaylistEntryEditor
+            {
+                entry = new PlaylistManager.PlaylistEntry()
+            };
             if (ed.ShowDialog() == DialogResult.OK)
             {
                 PlaylistManager.playlist.Add(ed.entry);
@@ -121,13 +127,15 @@ namespace UnknownServerWV
             }
         }
 
-        private void editEntryToolStripMenuItem_Click(object sender, EventArgs e)
+        private void EditEntryToolStripMenuItem_Click(object sender, EventArgs e)
         {
             int n = listBox1.SelectedIndex;
             if (n == -1)
                 return;
-            PlaylistEntryEditor ed = new PlaylistEntryEditor();
-            ed.entry = PlaylistManager.playlist[n];
+            PlaylistEntryEditor ed = new PlaylistEntryEditor
+            {
+                entry = PlaylistManager.playlist[n]
+            };
             if (ed.ShowDialog() == DialogResult.OK)
             {
                 PlaylistManager.playlist[n] = ed.entry;
@@ -135,7 +143,7 @@ namespace UnknownServerWV
             }
         }
 
-        private void deleteEntryToolStripMenuItem_Click(object sender, EventArgs e)
+        private void DeleteEntryToolStripMenuItem_Click(object sender, EventArgs e)
         {
             int n = listBox1.SelectedIndex;
             if (n == -1)
@@ -144,7 +152,7 @@ namespace UnknownServerWV
             RefreshPlaylist();
         }
 
-        private void moveUpToolStripMenuItem_Click(object sender, EventArgs e)
+        private void MoveUpToolStripMenuItem_Click(object sender, EventArgs e)
         {
             int n = listBox1.SelectedIndex;
             if (n < 1)
@@ -156,7 +164,7 @@ namespace UnknownServerWV
             listBox1.SelectedIndex = n - 1;
         }
 
-        private void moveDownToolStripMenuItem_Click(object sender, EventArgs e)
+        private void MoveDownToolStripMenuItem_Click(object sender, EventArgs e)
         {
             int n = listBox1.SelectedIndex;
             if (n == -1 || n >= PlaylistManager.playlist.Count - 1)
@@ -178,7 +186,7 @@ namespace UnknownServerWV
             File.WriteAllText("playlist.txt", sb.ToString());
         }
 
-        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        private void MenuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             switch (e.ClickedItem.Text)
             {
@@ -211,10 +219,10 @@ namespace UnknownServerWV
                 return;
             playlistIndex = listBox1.SelectedIndex;
             playlistCount = listBox1.Items.Count;
-            new Thread(tRun).Start();
+            new Thread(ThreadRun).Start();
         }
 
-        private void tRun(object obj)
+        private void ThreadRun(object obj)
         {
             IsRunning = true;
             ShouldExit = false;
@@ -311,9 +319,11 @@ namespace UnknownServerWV
 
         private void OnExportServerInfo()
         {
-            SaveFileDialog d = new SaveFileDialog();
-            d.Filter = "server.info|server.info";
-            d.FileName = "server.info";
+            SaveFileDialog d = new SaveFileDialog
+            {
+                Filter = "server.info|server.info",
+                FileName = "server.info"
+            };
             if (d.ShowDialog() == DialogResult.OK)
             {
                 StringBuilder sb = new StringBuilder();
@@ -326,7 +336,7 @@ namespace UnknownServerWV
             }
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
+        private void Timer1_Tick(object sender, EventArgs e)
         {
             bool running = Backend.IsRunning;
             splitContainer1.Panel1.Enabled = !running;
@@ -335,8 +345,8 @@ namespace UnknownServerWV
             if (running)
             {
                 listBox1.SelectedIndex = playlistIndex;
-                status.Text = "Status : UDP=0x" + MainServer.getDataCount().ToString("X")
-                            + " UDPErr=" + MainServer.getErrorCount()
+                status.Text = "Status : UDP=0x" + MainServer.GetDataCount().ToString("X")
+                            + " UDPErr=" + MainServer.GetErrorCount()
                             + " Mode=" + Backend.mode
                             + " State=" + Backend.modeState
                             + " Clients=" + Backend.clientList.Count 
@@ -344,9 +354,15 @@ namespace UnknownServerWV
             }
         }
 
-        private void toolStripButton1_Click(object sender, EventArgs e)
+        private void ToolStripButton1_Click(object sender, EventArgs e)
         {
             rtb1.Text = "";
+        }
+
+        private void SpawnEditorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SpawnEditor se = new SpawnEditor();
+            se.ShowDialog();
         }
     }
 }

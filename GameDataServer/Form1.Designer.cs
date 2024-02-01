@@ -94,7 +94,7 @@ namespace GameDataServer
             this.startToolStripMenuItem.Name = "startToolStripMenuItem";
             this.startToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
             this.startToolStripMenuItem.Text = "Start";
-            this.startToolStripMenuItem.Click += new System.EventHandler(this.startToolStripMenuItem_Click);
+            this.startToolStripMenuItem.Click += new System.EventHandler(this.StartToolStripMenuItem_Click);
             // 
             // stopToolStripMenuItem
             // 
@@ -103,7 +103,7 @@ namespace GameDataServer
             this.stopToolStripMenuItem.Name = "stopToolStripMenuItem";
             this.stopToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
             this.stopToolStripMenuItem.Text = "Stop";
-            this.stopToolStripMenuItem.Click += new System.EventHandler(this.stopToolStripMenuItem_Click);
+            this.stopToolStripMenuItem.Click += new System.EventHandler(this.StopToolStripMenuItem_Click);
             // 
             // refreshToolStripMenuItem
             // 
@@ -111,14 +111,14 @@ namespace GameDataServer
             this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
             this.refreshToolStripMenuItem.Size = new System.Drawing.Size(63, 20);
             this.refreshToolStripMenuItem.Text = "Refresh";
-            this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
+            this.refreshToolStripMenuItem.Click += new System.EventHandler(this.RefreshToolStripMenuItem_Click);
             // 
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
             this.settingsToolStripMenuItem.Size = new System.Drawing.Size(70, 20);
             this.settingsToolStripMenuItem.Text = "Settings...";
-            this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
+            this.settingsToolStripMenuItem.Click += new System.EventHandler(this.SettingsToolStripMenuItem_Click);
             // 
             // splitContainer1
             // 
@@ -190,7 +190,7 @@ namespace GameDataServer
             this.listBox1.ScrollAlwaysVisible = true;
             this.listBox1.Size = new System.Drawing.Size(262, 234);
             this.listBox1.TabIndex = 0;
-            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
+            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.ListBox1_SelectedIndexChanged);
             // 
             // contextMenuServers
             // 
@@ -206,14 +206,14 @@ namespace GameDataServer
             this.addToolStripMenuItem1.Name = "addToolStripMenuItem1";
             this.addToolStripMenuItem1.Size = new System.Drawing.Size(117, 22);
             this.addToolStripMenuItem1.Text = "Add";
-            this.addToolStripMenuItem1.Click += new System.EventHandler(this.addServer_Click);
+            this.addToolStripMenuItem1.Click += new System.EventHandler(this.AddServer_Click);
             // 
             // removeToolStripMenuItem1
             // 
             this.removeToolStripMenuItem1.Name = "removeToolStripMenuItem1";
             this.removeToolStripMenuItem1.Size = new System.Drawing.Size(117, 22);
             this.removeToolStripMenuItem1.Text = "Remove";
-            this.removeToolStripMenuItem1.Click += new System.EventHandler(this.removeServer_Click);
+            this.removeToolStripMenuItem1.Click += new System.EventHandler(this.RemoveServer_Click);
             // 
             // rtb2
             // 
@@ -269,7 +269,7 @@ namespace GameDataServer
             this.listBox2.ScrollAlwaysVisible = true;
             this.listBox2.Size = new System.Drawing.Size(262, 234);
             this.listBox2.TabIndex = 0;
-            this.listBox2.SelectedIndexChanged += new System.EventHandler(this.listBox2_SelectedIndexChanged);
+            this.listBox2.SelectedIndexChanged += new System.EventHandler(this.ListBox2_SelectedIndexChanged);
             // 
             // contextMenuProfiles
             // 
@@ -285,21 +285,21 @@ namespace GameDataServer
             this.addToolStripMenuItem.Name = "addToolStripMenuItem";
             this.addToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
             this.addToolStripMenuItem.Text = "Add";
-            this.addToolStripMenuItem.Click += new System.EventHandler(this.addProfile_Click);
+            this.addToolStripMenuItem.Click += new System.EventHandler(this.AddProfile_Click);
             // 
             // editToolStripMenuItem
             // 
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
             this.editToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
             this.editToolStripMenuItem.Text = "Edit";
-            this.editToolStripMenuItem.Click += new System.EventHandler(this.editProfile_Click);
+            this.editToolStripMenuItem.Click += new System.EventHandler(this.EditProfile_Click);
             // 
             // removeToolStripMenuItem
             // 
             this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
             this.removeToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
             this.removeToolStripMenuItem.Text = "Remove";
-            this.removeToolStripMenuItem.Click += new System.EventHandler(this.removeProfile_Click);
+            this.removeToolStripMenuItem.Click += new System.EventHandler(this.RemoveProfile_Click);
             // 
             // rtb3
             // 
@@ -332,7 +332,7 @@ namespace GameDataServer
             // 
             this.timer1.Enabled = true;
             this.timer1.Interval = 30000;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            this.timer1.Tick += new System.EventHandler(this.Timer1_Tick);
             // 
             // setupAndAddToolStripMenuItem
             // 
@@ -340,7 +340,7 @@ namespace GameDataServer
             this.setupAndAddToolStripMenuItem.Name = "setupAndAddToolStripMenuItem";
             this.setupAndAddToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.setupAndAddToolStripMenuItem.Text = "Setup and Add...";
-            this.setupAndAddToolStripMenuItem.Click += new System.EventHandler(this.setupAndAddToolStripMenuItem_Click);
+            this.setupAndAddToolStripMenuItem.Click += new System.EventHandler(this.SetupAndAddToolStripMenuItem_Click);
             // 
             // Form1
             // 

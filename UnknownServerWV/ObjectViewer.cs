@@ -12,7 +12,7 @@ namespace UnknownServerWV
             InitializeComponent();
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
+        private void Timer1_Tick(object sender, EventArgs e)
         {
             StringBuilder sb = new StringBuilder();
             int count = 0;

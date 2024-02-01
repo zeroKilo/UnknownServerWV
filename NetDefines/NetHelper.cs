@@ -16,7 +16,7 @@ namespace NetDefines
         private static readonly object _client_sync = new object();
         public static Random rnd = new Random();
         public static SHA256 sha = SHA256.Create();
-        public static readonly string version = "6";
+        public static readonly string version = "7";
         public static ushort ReadU16(Stream s)
         {
             byte[] buff = new byte[2];
@@ -242,6 +242,15 @@ namespace NetDefines
             root.Save(jsonWriter);
             jsonWriter.Flush();
             return Encoding.UTF8.GetString(m.ToArray());
+        }
+        public static string Base64Encode(string s)
+        {
+            return Convert.ToBase64String(Encoding.UTF8.GetBytes(s));
+        }
+
+        public static string Base64Decode(string s)
+        {
+            return Encoding.UTF8.GetString(Convert.FromBase64String(s));
         }
     }
 }

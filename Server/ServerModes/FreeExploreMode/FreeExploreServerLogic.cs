@@ -10,7 +10,7 @@ namespace Server
     {
         public static List<uint> playerIDs = new List<uint>();
         public static int roundTime;
-        private static Stopwatch sw = new Stopwatch();
+        private static readonly Stopwatch sw = new Stopwatch();
         private static readonly object _syncExit = new object();
         private static readonly object _syncRunning = new object();
         private static bool _running = false;
@@ -59,7 +59,7 @@ namespace Server
             ShouldExit = false;
             IsRunning = false;
             sw.Restart();
-            new Thread(tMain).Start();
+            new Thread(ThreadMain).Start();
         }
 
         public static void Stop()
@@ -74,7 +74,7 @@ namespace Server
             }
         }
 
-        public static void tMain()
+        public static void ThreadMain()
         {
             IsRunning = true;
             playerIDs = new List<uint>();

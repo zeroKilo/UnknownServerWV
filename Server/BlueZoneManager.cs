@@ -49,7 +49,7 @@ namespace Server
         public static Stopwatch sw = new Stopwatch();
 
         private static bool sendCurrentState = false;
-        private static Random rnd = new Random();
+        private static readonly Random rnd = new Random();
 
         public static void Reset()
         {

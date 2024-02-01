@@ -35,7 +35,6 @@ namespace UnknownServerWV
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.objectViewerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exportServerInfoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.playlistContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -55,6 +54,7 @@ namespace UnknownServerWV
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.spawnEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -72,13 +72,13 @@ namespace UnknownServerWV
             this.toolStripMenuItem1,
             this.toolStripMenuItem2,
             this.objectViewerToolStripMenuItem,
-            this.exportServerInfoToolStripMenuItem});
+            this.spawnEditorToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(800, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
-            this.menuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip1_ItemClicked);
+            this.menuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.MenuStrip1_ItemClicked);
             // 
             // toolStripMenuItem1
             // 
@@ -101,12 +101,6 @@ namespace UnknownServerWV
             this.objectViewerToolStripMenuItem.Name = "objectViewerToolStripMenuItem";
             this.objectViewerToolStripMenuItem.Size = new System.Drawing.Size(110, 20);
             this.objectViewerToolStripMenuItem.Text = "Object Viewer";
-            // 
-            // exportServerInfoToolStripMenuItem
-            // 
-            this.exportServerInfoToolStripMenuItem.Name = "exportServerInfoToolStripMenuItem";
-            this.exportServerInfoToolStripMenuItem.Size = new System.Drawing.Size(145, 20);
-            this.exportServerInfoToolStripMenuItem.Text = "Export Server Info";
             // 
             // splitContainer1
             // 
@@ -163,14 +157,14 @@ namespace UnknownServerWV
             this.loadPlaylistToolStripMenuItem.Name = "loadPlaylistToolStripMenuItem";
             this.loadPlaylistToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
             this.loadPlaylistToolStripMenuItem.Text = "Load Playlist";
-            this.loadPlaylistToolStripMenuItem.Click += new System.EventHandler(this.loadPlaylistToolStripMenuItem_Click);
+            this.loadPlaylistToolStripMenuItem.Click += new System.EventHandler(this.LoadPlaylistToolStripMenuItem_Click);
             // 
             // exportPlaylistToolStripMenuItem
             // 
             this.exportPlaylistToolStripMenuItem.Name = "exportPlaylistToolStripMenuItem";
             this.exportPlaylistToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
             this.exportPlaylistToolStripMenuItem.Text = "Export Playlist";
-            this.exportPlaylistToolStripMenuItem.Click += new System.EventHandler(this.exportPlaylistToolStripMenuItem_Click);
+            this.exportPlaylistToolStripMenuItem.Click += new System.EventHandler(this.ExportPlaylistToolStripMenuItem_Click);
             // 
             // toolStripMenuItem3
             // 
@@ -182,21 +176,21 @@ namespace UnknownServerWV
             this.addEntryToolStripMenuItem.Name = "addEntryToolStripMenuItem";
             this.addEntryToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
             this.addEntryToolStripMenuItem.Text = "Add Entry";
-            this.addEntryToolStripMenuItem.Click += new System.EventHandler(this.addEntryToolStripMenuItem_Click);
+            this.addEntryToolStripMenuItem.Click += new System.EventHandler(this.AddEntryToolStripMenuItem_Click);
             // 
             // editEntryToolStripMenuItem
             // 
             this.editEntryToolStripMenuItem.Name = "editEntryToolStripMenuItem";
             this.editEntryToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
             this.editEntryToolStripMenuItem.Text = "Edit Entry";
-            this.editEntryToolStripMenuItem.Click += new System.EventHandler(this.editEntryToolStripMenuItem_Click);
+            this.editEntryToolStripMenuItem.Click += new System.EventHandler(this.EditEntryToolStripMenuItem_Click);
             // 
             // deleteEntryToolStripMenuItem
             // 
             this.deleteEntryToolStripMenuItem.Name = "deleteEntryToolStripMenuItem";
             this.deleteEntryToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
             this.deleteEntryToolStripMenuItem.Text = "Delete Entry";
-            this.deleteEntryToolStripMenuItem.Click += new System.EventHandler(this.deleteEntryToolStripMenuItem_Click);
+            this.deleteEntryToolStripMenuItem.Click += new System.EventHandler(this.DeleteEntryToolStripMenuItem_Click);
             // 
             // toolStripMenuItem4
             // 
@@ -209,7 +203,7 @@ namespace UnknownServerWV
             this.moveUpToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F3;
             this.moveUpToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
             this.moveUpToolStripMenuItem.Text = "Move Up";
-            this.moveUpToolStripMenuItem.Click += new System.EventHandler(this.moveUpToolStripMenuItem_Click);
+            this.moveUpToolStripMenuItem.Click += new System.EventHandler(this.MoveUpToolStripMenuItem_Click);
             // 
             // moveDownToolStripMenuItem
             // 
@@ -217,7 +211,7 @@ namespace UnknownServerWV
             this.moveDownToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F4;
             this.moveDownToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
             this.moveDownToolStripMenuItem.Text = "Move Down";
-            this.moveDownToolStripMenuItem.Click += new System.EventHandler(this.moveDownToolStripMenuItem_Click);
+            this.moveDownToolStripMenuItem.Click += new System.EventHandler(this.MoveDownToolStripMenuItem_Click);
             // 
             // label18
             // 
@@ -278,12 +272,19 @@ namespace UnknownServerWV
             this.toolStripButton1.Name = "toolStripButton1";
             this.toolStripButton1.Size = new System.Drawing.Size(38, 22);
             this.toolStripButton1.Text = "Clear";
-            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
+            this.toolStripButton1.Click += new System.EventHandler(this.ToolStripButton1_Click);
             // 
             // timer1
             // 
             this.timer1.Enabled = true;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            this.timer1.Tick += new System.EventHandler(this.Timer1_Tick);
+            // 
+            // spawnEditorToolStripMenuItem
+            // 
+            this.spawnEditorToolStripMenuItem.Name = "spawnEditorToolStripMenuItem";
+            this.spawnEditorToolStripMenuItem.Size = new System.Drawing.Size(103, 20);
+            this.spawnEditorToolStripMenuItem.Text = "Spawn Editor";
+            this.spawnEditorToolStripMenuItem.Click += new System.EventHandler(this.SpawnEditorToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -329,7 +330,6 @@ namespace UnknownServerWV
         private System.Windows.Forms.ToolStripMenuItem objectViewerToolStripMenuItem;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel status;
-        private System.Windows.Forms.ToolStripMenuItem exportServerInfoToolStripMenuItem;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.ContextMenuStrip playlistContextMenu;
@@ -342,6 +342,7 @@ namespace UnknownServerWV
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
         private System.Windows.Forms.ToolStripMenuItem moveUpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem moveDownToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem spawnEditorToolStripMenuItem;
     }
 }
 

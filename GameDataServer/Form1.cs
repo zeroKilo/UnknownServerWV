@@ -32,33 +32,33 @@ namespace GameDataServer
             {
                 string v = Config.settings["autostart"];
                 if (v == "1")
-                    startToolStripMenuItem_Click(null, null);
+                    StartToolStripMenuItem_Click(null, null);
             }
         }
 
-        private void startToolStripMenuItem_Click(object sender, EventArgs e)
+        private void StartToolStripMenuItem_Click(object sender, EventArgs e)
         {
             GameDataServer.Start();
             Thread.Sleep(100);
-            if (GameDataServer.isRunning())
+            if (GameDataServer.IsRunning())
             {
                 startToolStripMenuItem.Enabled = false;
                 stopToolStripMenuItem.Enabled = true;
             }
         }
 
-        private void stopToolStripMenuItem_Click(object sender, EventArgs e)
+        private void StopToolStripMenuItem_Click(object sender, EventArgs e)
         {
             GameDataServer.Stop();
             Thread.Sleep(100);
-            if (!GameDataServer.isRunning())
+            if (!GameDataServer.IsRunning())
             {
                 startToolStripMenuItem.Enabled = true;
                 stopToolStripMenuItem.Enabled = false;
             }
         }
 
-        private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
+        private void RefreshToolStripMenuItem_Click(object sender, EventArgs e)
         {
             RefreshAll();
         }
@@ -78,7 +78,7 @@ namespace GameDataServer
             Log.Print("Refreshed display");
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
+        private void Timer1_Tick(object sender, EventArgs e)
         {
             foreach (GameServer gs in servers)
                 if (gs.NeedsUpdate)
@@ -94,10 +94,12 @@ namespace GameDataServer
             }
         }
 
-        private void addServer_Click(object sender, EventArgs e)
+        private void AddServer_Click(object sender, EventArgs e)
         {
-            OpenFileDialog d = new OpenFileDialog();
-            d.Filter = "server.info|server.info";
+            OpenFileDialog d = new OpenFileDialog
+            {
+                Filter = "server.info|server.info"
+            };
             if (d.ShowDialog() == DialogResult.OK)
                 AddServer(d.FileName);
         }
@@ -145,14 +147,14 @@ namespace GameDataServer
             }
         }
 
-        private void editServer_Click(object sender, EventArgs e)
+        private void EditServer_Click(object sender, EventArgs e)
         {
             int n = listBox1.SelectedIndex;
             if (n == -1)
                 return;
         }
 
-        private void removeServer_Click(object sender, EventArgs e)
+        private void RemoveServer_Click(object sender, EventArgs e)
         {
             int n = listBox1.SelectedIndex;
             if (n == -1)
@@ -161,10 +163,12 @@ namespace GameDataServer
             RefreshAll();
         }
 
-        private void addProfile_Click(object sender, EventArgs e)
+        private void AddProfile_Click(object sender, EventArgs e)
         {
-            OpenFileDialog d = new OpenFileDialog();
-            d.Filter = "player.info|player.info";
+            OpenFileDialog d = new OpenFileDialog
+            {
+                Filter = "player.info|player.info"
+            };
             if (d.ShowDialog() == DialogResult.OK)
             {
                 string[] lines = File.ReadAllLines(d.FileName);
@@ -175,14 +179,14 @@ namespace GameDataServer
             }
         }
 
-        private void editProfile_Click(object sender, EventArgs e)
+        private void EditProfile_Click(object sender, EventArgs e)
         {
             int n = listBox2.SelectedIndex;
             if (n == -1)
                 return;
         }
 
-        private void removeProfile_Click(object sender, EventArgs e)
+        private void RemoveProfile_Click(object sender, EventArgs e)
         {
             int n = listBox2.SelectedIndex;
             if (n == -1)
@@ -191,7 +195,7 @@ namespace GameDataServer
             RefreshAll();
         }
 
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void ListBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             int n = listBox1.SelectedIndex;
             if (n == -1)
@@ -206,7 +210,7 @@ namespace GameDataServer
             rtb2.Text = sb.ToString();
         }
 
-        private void listBox2_SelectedIndexChanged(object sender, EventArgs e)
+        private void ListBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
             int n = listBox2.SelectedIndex;
             if (n == -1)
@@ -220,7 +224,7 @@ namespace GameDataServer
             GameDataServer.Stop();
         }
 
-        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SettingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ConfigDialog d = new ConfigDialog();
             if (File.Exists("config.txt"))
@@ -251,11 +255,13 @@ namespace GameDataServer
             }
         }
 
-        private void setupAndAddToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SetupAndAddToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OpenFileDialog d = new OpenFileDialog();
-            d.Filter = "UnknownServerWV.exe|UnknownServerWV.exe";
-            if(d.ShowDialog() == DialogResult.OK)
+            OpenFileDialog d = new OpenFileDialog
+            {
+                Filter = "UnknownServerWV.exe|UnknownServerWV.exe"
+            };
+            if (d.ShowDialog() == DialogResult.OK)
             {
                 string path = Path.GetDirectoryName(d.FileName) + "\\";
                 ServerSetupDialog d2 = new ServerSetupDialog();

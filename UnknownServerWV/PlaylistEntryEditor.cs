@@ -30,7 +30,7 @@ namespace UnknownServerWV
             textBoxRoundTime.Text = entry.roundTime.ToString();
         }
 
-        private void comboBoxMode_SelectedIndexChanged(object sender, EventArgs e)
+        private void ComboBoxMode_SelectedIndexChanged(object sender, EventArgs e)
         {
             entry.mode = (ServerMode)(comboBoxMode.SelectedIndex + 1);
             comboBoxMap.Items.Clear();            
@@ -61,7 +61,7 @@ namespace UnknownServerWV
                 comboBoxMap.SelectedIndex = entry.map;
         }
 
-        private void comboBoxMap_SelectedIndexChanged(object sender, EventArgs e)
+        private void ComboBoxMap_SelectedIndexChanged(object sender, EventArgs e)
         {
             entry.map = comboBoxMap.SelectedIndex;
             NetMapInfo map;
@@ -87,7 +87,7 @@ namespace UnknownServerWV
                 comboBoxLocation.SelectedIndex = entry.spawnLoc;
         }
 
-        private void comboBoxLocation_SelectedIndexChanged(object sender, EventArgs e)
+        private void ComboBoxLocation_SelectedIndexChanged(object sender, EventArgs e)
         {
             entry.spawnLoc = comboBoxLocation.SelectedIndex;
         }
@@ -108,7 +108,7 @@ namespace UnknownServerWV
             labelKills.Visible = kills;
         }
 
-        private void buttonOK_Click(object sender, EventArgs e)
+        private void ButtonOK_Click(object sender, EventArgs e)
         {
             entry.countDown = int.Parse(textBoxCountDown.Text);
             entry.killsToWin = int.Parse(textBoxKills.Text);
@@ -118,7 +118,7 @@ namespace UnknownServerWV
             Close();
         }
 
-        private void buttonCancel_Click(object sender, EventArgs e)
+        private void ButtonCancel_Click(object sender, EventArgs e)
         {
 
             DialogResult = DialogResult.Cancel;

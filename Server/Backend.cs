@@ -72,7 +72,7 @@ namespace Server
             IsRunning = true;
             ShouldExit = false;
             clientTimeout = Convert.ToUInt32(Config.settings["timeout"]);
-            new Thread(tMain).Start();
+            new Thread(ThreadMain).Start();
         }
 
         public static void Stop()
@@ -93,7 +93,7 @@ namespace Server
             return (ushort)NetHelper.rnd.Next(min, min + range);
         }
 
-        public static void tMain(object obj)
+        public static void ThreadMain(object obj)
         {
             Log.Print("BACKEND main loop running...");
             if(!Config.settings.ContainsKey("port_tcp_min") || !Config.settings.ContainsKey("port_tcp_range"))
@@ -123,19 +123,21 @@ namespace Server
                         Thread.Sleep(100);
                         continue;
                     }
-                    ClientInfo cInfo = new ClientInfo();
-                    cInfo.tcp = tcp.AcceptTcpClient();
+                    ClientInfo cInfo = new ClientInfo
+                    {
+                        tcp = tcp.AcceptTcpClient(),
+                        ID = clientIDCounter++
+                    };
                     cInfo.ns = cInfo.tcp.GetStream();
                     cInfo.sw.Start();
-                    cInfo.ID = clientIDCounter++;
                     clientList.Add(cInfo);
-                    new Thread(tClient).Start(cInfo);
+                    new Thread(ThreadClient).Start(cInfo);
                 }
                 catch(Exception ex)
                 {
-                    if(ex is Win32Exception)
+                    if(ex is Win32Exception exception)
                     {
-                        uint code = (uint)((Win32Exception)ex).HResult;
+                        uint code = (uint)exception.HResult;
                         if (code == 0x80004005) //ignore error on tcp accept
                             break;
                     }
@@ -168,7 +170,7 @@ namespace Server
             IsRunning = false;
         }
 
-        public static void tClient(object obj)
+        public static void ThreadClient(object obj)
         {
             ClientInfo cInfo = (ClientInfo)obj;
             Log.Print("BACKEND Client connected with ID=" + cInfo.ID);

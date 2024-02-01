@@ -15,8 +15,8 @@ namespace Server
         public static int killsToWin;
         public static List<uint[]> playersPerLocation;
         public static List<PlayerScoreEntry[]> playerScoresPerLocation;
-        private static Stopwatch sw = new Stopwatch();
-        private static Stopwatch swLobby = new Stopwatch();
+        private static readonly Stopwatch sw = new Stopwatch();
+        private static readonly Stopwatch swLobby = new Stopwatch();
         private static int minWaitTimeLobbyMs = 3000;
         private static int maxWaitTimeLobbyMs = 60000;
         private static readonly object _syncExit = new object();
@@ -66,7 +66,7 @@ namespace Server
             ShouldExit = false;
             IsRunning = false;
             TeamDeathMatchMode.ResetPlayerSpawnLocations();
-            new Thread(tMain).Start();
+            new Thread(ThreadMain).Start();
         }
 
         public static void Stop()
@@ -81,7 +81,7 @@ namespace Server
             }
         }
 
-        public static void tMain()
+        public static void ThreadMain()
         {
             IsRunning = true;
             long lastTick = 0;

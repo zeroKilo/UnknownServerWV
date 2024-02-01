@@ -67,7 +67,7 @@ namespace Server
         {
             uint ID;
             byte[] data;
-            uint objectID, index, count, fromID, toID;
+            uint index, count, fromID, toID;
             ItemSpawnInfo spawnInfo;
             NetDefines.StateDefines.NetState_Inventory inventory;
             MemoryStream m = new MemoryStream(msg);
@@ -86,9 +86,8 @@ namespace Server
                     client.sw.Restart();
                     break;
                 case BackendCommand.LoginReq:
-                    string key = "";
-                    while (m.Position < m.Length)
-                        key += (char)m.ReadByte();
+                    string key = Encoding.UTF8.GetString(NetHelper.ReadArray(m));
+                    string machineInfo = Encoding.UTF8.GetString(NetHelper.ReadArray(m));
                     PlayerProfile target = null;
                     foreach (PlayerProfile p in Config.profiles)
                         if (p.publicKey == key)
@@ -123,6 +122,7 @@ namespace Server
                             client.teamID = Backend.clientTeamIDCounter++;
                             client.RequestMetaData();
                             client.loginCount++;
+                            client.machineInfo = machineInfo;
                             client.UpdateSpecificMetaData();
                             m = new MemoryStream();
                             NetHelper.WriteU32(m, client.ID);
@@ -150,9 +150,11 @@ namespace Server
                     NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.GetSpawnLocRes, tmp.ToArray(), client._sync);
                     break;
                 case BackendCommand.CreatePlayerObjectReq:
-                    NetObjPlayerState playerTransform = new NetObjPlayerState();
-                    playerTransform.ID = ObjectManager.objectIDcounter++;
-                    playerTransform.accessKey = ObjectManager.MakeNewAccessKey();
+                    NetObjPlayerState playerTransform = new NetObjPlayerState
+                    {
+                        ID = ObjectManager.objectIDcounter++,
+                        accessKey = ObjectManager.MakeNewAccessKey()
+                    };
                     playerTransform.ReadUpdate(m);
                     ObjectManager.objects.Add(playerTransform);
                     client.objIDs.Add(playerTransform.ID);
@@ -182,7 +184,7 @@ namespace Server
                     NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.GetAllObjectsRes, m.ToArray(), client._sync);
                     break;
                 case BackendCommand.ReloadTriggeredReq:
-                    objectID = NetHelper.ReadU32(m);
+                    NetHelper.ReadU32(m);
                     uint len = NetHelper.ReadU32(m);
                     string name = "";
                     for (int i = 0; i < len; i++)
@@ -191,7 +193,7 @@ namespace Server
                     Backend.BroadcastCommandExcept((uint)BackendCommand.ReloadTriggeredReq, data, client);
                     break;
                 case BackendCommand.InventoryUpdateReq:
-                    objectID = NetHelper.ReadU32(m);
+                    NetHelper.ReadU32(m);
                     data = NetHelper.CopyCommandData(m);
                     Backend.BroadcastCommandExcept((uint)BackendCommand.InventoryUpdateReq, data, client);
                     break;
@@ -257,14 +259,14 @@ namespace Server
                     count = NetHelper.ReadU32(m);
                     name = "";
                     for (int i = 0; i < count; i++)
-                        name = name + (char)m.ReadByte();
+                        name += (char)m.ReadByte();
                     SpawnManager.RegisterItemContainer(pos, ItemContainerType.PlayerCrate, name, inventory);
                     data = NetHelper.CopyCommandData(m);
                     Backend.BroadcastCommand((uint)BackendCommand.PlayerDiedReq, data);
                     ObjectManager.RemoveClientObjects(client);
                     break;
                 case BackendCommand.SpawnGroupItemReq:
-                    HandleSpawnGroupItemRequest(client, m);
+                    HandleSpawnGroupItemRequest(m);
                     break;
                 case BackendCommand.SpawnGroupItemRemoveReq:
                     pos = new float[] { NetHelper.ReadFloat(m), NetHelper.ReadFloat(m), NetHelper.ReadFloat(m) };
@@ -370,12 +372,12 @@ namespace Server
 
         
 
-        private static void HandleSpawnGroupItemRequest(ClientInfo client, Stream s)
+        private static void HandleSpawnGroupItemRequest(Stream s)
         {
             float[] pos = new float[] { NetHelper.ReadFloat(s), NetHelper.ReadFloat(s), NetHelper.ReadFloat(s) };
             uint count = NetHelper.ReadU32(s);
-            SpawnTierLevel tierLevel = (SpawnTierLevel)NetHelper.ReadU32(s);
-            List<ItemSpawnInfo> resultList = SpawnManager.GetRandomSpawn(tierLevel, count);
+            NetHelper.ReadU32(s); //tierLevel
+            List<ItemSpawnInfo> resultList = SpawnManager.GetRandomSpawn(mapName, count);
             MemoryStream m = new MemoryStream();
             foreach (float f in pos)
                 NetHelper.WriteFloat(m, f);

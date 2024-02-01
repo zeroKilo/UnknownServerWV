@@ -68,7 +68,7 @@ namespace Server
                 dataCounter = 0;
                 errorCounter = 0;
             }
-            new Thread(tMain).Start();
+            new Thread(ThreadMain).Start();
         }
 
         public static void Stop()
@@ -85,7 +85,7 @@ namespace Server
             }
         }
 
-        public static long getDataCount()
+        public static long GetDataCount()
         {
             lock(_syncMain)
             {
@@ -93,7 +93,7 @@ namespace Server
             }
         }
 
-        public static long getErrorCount()
+        public static long GetErrorCount()
         {
             lock (_syncMain)
             {
@@ -108,7 +108,7 @@ namespace Server
             return (ushort)NetHelper.rnd.Next(min, min + range);
         }
 
-        public static void tMain(object obj)
+        public static void ThreadMain(object obj)
         {
             Log.Print("MAINSERVER main loop running...");
             if (!Config.settings.ContainsKey("port_udp_min") || !Config.settings.ContainsKey("port_udp_range"))
@@ -182,9 +182,9 @@ namespace Server
             MemoryStream m = new MemoryStream(data);
             uint accessKey = NetHelper.ReadU32(m);
             NetObject obj = ObjectManager.FindByAccessKey(accessKey);
-            if(obj != null && obj is NetObjPlayerState)
+            if(obj != null && obj is NetObjPlayerState state)
             {
-                NetObjPlayerState playerTransform = (NetObjPlayerState)obj;
+                NetObjPlayerState playerTransform = state;
                 playerTransform.ReadUpdate(m);
                 m = new MemoryStream();
                 NetHelper.WriteU32(m, playerTransform.ID);

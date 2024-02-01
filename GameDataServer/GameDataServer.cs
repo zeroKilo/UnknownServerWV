@@ -35,7 +35,7 @@ namespace GameDataServer
             server.AddHandlerPOST("/register_player", HandlePostRegisterPlayer);
             server.AddHandlerPOST("/get_player_meta", HandlePostGetPlayerMeta);
             server.AddHandlerPOST("/server_status", HandlePostServerStatus);
-            server.AddHandlerPOST("/set_player_metas", HandlePostSetPlayerMeta);
+            server.AddHandlerPOST("/set_player_meta", HandlePostSetPlayerMeta);
             server.Start();
             Log.Print("GDS started");
         }
@@ -55,7 +55,7 @@ namespace GameDataServer
             Log.Print("GDS stopped");
         }
 
-        public static bool isRunning()
+        public static bool IsRunning()
         {
             if (server == null)
                 return false;
@@ -272,7 +272,7 @@ namespace GameDataServer
                 sb.Append("\"ip\":\"" + gs.IP + "\",");
                 sb.Append("\"portUDP\":\"" + gs.PortUDP + "\",");
                 sb.Append("\"portTCP\":\"" + gs.PortTCP + "\",");
-                sb.Append("\"status\":\"" + Helper.Base64Encode(gs.Status) + "\"}");
+                sb.Append("\"status\":\"" + NetHelper.Base64Encode(gs.Status) + "\"}");
                 if (++count < gameServers.Length)
                     sb.Append(",");
             }
@@ -290,7 +290,7 @@ namespace GameDataServer
             for (int i = 0; i < gameServers.Length; i++)
             {
                 GameServer gs = gameServers[i];
-                sb.Append("{\"status\":\"" + Helper.Base64Encode(gs.Status) + "\"}");
+                sb.Append("{\"status\":\"" + NetHelper.Base64Encode(gs.Status) + "\"}");
                 if (i < gameServers.Length - 1)
                     sb.Append(",");
             }

@@ -26,6 +26,7 @@ namespace Server
         public bool cleanUp = false;
         public List<XElement> metaData = new List<XElement>();
         public List<XElement> specificMetaData = new List<XElement>();
+        public string machineInfo = "{}";
 
         public string lastSeen = "";
         public long loginCount = 0;
@@ -94,7 +95,8 @@ namespace Server
             sb.Append("{");
             sb.Append("\"serverKey\":\"" + myKey + "\",");
             sb.Append("\"lastSeen\":" + lastSeen + ",");
-            sb.Append("\"loginCount\":" + loginCount + "}");
+            sb.Append("\"loginCount\":" + loginCount + ",");
+            sb.Append("\"machineInfo\":\"" + NetHelper.Base64Encode(machineInfo) + "\"}");
             HttpServerWV.SendSignedRestRequest(Config.rsaParams, Config.pubKey, HttpMethod.Post, Config.GetGdsBaseAddress(), "/set_player_meta", sb.ToString());
         }
     }

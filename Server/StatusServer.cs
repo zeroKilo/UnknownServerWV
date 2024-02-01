@@ -14,8 +14,6 @@ namespace Server
         private static readonly object _syncLogin = new object();
         private static readonly object _syncExit = new object();
         private static readonly object _syncRunning = new object();
-        private static string gdsIP;
-        private static string gdsPort;
         private static int gdsWait;
         private static int lastDay = DateTime.Now.Day;
         private static int _loginCount = 0;
@@ -89,8 +87,6 @@ namespace Server
                     Log.Print("STATUSSRV main loop stopped");
                     return;
                 }
-            gdsIP = Config.settings[keys[0]];
-            gdsPort = Config.settings[keys[1]];
             gdsWait = int.Parse(Config.settings[keys[2]]);
             if (gdsWait < 10)
                 gdsWait = 10;
@@ -102,10 +98,10 @@ namespace Server
                 return;
             IsRunning = true;
             ShouldExit = false;
-            new Thread(tMain).Start();
+            new Thread(ThreadMain).Start();
         }
 
-        public static void tMain(object obj)
+        public static void ThreadMain(object obj)
         {
             Log.Print("STATUSSRV main loop running...");
             while (true)

@@ -372,7 +372,7 @@ namespace NetDefines
             uint len = NetHelper.ReadU32(s);
             name = "";
             for (int j = 0; j < len; j++)
-                name = name + (char)s.ReadByte();
+                name += (char)s.ReadByte();
             len = NetHelper.ReadU32(s);
             items = new List<ItemSpawnInfo>();
             for (int j = 0; j < len; j++)

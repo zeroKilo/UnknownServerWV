@@ -59,7 +59,7 @@ namespace UnknownServerWV
             this.buttonOK.TabIndex = 28;
             this.buttonOK.Text = "OK";
             this.buttonOK.UseVisualStyleBackColor = true;
-            this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
+            this.buttonOK.Click += new System.EventHandler(this.ButtonOK_Click);
             // 
             // buttonCancel
             // 
@@ -71,7 +71,7 @@ namespace UnknownServerWV
             this.buttonCancel.TabIndex = 29;
             this.buttonCancel.Text = "Cancel";
             this.buttonCancel.UseVisualStyleBackColor = true;
-            this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
+            this.buttonCancel.Click += new System.EventHandler(this.ButtonCancel_Click);
             // 
             // panel1
             // 
@@ -192,7 +192,7 @@ namespace UnknownServerWV
             this.comboBoxLocation.Name = "comboBoxLocation";
             this.comboBoxLocation.Size = new System.Drawing.Size(401, 22);
             this.comboBoxLocation.TabIndex = 46;
-            this.comboBoxLocation.SelectedIndexChanged += new System.EventHandler(this.comboBoxLocation_SelectedIndexChanged);
+            this.comboBoxLocation.SelectedIndexChanged += new System.EventHandler(this.ComboBoxLocation_SelectedIndexChanged);
             // 
             // labelLocation
             // 
@@ -214,7 +214,7 @@ namespace UnknownServerWV
             this.comboBoxMap.Name = "comboBoxMap";
             this.comboBoxMap.Size = new System.Drawing.Size(401, 22);
             this.comboBoxMap.TabIndex = 34;
-            this.comboBoxMap.SelectedIndexChanged += new System.EventHandler(this.comboBoxMap_SelectedIndexChanged);
+            this.comboBoxMap.SelectedIndexChanged += new System.EventHandler(this.ComboBoxMap_SelectedIndexChanged);
             // 
             // labelMap
             // 
@@ -236,7 +236,7 @@ namespace UnknownServerWV
             this.comboBoxMode.Name = "comboBoxMode";
             this.comboBoxMode.Size = new System.Drawing.Size(401, 22);
             this.comboBoxMode.TabIndex = 44;
-            this.comboBoxMode.SelectedIndexChanged += new System.EventHandler(this.comboBoxMode_SelectedIndexChanged);
+            this.comboBoxMode.SelectedIndexChanged += new System.EventHandler(this.ComboBoxMode_SelectedIndexChanged);
             // 
             // labelMode
             // 

@@ -11,11 +11,11 @@ namespace Server
     {
         public static int neededPlayers;
         public static int countDownTime = 10000;
-        private static Stopwatch sw = new Stopwatch();
-        private static Stopwatch swLobby = new Stopwatch();
+        private static readonly Stopwatch sw = new Stopwatch();
+        private static readonly Stopwatch swLobby = new Stopwatch();
         private static int minWaitTimeLobbyMs = 3000;
         private static int maxWaitTimeLobbyMs = 60000;
-        private static Random rnd = new Random();
+        private static readonly Random rnd = new Random();
         private static readonly object _syncExit = new object();
         private static readonly object _syncRunning = new object();
         private static bool _running = false;
@@ -58,7 +58,7 @@ namespace Server
                 }
             }
         }
-        public static void tMain()
+        public static void ThreadMain()
         {
             IsRunning = true;
             Log.Print("SERVERLOGIC main loop running...");
@@ -143,7 +143,7 @@ namespace Server
             ShouldExit = false;
             IsRunning = false;
             swLobby.Restart();
-            new Thread(tMain).Start();
+            new Thread(ThreadMain).Start();
         }
 
         public static void Stop()

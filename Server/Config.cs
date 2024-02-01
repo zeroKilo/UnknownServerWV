@@ -103,15 +103,17 @@ namespace Server
                         XElement public_key = entry.XPathSelectElement("public_key");
                         if (name != null && public_key != null)
                         {
-                            PlayerProfile p = new PlayerProfile();
-                            p.id = int.Parse(id.Value);
-                            p.name = name.Value;
-                            p.publicKey = public_key.Value;
+                            PlayerProfile p = new PlayerProfile
+                            {
+                                id = int.Parse(id.Value),
+                                name = name.Value,
+                                publicKey = public_key.Value
+                            };
                             profiles.Add(p);
                         }
                     }
             } 
-            catch (Exception ex)
+            catch
             {
                 Log.Print("CONFIG Error : failed to receive player profiles!");
             }
