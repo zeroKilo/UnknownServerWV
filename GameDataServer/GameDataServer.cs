@@ -94,9 +94,10 @@ namespace GameDataServer
                 if (result == "")
                 {
                     string metaData = "{\"creationDate\":" + DateTimeOffset.Now.ToUnixTimeSeconds() + "}";
-                    DBManager.AddPlayerProfile(new PlayerProfile(0, pubkey, name, metaData));
                     result = "Successfully added!";
+                    DBManager.AddPlayerProfile(new PlayerProfile(0, pubkey, name, metaData));
                     Log.Print("HandlePostRegisterPlayer: " + result + " (" + name + ")");
+                    DBManager.Update();
                 }
             }
             catch

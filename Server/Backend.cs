@@ -12,12 +12,26 @@ namespace Server
 {
     public static class Backend
     {
+        public static List<BackendCommand> backendCmdFilter = new List<BackendCommand>
+        {
+            BackendCommand.PingReq,
+            BackendCommand.PlayFootStepSoundReq,
+            BackendCommand.SpawnGroupItemReq,
+            BackendCommand.SpawnGroupRemovalsReq,
+            BackendCommand.ImpactTriggeredReq,
+            BackendCommand.ShotTriggeredReq,
+            BackendCommand.ReloadTriggeredReq
+        };
+
         public static ServerMode mode;
         public static ServerModeState modeState;
         public static List<ClientInfo> clientList = new List<ClientInfo>();
         public static uint clientTeamIDCounter = 333;
         public static string currentMap = "";
         public static ushort port;
+        public static uint playersReady = 0;
+        public static uint playersWaiting = 0;
+        public static uint playersNeeded = 0;
         private static readonly object _syncBroadcast = new object();
         private static readonly object _syncExit = new object();
         private static readonly object _syncRunning = new object();
@@ -330,21 +344,19 @@ namespace Server
             Log.Print("BACKEND changed mode to " + mode + " : " + modeState);
         }
 
-
-        public static List<BackendCommand> backendCmdFilter = new List<BackendCommand>
-        {
-            BackendCommand.PingReq,
-            BackendCommand.PlayFootStepSoundReq,
-            BackendCommand.SpawnGroupItemReq,
-            BackendCommand.SpawnGroupRemovalsReq,
-            BackendCommand.ImpactTriggeredReq,
-            BackendCommand.ShotTriggeredReq,
-            BackendCommand.ReloadTriggeredReq
-        };
-
         public static bool ShouldFilterInLog(BackendCommand cmd)
         {
             return backendCmdFilter.Contains(cmd);
+        }
+
+        public static void HandlePing(ClientInfo client)
+        {
+            MemoryStream m = new MemoryStream();
+            NetHelper.WriteU32(m, playersReady);
+            NetHelper.WriteU32(m, playersWaiting);
+            NetHelper.WriteU32(m, playersNeeded);
+            NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.PingRes, m.ToArray(), client._sync);
+            client.sw.Restart();
         }
     }
 }

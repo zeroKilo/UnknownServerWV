@@ -80,15 +80,15 @@ namespace GameDataServer
 
         private void Timer1_Tick(object sender, EventArgs e)
         {
-            foreach (GameServer gs in servers)
-                if (gs.NeedsUpdate)
-                    DBManager.UpdateGameServer(gs);
-            foreach (PlayerProfile p in profiles)
-                if (p.NeedsUpdate)
-                    DBManager.UpdatePlayerProfile(p);
             bool needsUpdate = DBManager.NeedsUpdate();
             if(needsUpdate)
             {
+                foreach (GameServer gs in servers)
+                    if (gs.NeedsUpdate)
+                        DBManager.UpdateGameServer(gs);
+                foreach (PlayerProfile p in profiles)
+                    if (p.NeedsUpdate)
+                        DBManager.UpdatePlayerProfile(p);
                 RefreshAll();
                 Log.Print("Saved changes to db");
             }

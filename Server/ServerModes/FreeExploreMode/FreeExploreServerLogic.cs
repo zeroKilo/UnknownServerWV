@@ -95,6 +95,9 @@ namespace Server
                             ShouldExit = true;
                             IsRunning = false;
                         }
+                        Backend.playersNeeded =
+                        Backend.playersReady =
+                        Backend.playersWaiting = 0;
                         break;
                 }
                 Thread.Sleep(10);

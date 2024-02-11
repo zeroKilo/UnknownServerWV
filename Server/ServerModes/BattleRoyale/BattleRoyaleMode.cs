@@ -3,6 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Text;
 using NetDefines;
+using NetDefines.StateDefines;
 
 namespace Server
 {
@@ -69,7 +70,7 @@ namespace Server
             byte[] data;
             uint index, count, fromID, toID;
             ItemSpawnInfo spawnInfo;
-            NetDefines.StateDefines.NetState_Inventory inventory;
+            NetState_Inventory inventory;
             MemoryStream m = new MemoryStream(msg);
             MemoryStream tmp = new MemoryStream();
             BackendCommand cmd = (BackendCommand)NetHelper.ReadU32(m);
@@ -82,8 +83,7 @@ namespace Server
                     NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.WelcomeRes, Encoding.UTF8.GetBytes(Config.settings["name"]), client._sync);
                     break;
                 case BackendCommand.PingReq:
-                    NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.PingRes, new byte[0], client._sync);
-                    client.sw.Restart();
+                    Backend.HandlePing(client);
                     break;
                 case BackendCommand.LoginReq:
                     string key = Encoding.UTF8.GetString(NetHelper.ReadArray(m));
@@ -369,8 +369,6 @@ namespace Server
                     throw new Exception("Unknown command 0x" + cmd.ToString("X"));
             }
         }
-
-        
 
         private static void HandleSpawnGroupItemRequest(Stream s)
         {

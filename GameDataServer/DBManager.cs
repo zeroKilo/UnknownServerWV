@@ -187,6 +187,7 @@ namespace GameDataServer
                 long newId = (long)cmd.ExecuteScalar();
                 p.Id = (int)newId;
                 profiles.Add(p);
+                needsUpdate = true;
             }
         }
 
@@ -300,24 +301,16 @@ namespace GameDataServer
         {
             if (needsUpdate)
                 return true;
-            bool result = false;
             lock (_sync)
             {
                 foreach (GameServer gs in servers)
                     if (gs.NeedsUpdate)
-                    {
-                        result = true;
-                        break;
-                    }
-                if (!result)
-                    foreach (PlayerProfile p in profiles)
-                        if (p.NeedsUpdate)
-                        {
-                            result = true;
-                            break;
-                        }
+                        return true;
+                foreach (PlayerProfile p in profiles)
+                    if (p.NeedsUpdate)
+                        return true;
             }
-            return result;
+            return false;
         }
 
         public static void Update()

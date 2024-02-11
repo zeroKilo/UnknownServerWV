@@ -102,21 +102,12 @@ namespace Server
                             ShutDown("Lobby timeout");
                             break;
                         }
+                        UpdatePlayerCounts();
                         if (Backend.clientList.Count != neededPlayers)
                             sw.Stop();
                         else
                         {
-                            bool found = false;
-                            foreach (ClientInfo c in Backend.clientList)
-                                lock (c._sync)
-                                {
-                                    if (!c.isReady)
-                                    {
-                                        found = true;
-                                        break;
-                                    }
-                                }
-                            if (!found)
+                            if (Backend.playersWaiting == 0)
                             {
                                 if (!sw.IsRunning)
                                 {
@@ -209,6 +200,23 @@ namespace Server
             swLobby.Stop();
             ShouldExit = true;
             IsRunning = false;
+        }
+
+        private static void UpdatePlayerCounts()
+        {
+            uint ready = 0;
+            uint waiting = 0;
+            foreach (ClientInfo c in Backend.clientList)
+                lock (c._sync)
+                {
+                    if (!c.isReady)
+                        waiting++;
+                    else
+                        ready++;
+                }
+            Backend.playersNeeded = (uint)neededPlayers;
+            Backend.playersReady = ready;
+            Backend.playersWaiting = waiting;
         }
     }
 }

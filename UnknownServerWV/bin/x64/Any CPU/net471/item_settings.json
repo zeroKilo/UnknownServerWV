@@ -93,7 +93,7 @@
 		],
 		"itemPreview3DcamDis": "0,4",
 		"itemAmmoType": "Magnum300",
-		"itemCount": 30,
+		"itemCount": 100,
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
@@ -9727,9 +9727,9 @@
 		],
 		"itemPreview3DcamDis": "0,4",
 		"itemAmmoType": "Nato556mm",
-		"itemCount": 30,
-		"itemMagSize": 30,
-		"itemMagSizeEx": 40,
+		"itemCount": 0,
+		"itemMagSize": 100,
+		"itemMagSizeEx": 100,
 		"itemUsageTime": "0",
 		"aimOffsetHeights": [
 			"0,0749",
@@ -9762,9 +9762,9 @@
 				"0"
 			],
 			[
-				"0,3",
+				"0,03",
 				"0",
-				"0"
+				"-0,04"
 			],
 			[
 				"0,1",

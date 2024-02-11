@@ -89,8 +89,7 @@ namespace Server
                     NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.WelcomeRes, Encoding.UTF8.GetBytes(Config.settings["name"]), client._sync);
                     break;
                 case BackendCommand.PingReq:
-                    NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.PingRes, new byte[0], client._sync);
-                    client.sw.Restart();
+                    Backend.HandlePing(client);
                     break;
                 case BackendCommand.LoginReq:
                     string key = Encoding.UTF8.GetString(NetHelper.ReadArray(m));
