@@ -110,7 +110,7 @@ namespace Server
                     {
                         Log.Print("Client ID=" + client.ID + " tries to login as " + target.name);
                         ClientInfo other = null;
-                        foreach (ClientInfo c in Backend.clientList)
+                        foreach (ClientInfo c in Backend.ClientList)
                             if (c.profile != null && c.profile.publicKey == key)
                             {
                                 other = c;
@@ -160,7 +160,7 @@ namespace Server
                     {
                         foreach (uint playerID in players)
                             if (!foundTeam)
-                                foreach (ClientInfo info in Backend.clientList)
+                                foreach (ClientInfo info in Backend.ClientList)
                                     if (info.ID == playerID && info.teamID == client.teamID)
                                     {
                                         foundTeam = true;
@@ -187,7 +187,7 @@ namespace Server
                         //now add all players of the team to the found location
                         List<uint> list = new List<uint>();
                         list.AddRange(TeamDeathMatchServerLogic.playersPerLocation[(int)foundLocIdx]);
-                        foreach (ClientInfo info in Backend.clientList)
+                        foreach (ClientInfo info in Backend.ClientList)
                             if (info.teamID == client.teamID)
                                 list.Add(info.ID);
                         TeamDeathMatchServerLogic.playersPerLocation[(int)foundLocIdx] = list.ToArray();
@@ -281,7 +281,7 @@ namespace Server
                 case BackendCommand.PlayerHitReq:
                     ID = NetHelper.ReadU32(m);
                     HitLocation loc = (HitLocation)NetHelper.ReadU32(m);
-                    foreach (ClientInfo other in Backend.clientList)
+                    foreach (ClientInfo other in Backend.ClientList)
                     {
                         if (other.objIDs.Contains(ID))
                         {
@@ -357,8 +357,8 @@ namespace Server
                     break;
                 case BackendCommand.GetPlayersOnServerReq:
                     m = new MemoryStream();
-                    NetHelper.WriteU32(m, (uint)Backend.clientList.Count);
-                    foreach (ClientInfo other in Backend.clientList)
+                    NetHelper.WriteU32(m, (uint)Backend.ClientList.Count);
+                    foreach (ClientInfo other in Backend.ClientList)
                     {
                         NetHelper.WriteU32(m, other.ID);
                         NetHelper.WriteU32(m, other.teamID);
@@ -372,7 +372,7 @@ namespace Server
                 case BackendCommand.TeamInviteReq:
                     fromID = NetHelper.ReadU32(m);
                     toID = NetHelper.ReadU32(m);
-                    foreach (ClientInfo other in Backend.clientList)
+                    foreach (ClientInfo other in Backend.ClientList)
                         if (other.ID == toID)
                         {
                             Log.Print("Sending team invite from " + fromID + " to " + toID);
@@ -383,12 +383,12 @@ namespace Server
                     break;
                 case BackendCommand.TeamInviteAcceptReq:
                     toID = NetHelper.ReadU32(m);
-                    foreach (ClientInfo other in Backend.clientList)
+                    foreach (ClientInfo other in Backend.ClientList)
                         if (other.ID == toID)
                         {
                             Log.Print("Accepting team invite by " + client.ID + " into team of " + toID);
                             client.teamID = other.teamID;
-                            foreach (ClientInfo other2 in Backend.clientList)
+                            foreach (ClientInfo other2 in Backend.ClientList)
                                 if (other2.teamID == client.teamID)
                                     other2.isTeamReady = false;
                             Backend.BroadcastCommand((uint)BackendCommand.RefreshPlayerListReq, new byte[0]);

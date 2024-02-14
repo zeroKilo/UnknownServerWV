@@ -78,12 +78,12 @@ namespace Server
                             ShutDown();
                             break;
                         }
-                        UpdatePlayerCounts();
-                        if (Backend.clientList.Count != neededPlayers)
+                        Backend.UpdatePlayerCounts((uint)neededPlayers);
+                        if (Backend.ClientList.Count != neededPlayers)
                             sw.Stop();
                         else
                         {                           
-                            if (Backend.playersWaiting == 0)
+                            if (Backend.PlayersWaiting == 0)
                             {
                                 if (!sw.IsRunning)
                                 {
@@ -119,7 +119,7 @@ namespace Server
                         break;
                     case ServerModeState.BR_MainGameState:
                         BlueZoneManager.Update();
-                        if (Backend.clientList.Count == 0)
+                        if (Backend.ClientList.Count == 0)
                             ShutDown();
                         break;
                 }
@@ -159,23 +159,6 @@ namespace Server
             swLobby.Stop();
             ShouldExit = true;
             IsRunning = false;
-        }
-
-        private static void UpdatePlayerCounts()
-        {
-            uint ready = 0;
-            uint waiting = 0;
-            foreach (ClientInfo c in Backend.clientList)
-                lock (c._sync)
-                {
-                    if (!c.isReady)
-                        waiting++;
-                    else
-                        ready++;
-                }
-            Backend.playersNeeded = (uint)neededPlayers;
-            Backend.playersReady = ready;
-            Backend.playersWaiting = waiting;
         }
     }
 }

@@ -159,15 +159,15 @@ namespace Server
             sb.Append("\"backend_mode_state\":\"" + Backend.modeState.ToString() + "\"");
             sb.Append("},");
             sb.Append("\"clients\":{");
-            for (int i = 0; i < Backend.clientList.Count; i++)
+            for (int i = 0; i < Backend.ClientList.Count; i++)
             {
-                ClientInfo info = Backend.clientList[i];
+                ClientInfo info = Backend.ClientList[i];
                 if (info.profile == null)
                     break;
                 sb.Append("\"" + info.ID + "\":{");
                 sb.Append("\"name\":\"" + info.profile.name + "\"");
                 sb.Append("}");
-                if (i < Backend.clientList.Count - 1)
+                if (i < Backend.ClientList.Count - 1)
                     sb.Append(",");
             }
             sb.Append("}");

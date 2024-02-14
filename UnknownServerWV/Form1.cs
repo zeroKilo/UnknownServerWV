@@ -349,7 +349,7 @@ namespace UnknownServerWV
                             + " UDPErr=" + MainServer.GetErrorCount()
                             + " Mode=" + Backend.mode
                             + " State=" + Backend.modeState
-                            + " Clients=" + Backend.clientList.Count 
+                            + " Clients=" + Backend.ClientList.Count 
                             + " Logins=" + StatusServer.LoginCount;
             }
         }

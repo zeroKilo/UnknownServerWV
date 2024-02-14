@@ -96,7 +96,7 @@ namespace Server
                     {
                         Log.Print("Client ID=" + client.ID + " tries to login as " + target.name);
                         found = false;
-                        foreach (ClientInfo c in Backend.clientList)
+                        foreach (ClientInfo c in Backend.ClientList)
                             if (c.profile != null && c.profile.publicKey == key)
                             {
                                 found = true;
@@ -236,7 +236,7 @@ namespace Server
                 case BackendCommand.PlayerHitReq:
                     ID = NetHelper.ReadU32(m);
                     HitLocation loc = (HitLocation)NetHelper.ReadU32(m);
-                    foreach (ClientInfo other in Backend.clientList)
+                    foreach (ClientInfo other in Backend.ClientList)
                     {
                         if (other.objIDs.Contains(ID))
                         {
@@ -312,8 +312,8 @@ namespace Server
                     break;
                 case BackendCommand.GetPlayersOnServerReq:
                     m = new MemoryStream();
-                    NetHelper.WriteU32(m, (uint)Backend.clientList.Count);
-                    foreach (ClientInfo other in Backend.clientList)
+                    NetHelper.WriteU32(m, (uint)Backend.ClientList.Count);
+                    foreach (ClientInfo other in Backend.ClientList)
                     {
                         NetHelper.WriteU32(m, other.ID);
                         NetHelper.WriteU32(m, other.teamID);
@@ -327,7 +327,7 @@ namespace Server
                 case BackendCommand.TeamInviteReq:
                     fromID = NetHelper.ReadU32(m);
                     toID = NetHelper.ReadU32(m);
-                    foreach (ClientInfo other in Backend.clientList)
+                    foreach (ClientInfo other in Backend.ClientList)
                         if (other.ID == toID)
                         {
                             Log.Print("Sending team invite from " + fromID + " to " + toID);
@@ -338,12 +338,12 @@ namespace Server
                     break;
                 case BackendCommand.TeamInviteAcceptReq:
                     toID = NetHelper.ReadU32(m);
-                    foreach (ClientInfo other in Backend.clientList)
+                    foreach (ClientInfo other in Backend.ClientList)
                         if (other.ID == toID)
                         {
                             Log.Print("Accepting team invite by " + client.ID + " into team of " + toID);
                             client.teamID = other.teamID;
-                            foreach (ClientInfo other2 in Backend.clientList)
+                            foreach (ClientInfo other2 in Backend.ClientList)
                                 if (other2.teamID == client.teamID)
                                     other2.isTeamReady = false;
                             Backend.BroadcastCommand((uint)BackendCommand.RefreshPlayerListReq, new byte[0]);

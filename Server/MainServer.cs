@@ -189,7 +189,7 @@ namespace Server
                 m = new MemoryStream();
                 NetHelper.WriteU32(m, playerTransform.ID);
                 playerTransform.WriteUpdate(m);
-                foreach (ClientInfo client in Backend.clientList)
+                foreach (ClientInfo client in Backend.ClientList)
                 {
                     if(client.objIDs.Contains(playerTransform.ID))
                     {

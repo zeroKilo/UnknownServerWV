@@ -25,21 +25,23 @@ namespace Server
 
         public static ServerMode mode;
         public static ServerModeState modeState;
-        public static List<ClientInfo> clientList = new List<ClientInfo>();
         public static uint clientTeamIDCounter = 333;
         public static string currentMap = "";
         public static ushort port;
-        public static uint playersReady = 0;
-        public static uint playersWaiting = 0;
-        public static uint playersNeeded = 0;
         private static readonly object _syncBroadcast = new object();
         private static readonly object _syncExit = new object();
         private static readonly object _syncRunning = new object();
+        private static readonly object _syncPlayerCount = new object();
+        private static readonly object _syncClientList = new object();
         private static TcpListener tcp;
         private static uint clientIDCounter = 0;
         private static uint clientTimeout = 0;
+        private static List<ClientInfo> _clientList = new List<ClientInfo>();
         private static bool _running = false;
         private static bool _exit = false;
+        private static uint _playersReady = 0;
+        private static uint _playersWaiting = 0;
+        private static uint _playersNeeded = 0;
         public static bool IsRunning
         {
             get
@@ -75,6 +77,82 @@ namespace Server
                 lock (_syncExit)
                 {
                     _exit = value;
+                }
+            }
+        }
+        public static uint PlayersReady
+        {
+            get
+            {
+                uint result = 0;
+                lock (_syncPlayerCount)
+                {
+                    result = _playersReady;
+                }
+                return result;
+            }
+            set
+            {
+                lock (_syncPlayerCount)
+                {
+                    _playersReady = value;
+                }
+            }
+        }
+        public static uint PlayersWaiting
+        {
+            get
+            {
+                uint result = 0;
+                lock (_syncPlayerCount)
+                {
+                    result = _playersWaiting;
+                }
+                return result;
+            }
+            set
+            {
+                lock (_syncPlayerCount)
+                {
+                    _playersWaiting = value;
+                }
+            }
+        }
+        public static uint PlayersNeeded
+        {
+            get
+            {
+                uint result = 0;
+                lock (_syncPlayerCount)
+                {
+                    result = _playersNeeded;
+                }
+                return result;
+            }
+            set
+            {
+                lock (_syncPlayerCount)
+                {
+                    _playersNeeded = value;
+                }
+            }
+        }
+        public static List<ClientInfo> ClientList
+        {
+            get
+            {
+                List<ClientInfo> result = new List<ClientInfo>();
+                lock (_syncClientList)
+                {
+                    result.AddRange(_clientList);
+                }
+                return result;
+            }
+            set
+            {
+                lock (_syncClientList)
+                {
+                    _clientList = value;
                 }
             }
         }
@@ -144,7 +222,7 @@ namespace Server
                     };
                     cInfo.ns = cInfo.tcp.GetStream();
                     cInfo.sw.Start();
-                    clientList.Add(cInfo);
+                    AddClient(cInfo);
                     new Thread(ThreadClient).Start(cInfo);
                 }
                 catch(Exception ex)
@@ -162,7 +240,7 @@ namespace Server
             try
             {
                 Log.Print("BACKEND kicking clients...");
-                foreach (ClientInfo client in clientList)
+                foreach (ClientInfo client in ClientList)
                     try
                     {
                         client.tcp.Close();
@@ -171,7 +249,7 @@ namespace Server
                     {
                         Log.Print("BACKEND: Error kicking client #" + client.ID);
                     }
-                clientList.Clear();
+                ClearClientList();
                 Log.Print("BACKEND stopping listener...");
                 if (tcp != null)
                     tcp.Stop();
@@ -253,19 +331,20 @@ namespace Server
                 if (cInfo.cleanUp)
                 {
                     Log.Print("BACKEND Cleanup client ID=" + cInfo.ID + " removed");
-                    for (int i = 0; i < clientList.Count; i++)
-                        if (clientList[i].ID == cInfo.ID)
-                        {
-                            clientList.RemoveAt(i);
-                            break;
-                        }
                     break;
                 }
                 Thread.Sleep(1);
             }
-            cInfo.tcp.Close();
             RemoveClient(cInfo);
             Log.Print("BACKEND Client disconnected with ID=" + cInfo.ID);
+        }
+
+        public static void AddClient(ClientInfo info)
+        {
+            lock (_syncClientList)
+            {
+                _clientList.Add(info);
+            }
         }
 
         private static void RemoveClient(ClientInfo c)
@@ -284,22 +363,33 @@ namespace Server
                         FreeExploreMode.RemovePlayer(c.ID);
                         break;
                 }
-                for (int i = 0; i < clientList.Count; i++)
-                    if (clientList[i].ID == c.ID)
-                    {
-                        try
+                lock (_syncClientList)
+                {
+                    for (int i = 0; i < _clientList.Count; i++)
+                        if (_clientList[i].ID == c.ID)
                         {
-                            clientList[i].tcp.Close();
+                            _clientList.RemoveAt(i);
+                            i--;
                         }
-                        catch
-                        {
-                            Log.Print("BACKEND: Error exiting client #" + clientList[i].ID);
-                        }
-                        clientList.RemoveAt(i);
-                        break;
-                    }
+                }
+                try
+                {
+                    c.tcp.Close();
+                }
+                catch
+                {
+                    Log.Print("BACKEND: Error exiting client #" + c.ID);
+                }
                 ObjectManager.RemoveClientObjects(c);
                 BroadcastCommand((uint)BackendCommand.RefreshPlayerListReq, new byte[0]);
+            }
+        }
+
+        private static void ClearClientList()
+        {
+            lock (_syncClientList)
+            {
+                _clientList.Clear();
             }
         }
 
@@ -312,7 +402,7 @@ namespace Server
         {
             try
             {
-                foreach (ClientInfo client in clientList)
+                foreach (ClientInfo client in ClientList)
                 {
                     if (client != except)
                         try
@@ -352,11 +442,28 @@ namespace Server
         public static void HandlePing(ClientInfo client)
         {
             MemoryStream m = new MemoryStream();
-            NetHelper.WriteU32(m, playersReady);
-            NetHelper.WriteU32(m, playersWaiting);
-            NetHelper.WriteU32(m, playersNeeded);
+            NetHelper.WriteU32(m, PlayersReady);
+            NetHelper.WriteU32(m, PlayersWaiting);
+            NetHelper.WriteU32(m, PlayersNeeded);
             NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.PingRes, m.ToArray(), client._sync);
             client.sw.Restart();
+        }
+
+        public static void UpdatePlayerCounts(uint neededPlayers)
+        {
+            uint ready = 0;
+            uint waiting = 0;
+            foreach (ClientInfo c in ClientList)
+                lock (c._sync)
+                {
+                    if (!c.isReady)
+                        waiting++;
+                    else
+                        ready++;
+                }
+            PlayersNeeded = neededPlayers;
+            PlayersReady = ready;
+            PlayersWaiting = waiting;
         }
     }
 }

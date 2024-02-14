@@ -80,6 +80,9 @@ namespace Server
             playerIDs = new List<uint>();
             Log.Print("SERVERLOGIC main loop running...");
             Backend.modeState = ServerModeState.FEM_LobbyState;
+            Backend.PlayersNeeded =
+            Backend.PlayersReady =
+            Backend.PlayersWaiting = 0;
             Backend.BroadcastServerStateChange(ServerMode.FreeExploreMode, ServerModeState.FEM_LobbyState);
             while (true)
             {
@@ -95,9 +98,6 @@ namespace Server
                             ShouldExit = true;
                             IsRunning = false;
                         }
-                        Backend.playersNeeded =
-                        Backend.playersReady =
-                        Backend.playersWaiting = 0;
                         break;
                 }
                 Thread.Sleep(10);
