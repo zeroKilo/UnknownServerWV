@@ -13,7 +13,8 @@ namespace Server
         public static int spawnLocIdx;
         public static List<NetMapInfo> mapInfos = new List<NetMapInfo>()
         {
-            new NetMapInfo("miramar", new List<string>(){"SpawnLoc"})
+            new NetMapInfo("miramar", new List<string>(){"SpawnLoc"}),
+            new NetMapInfo("ShootingRange", new List<string>(){"PlayerSpawnLoc"})
         };
 
         public static void RemovePlayer(uint id)
