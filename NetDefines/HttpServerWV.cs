@@ -25,6 +25,7 @@ namespace NetDefines
         private readonly object _syncRunning = new object();
         private bool _isRunning = false;
         private bool _shouldStop = false;
+        private bool secure = false;
         private readonly Dictionary<string, Func<HttpListenerContext, int>> _handlerGET = new Dictionary<string, Func<HttpListenerContext, int>>();
         private readonly Dictionary<string, Func<HttpListenerContext, int>> _handlerPOST = new Dictionary<string, Func<HttpListenerContext, int>>();
         #endregion
@@ -70,15 +71,17 @@ namespace NetDefines
         }
         #endregion
 
-        public HttpServerWV(ushort port)
+        public HttpServerWV(ushort port, bool useHTTPS)
         {
             bindPort = port;
+            secure = useHTTPS;
         }
 
-        public HttpServerWV(string address, ushort port)
+        public HttpServerWV(string address, ushort port, bool useHTTPS)
         {
             bindAddress = address;
             bindPort = port;
+            secure = useHTTPS;
         }
 
         public void Start()
@@ -168,7 +171,7 @@ namespace NetDefines
         {
             HttpClient client = new HttpClient
             {
-                BaseAddress = new Uri("http://" + baseAddress + "/")
+                BaseAddress = new Uri("https://" + baseAddress + "/")
             };
             HttpRequestMessage request = new HttpRequestMessage(type, path);
             if (extraHeader != null)
@@ -187,7 +190,7 @@ namespace NetDefines
             byte[] signature = NetHelper.MakeSignature(buff, rsa);
             HttpClient client = new HttpClient
             {
-                BaseAddress = new Uri("http://" + baseAddress + "/")
+                BaseAddress = new Uri("https://" + baseAddress + "/")
             };
             HttpRequestMessage request = new HttpRequestMessage(type, path);
             request.Headers.Add("Signature", NetHelper.MakeHexString(signature));
@@ -205,7 +208,10 @@ namespace NetDefines
         private void ThreadMainLoop(object obj)
         {
             httpListener = new HttpListener();
-            httpListener.Prefixes.Add("http://" + bindAddress + ":" + bindPort + "/");
+            if (secure)
+                httpListener.Prefixes.Add("https://" + bindAddress + ":" + bindPort + "/");
+            else
+                httpListener.Prefixes.Add("http://" + bindAddress + ":" + bindPort + "/");
             httpListener.Start();
             IsRunning = true;
             try

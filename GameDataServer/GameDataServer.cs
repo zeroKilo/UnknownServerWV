@@ -13,11 +13,11 @@ namespace GameDataServer
 {
     public static class GameDataServer
     {
-        private static HttpServerWV server;
+        private static HttpServerWV serverHttp;
 
         public static void Start()
         {
-            if (server != null && server.IsRunning)
+            if (serverHttp != null && serverHttp.IsRunning)
                 return;
             if (!Config.settings.ContainsKey("port_tcp"))
             {
@@ -27,27 +27,27 @@ namespace GameDataServer
             }
             ushort port = Convert.ToUInt16(Config.settings["port_tcp"]);
             string ip = Config.settings["ip"].Trim();
-            server = new HttpServerWV(ip, port);
-            server.AddHandlerGET("/stats", HandleGetStats);
-            server.AddHandlerGET("/profile_list", HandleGetProfileList);
-            server.AddHandlerGET("/server_list", HandleGetServerList);
-            server.AddHandlerGET("/status_list", HandleGetStatusList);
-            server.AddHandlerPOST("/register_player", HandlePostRegisterPlayer);
-            server.AddHandlerPOST("/get_player_meta", HandlePostGetPlayerMeta);
-            server.AddHandlerPOST("/server_status", HandlePostServerStatus);
-            server.AddHandlerPOST("/set_player_meta", HandlePostSetPlayerMeta);
-            server.Start();
+            serverHttp = new HttpServerWV(ip, port, true);
+            serverHttp.AddHandlerGET("/stats", HandleGetStats);
+            serverHttp.AddHandlerGET("/profile_list", HandleGetProfileList);
+            serverHttp.AddHandlerGET("/server_list", HandleGetServerList);
+            serverHttp.AddHandlerGET("/status_list", HandleGetStatusList);
+            serverHttp.AddHandlerPOST("/register_player", HandlePostRegisterPlayer);
+            serverHttp.AddHandlerPOST("/get_player_meta", HandlePostGetPlayerMeta);
+            serverHttp.AddHandlerPOST("/server_status", HandlePostServerStatus);
+            serverHttp.AddHandlerPOST("/set_player_meta", HandlePostSetPlayerMeta);
+            serverHttp.Start();
             Log.Print("GDS started");
         }
 
         public static void Stop()
         {
-            if (server == null || !server.IsRunning)
+            if (serverHttp == null || !serverHttp.IsRunning)
                 return;
-            server.Stop();
+            serverHttp.Stop();
             while (true)
             {
-                if (!server.IsRunning)
+                if (!serverHttp.IsRunning)
                     break;
                 Thread.Sleep(10);
                 Application.DoEvents();
@@ -57,10 +57,10 @@ namespace GameDataServer
 
         public static bool IsRunning()
         {
-            if (server == null)
+            if (serverHttp == null)
                 return false;
             else
-                return server.IsRunning;
+                return serverHttp.IsRunning;
         }
 
         public static int HandlePostRegisterPlayer(HttpListenerContext ctx)
