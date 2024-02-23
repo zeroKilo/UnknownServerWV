@@ -25,7 +25,7 @@ namespace NetDefines
         private readonly object _syncRunning = new object();
         private bool _isRunning = false;
         private bool _shouldStop = false;
-        private bool secure = false;
+        public static bool secure = false;
         private readonly Dictionary<string, Func<HttpListenerContext, int>> _handlerGET = new Dictionary<string, Func<HttpListenerContext, int>>();
         private readonly Dictionary<string, Func<HttpListenerContext, int>> _handlerPOST = new Dictionary<string, Func<HttpListenerContext, int>>();
         #endregion
@@ -169,10 +169,11 @@ namespace NetDefines
 
         public static HttpResponseMessage SendRestRequest(HttpMethod type, string baseAddress, string path, string content, Dictionary<string,string> extraHeader = null, string contentType= "application/json")
         {
-            HttpClient client = new HttpClient
-            {
-                BaseAddress = new Uri("https://" + baseAddress + "/")
-            };
+            HttpClient client = new HttpClient();
+            if(secure)
+                client.BaseAddress = new Uri("https://" + baseAddress + "/");
+            else
+                client.BaseAddress = new Uri("http://" + baseAddress + "/");
             HttpRequestMessage request = new HttpRequestMessage(type, path);
             if (extraHeader != null)
                 foreach (KeyValuePair<string, string> pair in extraHeader)
@@ -188,10 +189,11 @@ namespace NetDefines
         {
             byte[] buff = Encoding.ASCII.GetBytes(content);
             byte[] signature = NetHelper.MakeSignature(buff, rsa);
-            HttpClient client = new HttpClient
-            {
-                BaseAddress = new Uri("https://" + baseAddress + "/")
-            };
+            HttpClient client = new HttpClient();
+            if (secure)
+                client.BaseAddress = new Uri("https://" + baseAddress + "/");
+            else
+                client.BaseAddress = new Uri("http://" + baseAddress + "/");
             HttpRequestMessage request = new HttpRequestMessage(type, path);
             request.Headers.Add("Signature", NetHelper.MakeHexString(signature));
             request.Headers.Add("Public-Key", pubKey);

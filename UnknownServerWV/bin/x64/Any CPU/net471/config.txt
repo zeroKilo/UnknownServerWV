@@ -26,3 +26,6 @@ max_lobby_wait = 300000
 gds_ip = 127.0.0.1
 gds_port = 4321
 gds_wait = 10
+
+# use https (needs ssl/tls certificate!)
+use_https = 0

@@ -246,6 +246,9 @@ namespace GameDataServer
                 sb.AppendLine();
                 sb.AppendLine("#database path");
                 sb.AppendLine("path_db = data.db");
+                sb.AppendLine();
+                sb.AppendLine("# use https (needs ssl/tls certificate!)");
+                sb.AppendLine("use_https = 0");
                 d.rtb1.Text = sb.ToString();
             }
             if(d.ShowDialog() == DialogResult.OK)
@@ -296,6 +299,9 @@ namespace GameDataServer
                     sb.AppendLine("gds_ip = " + Config.settings["ip"]);
                     sb.AppendLine("gds_port = " + Config.settings["port_tcp"]);
                     sb.AppendLine("gds_wait = 10");
+                    sb.AppendLine();
+                    sb.AppendLine("# use https (needs ssl/tls certificate!)");
+                    sb.AppendLine("use_https = 0");
                     File.WriteAllText(path + "config.txt", sb.ToString());
                     string[] keys = NetHelper.MakeSigningKeys();
                     sb = new StringBuilder();

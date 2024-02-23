@@ -41,6 +41,7 @@ namespace Server
             Log.Print("CONFIG settings loaded:");
             foreach (KeyValuePair<string, string> pair in settings)
                 Log.Print(" - " + pair.Key + " = " + pair.Value);
+            HttpServerWV.secure = settings["use_https"] == "1";
             LoadItemSettings();
             LoadServerKeys();
             StatusServer.Init();

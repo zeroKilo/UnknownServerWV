@@ -12,3 +12,6 @@ port_tcp = 4321
 
 #database path
 path_db = data.db
+
+#use https (needs ssl/tls certificate!)
+use_https = 0

@@ -27,7 +27,7 @@ namespace GameDataServer
             }
             ushort port = Convert.ToUInt16(Config.settings["port_tcp"]);
             string ip = Config.settings["ip"].Trim();
-            serverHttp = new HttpServerWV(ip, port, true);
+            serverHttp = new HttpServerWV(ip, port, Config.settings["use_https"] == "1");
             serverHttp.AddHandlerGET("/stats", HandleGetStats);
             serverHttp.AddHandlerGET("/profile_list", HandleGetProfileList);
             serverHttp.AddHandlerGET("/server_list", HandleGetServerList);
