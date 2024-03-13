@@ -16,7 +16,7 @@ namespace NetDefines
         private static readonly object _client_sync = new object();
         public static Random rnd = new Random();
         public static SHA256 sha = SHA256.Create();
-        public static readonly string version = "7";
+        public static readonly string version = "8";
         public static ushort ReadU16(Stream s)
         {
             byte[] buff = new byte[2];
@@ -251,6 +251,22 @@ namespace NetDefines
         public static string Base64Decode(string s)
         {
             return Encoding.UTF8.GetString(Convert.FromBase64String(s));
+        }
+
+        public static bool IsClose(float[] a, float[] b, float maxDistance = 0.1f)
+        {
+            float[] diff =
+            {
+                b[0]- a[0],
+                b[1]- a[1],
+                b[2]- a[2],
+            };
+            double sum = 0;
+            sum += diff[0] * diff[0];
+            sum += diff[1] * diff[1];
+            sum += diff[2] * diff[2];
+            double magnitude = Math.Sqrt(sum);
+            return magnitude < maxDistance;
         }
     }
 }

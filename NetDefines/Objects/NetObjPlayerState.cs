@@ -19,6 +19,7 @@ namespace NetDefines
         public bool grounded = true;
         public bool jumping = false;
         public float[] aimPoint = new float[3];
+        public float[] weaponPivot = new float[3];
         public bool rigOn = false;
         public bool isAnimating = false;
         public NetState_Inventory stateInventory = new NetState_Inventory();
@@ -62,11 +63,14 @@ namespace NetDefines
             jumping = jp;
         }
 
-        public void UpdateRig(bool enableRig, float[] aimPos, bool animating)
+        public void UpdateRig(bool enableRig, float[] aimPos, float[] pivotOffset, bool animating)
         {
             rigOn = enableRig;
             for (int i = 0; i < 3; i++)
+            {
                 aimPoint[i] = aimPos[i];
+                weaponPivot[i] = pivotOffset[i];
+            }
             isAnimating = animating;
         }
 
@@ -91,6 +95,8 @@ namespace NetDefines
             isAnimating = (flags & 8) != 0;
             for (int i = 0; i < 3; i++)
                 aimPoint[i] = NetHelper.ReadFloat(s);
+            for (int i = 0; i < 3; i++)
+                weaponPivot[i] = NetHelper.ReadFloat(s);
         }
 
         public override void WriteUpdate(Stream s)
@@ -119,6 +125,8 @@ namespace NetDefines
             s.WriteByte(flags);
             for (int i = 0; i < 3; i++)
                 NetHelper.WriteFloat(s, aimPoint[i]);
+            for (int i = 0; i < 3; i++)
+                NetHelper.WriteFloat(s, weaponPivot[i]);
         }
 
         public override string GetDetails()
@@ -148,6 +156,10 @@ namespace NetDefines
             sb.AppendLine(" Is Animating = " + isAnimating);
             sb.Append("\n AimPoint = (");
             foreach (float f in aimPoint)
+                sb.Append(f + " ");
+            sb.AppendLine(")");
+            sb.Append("\n WeaponPivot = (");
+            foreach (float f in weaponPivot)
                 sb.Append(f + " ");
             sb.AppendLine(")");
             return sb.ToString();

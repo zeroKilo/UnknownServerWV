@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using NetDefines;
 using System.Xml.Linq;
-using System.Text;
 
 namespace Server
 {
@@ -192,9 +191,7 @@ namespace Server
             for (int i = 0; i < droppedItems.Count; i++)
             {
                 DroppedItemInfo info = droppedItems[i];
-                if (info.location[0] == pos[0] &&
-                    info.location[1] == pos[1] &&
-                    info.location[2] == pos[2])
+                if (NetHelper.IsClose(info.location, pos))
                 {
                     droppedItems.RemoveAt(i);
                     return;
@@ -205,9 +202,7 @@ namespace Server
         public static void AddItemContainerRemoval(float[] pos, int index)
         {
             foreach (ItemContainerInfo info in itemContainers)
-                if (info.location[0] == pos[0] &&
-                    info.location[1] == pos[1] &&
-                    info.location[2] == pos[2])
+                if (NetHelper.IsClose(info.location, pos))
                 {
                     info.removedIndicies.Add(index);
                     return;
@@ -217,9 +212,7 @@ namespace Server
         public static void AddSpawnGroupRemoval(float[] pos, int index)
         {
             foreach (SpawnGroupRemoveInfo info in spawnGroupChanges)
-                if (info.location[0] == pos[0] &&
-                    info.location[1] == pos[1] &&
-                    info.location[2] == pos[2])
+                if (NetHelper.IsClose(info.location, pos))
                 {
                     info.AddRemoval(index);
                     return;
@@ -245,9 +238,7 @@ namespace Server
             foreach (float f in pos)
                 NetHelper.WriteFloat(s, f);
             foreach (SpawnGroupRemoveInfo info in spawnGroupChanges)
-                if (info.location[0] == pos[0] &&
-                    info.location[1] == pos[1] &&
-                    info.location[2] == pos[2])
+                if (NetHelper.IsClose(info.location, pos))
                 {
                     NetHelper.WriteU32(s, (uint)info.indicies.Count);
                     foreach (int index in info.indicies)

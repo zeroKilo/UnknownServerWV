@@ -57,8 +57,8 @@ namespace UnknownServerWV
                     SetVisible(true, true, false, false, true, false);
                     break;
             }
-            if (entry.map != -1)
-                comboBoxMap.SelectedIndex = entry.map;
+            if (comboBoxMap.Items.Count > 0)
+                comboBoxMap.SelectedIndex = 0;
         }
 
         private void ComboBoxMap_SelectedIndexChanged(object sender, EventArgs e)

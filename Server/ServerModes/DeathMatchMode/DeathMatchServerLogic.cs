@@ -95,6 +95,7 @@ namespace Server
             {
                 if (ShouldExit)
                     break;
+                Backend.UpdatePlayerCounts((uint)neededPlayers);
                 switch (Backend.modeState)
                 {
                     case ServerModeState.DM_LobbyState:
@@ -103,7 +104,6 @@ namespace Server
                             ShutDown();
                             break;
                         }
-                        Backend.UpdatePlayerCounts((uint)neededPlayers);
                         if (Backend.ClientList.Count != neededPlayers)
                             sw.Stop();
                         else

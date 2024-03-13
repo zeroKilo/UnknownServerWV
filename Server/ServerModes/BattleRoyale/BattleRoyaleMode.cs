@@ -103,39 +103,36 @@ namespace Server
                     else
                     {
                         Log.Print("Client ID=" + client.ID + " tries to login as " + target.name);
-                        bool found = false;
+                        ClientInfo oldClient = null;
                         foreach (ClientInfo c in Backend.ClientList)
                             if (c.profile != null && c.profile.publicKey == key)
                             {
-                                found = true;
+                                oldClient = c;
                                 break;
                             }
-                        if (found)
+                        if (oldClient != null)
                         {
-                            Log.Print("Error : client ID=" + client.ID + " cant login as " + target.name + " because another client is already logged in");
-                            NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.LoginFailRes, new byte[0], client._sync);
+                            Log.Print("Warning : client ID=" + client.ID + " was already logged in as " + target.name + "!");
+                            Backend.RemoveClient(oldClient);
                         }
-                        else
-                        {
-                            Log.Print("Client ID=" + client.ID + " logged in as " + target.name);
-                            client.profile = target;
-                            client.teamID = Backend.clientTeamIDCounter++;
-                            client.RequestMetaData();
-                            client.loginCount++;
-                            client.machineInfo = machineInfo;
-                            client.UpdateSpecificMetaData();
-                            m = new MemoryStream();
-                            NetHelper.WriteU32(m, client.ID);
-                            NetHelper.WriteU32(m, client.teamID);
-                            NetHelper.WriteU32(m, (uint)target.name.Length);
-                            foreach (char c in target.name)
-                                m.WriteByte((byte)c);
-                            NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.LoginSuccessRes, m.ToArray(), client._sync);
-                            NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.RefreshPlayerListReq, new byte[0], client._sync);
-                            Backend.BroadcastCommandExcept((uint)BackendCommand.RefreshPlayerListReq, new byte[0], client);
-                            StatusServer.LoginCount++;
-                        }
-                    }
+                        Log.Print("Client ID=" + client.ID + " logged in as " + target.name);
+                        client.profile = target;
+                        client.teamID = Backend.clientTeamIDCounter++;
+                        client.RequestMetaData();
+                        client.loginCount++;
+                        client.machineInfo = machineInfo;
+                        client.UpdateSpecificMetaData();
+                        m = new MemoryStream();
+                        NetHelper.WriteU32(m, client.ID);
+                        NetHelper.WriteU32(m, client.teamID);
+                        NetHelper.WriteU32(m, (uint)target.name.Length);
+                        foreach (char c in target.name)
+                            m.WriteByte((byte)c);
+                        NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.LoginSuccessRes, m.ToArray(), client._sync);
+                        NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.RefreshPlayerListReq, new byte[0], client._sync);
+                        Backend.BroadcastCommandExcept((uint)BackendCommand.RefreshPlayerListReq, new byte[0], client);
+                        StatusServer.LoginCount++;
+                    }                    
                     break;
                 case BackendCommand.GetItemConfigReq:
                     NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.GetItemConfigRes, Encoding.UTF8.GetBytes(Config.itemSettingsJson), client._sync);

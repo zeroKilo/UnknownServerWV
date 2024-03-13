@@ -109,23 +109,17 @@ namespace Server
                     else
                     {
                         Log.Print("Client ID=" + client.ID + " tries to login as " + target.name);
-                        ClientInfo other = null;
+                        ClientInfo oldClient = null;
                         foreach (ClientInfo c in Backend.ClientList)
                             if (c.profile != null && c.profile.publicKey == key)
                             {
-                                other = c;
+                                oldClient = c;
                                 break;
                             }
-                        if (other != null)
+                        if (oldClient != null)
                         {
-                            Log.Print("Error : client ID=" + other.ID + " already logged in as " + target.name + ", kicking...");
-                            try
-                            {
-                                NetHelper.ServerSendCMDPacket(other.ns, (uint)BackendCommand.LoginFailRes, new byte[0], other._sync);
-                                other.ns.Close();
-                            }
-                            catch { }
-                            other.cleanUp = true;
+                            Log.Print("Warning : client ID=" + client.ID + " was already logged in as " + target.name + "!");
+                            Backend.RemoveClient(oldClient);
                         }
                         Log.Print("Client ID=" + client.ID + " logged in as " + target.name);
                         client.profile = target;

@@ -97,8 +97,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -424,8 +427,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -751,8 +757,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -1078,8 +1087,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -1405,8 +1417,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -1732,8 +1747,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -2059,8 +2077,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -2386,8 +2407,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -2713,8 +2737,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -3040,8 +3067,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -3367,8 +3397,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -3694,8 +3727,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -4021,8 +4057,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -4348,8 +4387,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -4675,8 +4717,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -5002,8 +5047,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -5329,8 +5377,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -5656,8 +5707,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -5983,8 +6037,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -6310,8 +6367,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -6637,8 +6697,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -6964,8 +7027,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -7291,8 +7357,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -7618,17 +7687,11 @@
 		"itemMagSize": 30,
 		"itemMagSizeEx": 40,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [
+		"aimOffset": [
+			"0",
 			"0,038",
-			"0,0742",
-			"0,0673",
-			"0,0562",
-			"0,066",
-			"0,0603",
-			"0,065",
 			"0"
 		],
-		"aimOffsetZ": "0",
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "0,05",
@@ -7970,17 +8033,11 @@
 		"itemMagSize": 30,
 		"itemMagSizeEx": 40,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [
+		"aimOffset": [
+			"0",
 			"0,023",
-			"0,0658",
-			"0,059",
-			"0,0477",
-			"0,0575",
-			"0,0518",
-			"0,0565",
 			"0"
 		],
-		"aimOffsetZ": "0",
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "0,05",
@@ -8328,17 +8385,11 @@
 		"itemMagSize": 47,
 		"itemMagSizeEx": 47,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [
+		"aimOffset": [
+			"0",
 			"0,045",
-			"0,0875",
-			"0,0805",
-			"0,0695",
-			"0,0791",
-			"0,0735",
-			"0,0782",
 			"0"
 		],
-		"aimOffsetZ": "0",
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -8671,17 +8722,11 @@
 		"itemMagSize": 30,
 		"itemMagSizeEx": 40,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [
+		"aimOffset": [
+			"0",
 			"0,0408",
-			"0,08",
-			"0,073",
-			"0,0617",
-			"0,0715",
-			"0,0658",
-			"0,0705",
 			"0"
 		],
-		"aimOffsetZ": "0",
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "0,05",
@@ -9027,17 +9072,11 @@
 		"itemMagSize": 30,
 		"itemMagSizeEx": 40,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [
+		"aimOffset": [
+			"0",
 			"0,0661",
-			"0,115",
-			"0,109",
-			"0,0975",
-			"0,1071",
-			"0,1016",
-			"0,1063",
 			"0"
 		],
-		"aimOffsetZ": "0",
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "0,05",
@@ -9377,17 +9416,11 @@
 		"itemMagSize": 30,
 		"itemMagSizeEx": 40,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [
+		"aimOffset": [
+			"0",
 			"0,074",
-			"0,08",
-			"0,074",
-			"0,062",
-			"0,0717",
-			"0,066",
-			"0,0707",
 			"0"
 		],
-		"aimOffsetZ": "0",
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "0,05",
@@ -9731,17 +9764,11 @@
 		"itemMagSize": 100,
 		"itemMagSizeEx": 100,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [
+		"aimOffset": [
+			"0",
 			"0,0749",
-			"0,11",
-			"0,1035",
-			"0,0922",
-			"0,102",
-			"0,09635",
-			"0,10102",
 			"0"
 		],
-		"aimOffsetZ": "0",
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -10074,17 +10101,11 @@
 		"itemMagSize": 30,
 		"itemMagSizeEx": 40,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [
+		"aimOffset": [
+			"0",
 			"0,0448",
-			"0,074",
-			"0,0671",
-			"0,0561",
-			"0,066",
-			"0,0603",
-			"0,0649",
 			"0"
 		],
-		"aimOffsetZ": "0",
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "0,05",
@@ -10434,17 +10455,11 @@
 		"itemMagSize": 30,
 		"itemMagSizeEx": 40,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [
+		"aimOffset": [
+			"0",
 			"0,038",
-			"0,0741",
-			"0,0671",
-			"0,05605",
-			"0,06589",
-			"0,0603",
-			"0,0649",
 			"0"
 		],
-		"aimOffsetZ": "0",
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "0,05",
@@ -10793,17 +10808,11 @@
 		"itemMagSize": 30,
 		"itemMagSizeEx": 40,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [
+		"aimOffset": [
+			"0",
 			"0,0226",
-			"0,0616",
-			"0,0547",
-			"0,0437",
-			"0,05345",
-			"0,04782",
-			"0,05244",
 			"0"
 		],
-		"aimOffsetZ": "0",
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "0,1",
@@ -11153,17 +11162,11 @@
 		"itemMagSize": 53,
 		"itemMagSizeEx": 53,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [
+		"aimOffset": [
+			"0",
 			"0,036",
-			"0,0833",
-			"0,0764",
-			"0,0656",
-			"0,0751",
-			"0,0695",
-			"0,07415",
 			"0"
 		],
-		"aimOffsetZ": "0",
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "0,05",
@@ -11501,17 +11504,11 @@
 		"itemMagSize": 5,
 		"itemMagSizeEx": 10,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [
+		"aimOffset": [
+			"0",
 			"0,0353",
-			"0,0786",
-			"0,0717",
-			"0,0606",
-			"0,0704",
-			"0,06485",
-			"0,06945",
 			"0"
 		],
-		"aimOffsetZ": "0",
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "0,2",
@@ -11853,17 +11850,11 @@
 		"itemMagSize": 2,
 		"itemMagSizeEx": 2,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [
+		"aimOffset": [
+			"0",
 			"-0,02",
-			"0,0353",
-			"0,0733",
-			"0,0618",
-			"0,0716",
-			"0,0657",
-			"0,0708",
 			"0"
 		],
-		"aimOffsetZ": "0",
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "0,2",
@@ -12194,17 +12185,11 @@
 		"itemMagSize": 30,
 		"itemMagSizeEx": 40,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [
+		"aimOffset": [
+			"0",
 			"0,0833",
-			"0,0943",
-			"0,0874",
-			"0,0763",
-			"0,086",
-			"0,0804",
-			"0,085",
-			"0"
+			"0,016"
 		],
-		"aimOffsetZ": "0,016",
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "0,05",
@@ -12552,17 +12537,11 @@
 		"itemMagSize": 30,
 		"itemMagSizeEx": 50,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [
+		"aimOffset": [
+			"0",
 			"0,0245",
-			"0,0282",
-			"0,0776",
-			"0,0661",
-			"0,0758",
-			"0,07",
-			"0,0752",
 			"0"
 		],
-		"aimOffsetZ": "0",
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "0,05",
@@ -12900,17 +12879,11 @@
 		"itemMagSize": 30,
 		"itemMagSizeEx": 40,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [
+		"aimOffset": [
+			"0",
 			"0,0468",
-			"0,09378",
-			"0,0868",
-			"0,0758",
-			"0,0855",
-			"0,07993",
-			"0,08455",
-			"0,0686"
+			"0"
 		],
-		"aimOffsetZ": "0",
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "0,05",
@@ -13258,17 +13231,11 @@
 		"itemMagSize": 25,
 		"itemMagSizeEx": 35,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [
+		"aimOffset": [
+			"0",
 			"0,049",
-			"0,0869",
-			"0,08",
-			"0,069",
-			"0,07875",
-			"0,0731",
-			"0,07775",
 			"0"
 		],
-		"aimOffsetZ": "0",
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "0,05",
@@ -13617,17 +13584,11 @@
 		"itemMagSize": 25,
 		"itemMagSizeEx": 35,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [
+		"aimOffset": [
+			"0",
 			"0,018",
-			"0,0612",
-			"0,0543",
-			"0",
-			"0",
-			"0",
-			"0",
 			"0"
 		],
-		"aimOffsetZ": "0",
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "0,05",
@@ -13967,17 +13928,11 @@
 		"itemMagSize": 25,
 		"itemMagSizeEx": 35,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [
+		"aimOffset": [
+			"0",
 			"0,0208",
-			"0,0636",
-			"0,0575",
-			"0",
-			"0",
-			"0",
-			"0",
 			"0"
 		],
-		"aimOffsetZ": "0",
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "0,05",
@@ -14314,17 +14269,11 @@
 		"itemMagSize": 19,
 		"itemMagSizeEx": 33,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [
+		"aimOffset": [
+			"0",
 			"-0,0059",
-			"0,0416",
-			"0,0347",
-			"0,0237",
-			"0,0334",
-			"0,0278",
-			"0,0324",
-			"0"
+			"-0,0083"
 		],
-		"aimOffsetZ": "-0,0083",
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "0,05",
@@ -14675,17 +14624,11 @@
 		"itemMagSize": 5,
 		"itemMagSizeEx": 5,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [
+		"aimOffset": [
+			"0",
 			"-0,0165",
-			"0,0733",
-			"0,0733",
-			"0,0618",
-			"0,0716",
-			"0,0657",
-			"0,0708",
 			"0"
 		],
-		"aimOffsetZ": "0",
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "0,2",
@@ -15017,17 +14960,11 @@
 		"itemMagSize": 5,
 		"itemMagSizeEx": 7,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [
+		"aimOffset": [
+			"0",
 			"0,03",
-			"0,071",
-			"0,0645",
-			"0,0535",
-			"0,063",
-			"0,0575",
-			"0,0621",
-			"0,0665"
+			"0"
 		],
-		"aimOffsetZ": "0",
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -15371,17 +15308,11 @@
 		"itemMagSize": 5,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [
+		"aimOffset": [
+			"0",
 			"0,0135",
-			"0,045",
-			"0,0375",
-			"0,026",
-			"0,036",
-			"0,0303",
-			"0,035",
-			"0,0393"
+			"0,217"
 		],
-		"aimOffsetZ": "0,217",
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -15722,17 +15653,11 @@
 		"itemMagSize": 5,
 		"itemMagSizeEx": 7,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [
+		"aimOffset": [
+			"0",
 			"-0,01",
-			"0,03",
-			"0,023",
-			"0,012",
-			"0,022",
-			"0,0162",
-			"0,0208",
-			"0,0252"
+			"0"
 		],
-		"aimOffsetZ": "0",
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -16076,17 +16001,11 @@
 		"itemMagSize": 10,
 		"itemMagSizeEx": 20,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [
+		"aimOffset": [
+			"0",
 			"0,0201",
-			"0,0559",
-			"0,0496",
-			"0,0387",
-			"0,0485",
-			"0,0431",
-			"0,0477",
-			"0,0521"
+			"0"
 		],
-		"aimOffsetZ": "0",
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "0,1",
@@ -16434,17 +16353,11 @@
 		"itemMagSize": 5,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [
+		"aimOffset": [
+			"0",
 			"0,0135",
-			"0,0598",
-			"0,0528",
-			"0,0416",
-			"0,0515",
-			"0,0459",
-			"0,0505",
-			"0,05488"
+			"0"
 		],
-		"aimOffsetZ": "0",
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -16785,17 +16698,11 @@
 		"itemMagSize": 10,
 		"itemMagSizeEx": 20,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [
+		"aimOffset": [
+			"0",
 			"0,0218",
-			"0,0685",
-			"0,0617",
-			"0,0506",
-			"0,0606",
-			"0,0548",
-			"0,0594",
-			"0,0638"
+			"0"
 		],
-		"aimOffsetZ": "0",
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "0,05",
@@ -17146,17 +17053,11 @@
 		"itemMagSize": 10,
 		"itemMagSizeEx": 20,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [
+		"aimOffset": [
+			"0",
 			"0,069",
-			"0,0725",
-			"0,0657",
-			"0,0546",
-			"0,0644",
-			"0,0588",
-			"0,0635",
-			"0,0678"
+			"0,0566"
 		],
-		"aimOffsetZ": "0,0566",
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "0,05",
@@ -17504,17 +17405,11 @@
 		"itemMagSize": 10,
 		"itemMagSizeEx": 20,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [
+		"aimOffset": [
+			"0",
 			"0,052",
-			"0,0967",
-			"0,0897",
-			"0,0786",
-			"0,0885",
-			"0,0829",
-			"0,08752",
-			"0,09189"
+			"0"
 		],
-		"aimOffsetZ": "0",
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "0,1",
@@ -17870,17 +17765,11 @@
 		"itemMagSize": 10,
 		"itemMagSizeEx": 20,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [
+		"aimOffset": [
+			"0",
 			"0,042",
-			"0,0787",
-			"0,0717",
-			"0,0609",
-			"0,0704",
-			"0,0648",
-			"0,06945",
-			"0,0738"
+			"0"
 		],
-		"aimOffsetZ": "0",
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "0,1",
@@ -18230,17 +18119,11 @@
 		"itemMagSize": 10,
 		"itemMagSizeEx": 20,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [
+		"aimOffset": [
+			"0",
 			"0,03095",
-			"0,068",
-			"0,068",
-			"0,054",
-			"0,0646",
-			"0,0592",
-			"0,0638",
-			"0,0686"
+			"0,2546"
 		],
-		"aimOffsetZ": "0,2546",
 		"zoomFactor": "0",
 		"fixedZoom": "4",
 		"fireRateSingle": "3",
@@ -18572,17 +18455,11 @@
 		"itemMagSize": 8,
 		"itemMagSizeEx": 8,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [
+		"aimOffset": [
+			"0",
 			"0,05065",
-			"0,068",
-			"0,068",
-			"0,054",
-			"0,0646",
-			"0,0592",
-			"0,0638",
-			"0,0686"
+			"0,4023"
 		],
-		"aimOffsetZ": "0,4023",
 		"zoomFactor": "0",
 		"fixedZoom": "2,7",
 		"fireRateSingle": "3",
@@ -18911,17 +18788,11 @@
 		"itemMagSize": 17,
 		"itemMagSizeEx": 25,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [
+		"aimOffset": [
+			"0",
 			"-0,005",
-			"0,03565",
-			"0,028",
-			"0",
-			"0",
-			"0",
-			"0",
-			"0"
+			"-0,0034"
 		],
-		"aimOffsetZ": "-0,0034",
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "0,05",
@@ -19257,17 +19128,11 @@
 		"itemMagSize": 7,
 		"itemMagSizeEx": 12,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [
+		"aimOffset": [
+			"0",
 			"-0,007",
-			"0,03564",
-			"0,03",
-			"0",
-			"0",
-			"0",
-			"0",
 			"0"
 		],
-		"aimOffsetZ": "0",
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "0,05",
@@ -19603,17 +19468,11 @@
 		"itemMagSize": 15,
 		"itemMagSizeEx": 20,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [
+		"aimOffset": [
+			"0",
 			"-0,005",
-			"0,0356",
-			"0,028",
-			"0",
-			"0",
-			"0",
-			"0",
 			"0"
 		],
-		"aimOffsetZ": "0",
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "0,05",
@@ -19949,17 +19808,11 @@
 		"itemMagSize": 6,
 		"itemMagSizeEx": 6,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [
+		"aimOffset": [
+			"0",
 			"-0,005",
-			"0,0356",
-			"0,028",
-			"0",
-			"0",
-			"0",
-			"0",
-			"0"
+			"-0,015"
 		],
-		"aimOffsetZ": "-0,015",
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "0,2",
@@ -20295,17 +20148,11 @@
 		"itemMagSize": 2,
 		"itemMagSizeEx": 2,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [
+		"aimOffset": [
+			"0",
 			"0,015",
-			"0",
-			"0",
-			"0",
-			"0",
-			"0",
-			"0",
-			"0"
+			"-0,015"
 		],
-		"aimOffsetZ": "-0,015",
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "0,2",
@@ -20631,17 +20478,11 @@
 		"itemMagSize": 20,
 		"itemMagSizeEx": 40,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [
+		"aimOffset": [
+			"0",
 			"0,013",
-			"0,0527",
-			"0,0464",
-			"0",
-			"0",
-			"0",
-			"0",
-			"0"
+			"-0,0034"
 		],
-		"aimOffsetZ": "-0,0034",
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "0,05",
@@ -20978,8 +20819,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -21305,8 +21149,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -21632,8 +21479,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0,0001",
+			"0",
+			"0,000465"
+		],
 		"zoomFactor": "1",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -21959,8 +21809,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0,0007",
+			"0",
+			"0,000535"
+		],
 		"zoomFactor": "1",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -22286,8 +22139,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0,0013",
+			"0",
+			"0,000355"
+		],
 		"zoomFactor": "2",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -22613,8 +22469,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0,00149",
+			"0",
+			"0,000452"
+		],
 		"zoomFactor": "3",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -22940,8 +22799,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0,00208",
+			"0",
+			"0,000395"
+		],
 		"zoomFactor": "4",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -23267,8 +23129,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0,00208",
+			"0",
+			"0,000441"
+		],
 		"zoomFactor": "6",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -23594,8 +23459,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0,00208",
+			"1E-06",
+			"0,000485"
+		],
 		"zoomFactor": "8",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -23921,8 +23789,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -24248,8 +24119,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -24575,8 +24449,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -24902,8 +24779,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -25229,8 +25109,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -25556,8 +25439,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -25883,8 +25769,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -26210,8 +26099,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -26537,8 +26429,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -26864,8 +26759,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -27191,8 +27089,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -27518,8 +27419,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -27845,8 +27749,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -28172,8 +28079,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -28499,8 +28409,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -28826,8 +28739,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -29153,8 +29069,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -29480,8 +29399,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -29807,8 +29729,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -30134,8 +30059,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -30461,8 +30389,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -30788,8 +30719,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -31115,8 +31049,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "5",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -31442,8 +31379,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "5",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -31769,8 +31709,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "7,5",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -32096,8 +32039,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "10",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -32423,8 +32369,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "10",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -32750,8 +32699,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "7,5",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",
@@ -33077,8 +33029,11 @@
 		"itemMagSize": 0,
 		"itemMagSizeEx": 0,
 		"itemUsageTime": "0",
-		"aimOffsetHeights": [],
-		"aimOffsetZ": "0",
+		"aimOffset": [
+			"0",
+			"0",
+			"0"
+		],
 		"zoomFactor": "0",
 		"fixedZoom": "-1",
 		"fireRateSingle": "3",

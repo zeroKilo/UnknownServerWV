@@ -70,15 +70,15 @@ namespace Server
             {
                 if (ShouldExit)
                     break;
+                Backend.UpdatePlayerCounts((uint)neededPlayers);
                 switch (Backend.modeState)
                 {
                     case ServerModeState.BR_LobbyState:
-                        if(swLobby.ElapsedMilliseconds > maxWaitTimeLobbyMs)
+                        if (swLobby.ElapsedMilliseconds > maxWaitTimeLobbyMs)
                         {
                             ShutDown();
                             break;
                         }
-                        Backend.UpdatePlayerCounts((uint)neededPlayers);
                         if (Backend.ClientList.Count != neededPlayers)
                             sw.Stop();
                         else

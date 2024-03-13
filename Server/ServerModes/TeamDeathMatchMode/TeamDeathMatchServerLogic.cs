@@ -94,6 +94,7 @@ namespace Server
             {
                 if (ShouldExit)
                     break;
+                Backend.UpdatePlayerCounts((uint)neededPlayers);
                 switch (Backend.modeState)
                 {
                     case ServerModeState.TDM_LobbyState:
@@ -102,7 +103,6 @@ namespace Server
                             ShutDown("Lobby timeout");
                             break;
                         }
-                        Backend.UpdatePlayerCounts((uint)neededPlayers);
                         if (Backend.ClientList.Count != neededPlayers)
                             sw.Stop();
                         else

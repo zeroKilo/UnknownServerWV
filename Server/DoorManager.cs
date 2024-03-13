@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using NetDefines;
 
 namespace Server
 {
@@ -20,10 +21,8 @@ namespace Server
 
         public static void UpdateDoor(float[] pos, int newState)
         {
-            foreach(DoorInfo di in doorChanges)
-                if( di.location[0] == pos[0] &&
-                    di.location[1] == pos[1] &&
-                    di.location[2] == pos[2])
+            foreach (DoorInfo di in doorChanges)
+                if (NetHelper.IsClose(di.location, pos))
                 {
                     di.state = newState;
                     return;
