@@ -98,6 +98,8 @@ namespace Server
                             ShouldExit = true;
                             IsRunning = false;
                         }
+                        if (EnvServer.IsRunningTCP && EnvServer.state == EnvServer.State.MainLoop && EnvServer.currentMapName != Backend.currentMap)
+                            EnvServer.SendLoadMapRequest(Backend.currentMap);
                         break;
                 }
                 Thread.Sleep(10);

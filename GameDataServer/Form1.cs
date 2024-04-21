@@ -300,8 +300,15 @@ namespace GameDataServer
                     sb.AppendLine("gds_port = " + Config.settings["port_tcp"]);
                     sb.AppendLine("gds_wait = 10");
                     sb.AppendLine();
-                    sb.AppendLine("# use https (needs ssl/tls certificate!)");
+                    sb.AppendLine("#use https (needs ssl/tls certificate!)");
                     sb.AppendLine("use_https = 0");
+                    sb.AppendLine();
+                    sb.AppendLine("#environment server settings");
+                    sb.AppendLine("env_enabled = 1");
+                    sb.AppendLine("env_ip = 127.0.0.1");
+                    sb.AppendLine("env_port_tcp = 9997");
+                    sb.AppendLine("env_port_udp_tx = 9998");
+                    sb.AppendLine("env_port_udp_rx = 9999");
                     File.WriteAllText(path + "config.txt", sb.ToString());
                     string[] keys = NetHelper.MakeSigningKeys();
                     sb = new StringBuilder();

@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Collections.Generic;
+using System;
 
 namespace NetDefines.StateDefines
 {
@@ -8,10 +9,10 @@ namespace NetDefines.StateDefines
         public class State_Weapon
         {
             public uint item = (uint)Item.UNDEFINED;
-            public uint[] modSlots;
+            [NonSerialized] public uint[] modSlots;
         }
 
-        public State_Weapon[] weaponSlots;
+        [NonSerialized] public State_Weapon[] weaponSlots;
         public sbyte activeWeaponIndex;
         public bool hasBag;
         public List<ItemSpawnInfo> bagContent;

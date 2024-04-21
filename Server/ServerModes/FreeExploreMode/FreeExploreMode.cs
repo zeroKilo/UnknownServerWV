@@ -43,12 +43,15 @@ namespace Server
             Backend.Start();
             MainServer.Start();
             StatusServer.Start();
+            EnvServer.Start();
             FreeExploreServerLogic.Start();
         }
 
         public static void Stop()
         {
             Log.Print("Stopping free explore mode...");
+            Log.Print("Stopping environment server...");
+            EnvServer.Stop();
             Log.Print("Stopping status server...");
             StatusServer.Stop();
             Log.Print("Stopping main server...");
@@ -62,10 +65,10 @@ namespace Server
 
         public static void HandleMessage(byte[] msg, ClientInfo client)
         {
-            uint ID;
+            uint playerID, vehicleID, ID, index;
+            int seatIdx;
             byte[] data;
-            bool found;
-            uint index;
+            bool found, neutral;
             ItemSpawnInfo spawnInfo;
             MemoryStream m = new MemoryStream(msg);
             MemoryStream tmp;
@@ -172,6 +175,7 @@ namespace Server
                     NetHelper.WriteU32(m, client.ID);
                     m.Write(data, 0, data.Length);
                     Backend.BroadcastCommandExcept((uint)BackendCommand.CreateEnemyObjectReq, m.ToArray(), client);
+                    EnvServer.SendPlayerSpawnRequest(m.ToArray());
                     break;
                 case BackendCommand.GetAllObjectsReq:
                     m = new MemoryStream();
@@ -226,6 +230,34 @@ namespace Server
                         NetHelper.WriteU32(m, (uint)di.state);
                     }
                     NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.GetDoorStatesRes, m.ToArray(), client._sync);
+                    break;
+                case BackendCommand.GetVehicleSpawnsReq:
+                    m = new MemoryStream();
+                    List<NetObjVehicleState> states = new List<NetObjVehicleState>();
+                    foreach (NetObject obj in ObjectManager.objects)
+                        if (obj is NetObjVehicleState)
+                            states.Add((NetObjVehicleState)obj);
+                    NetHelper.WriteU32(m, (uint)states.Count);
+                    foreach (NetObjVehicleState obj in states)
+                    {
+                        NetHelper.WriteU32(m, obj.ID);
+                        obj.WriteUpdate(m);
+                    }
+                    NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.GetVehicleSpawnsRes, m.ToArray(), client._sync);
+                    break;
+                case BackendCommand.GetEnemySpawnsReq:
+                    m = new MemoryStream();
+                    List<NetObjPlayerState> pstates = new List<NetObjPlayerState>();
+                    foreach (NetObject obj in ObjectManager.objects)
+                        if (obj is NetObjPlayerState pObj)
+                            pstates.Add(pObj);
+                    NetHelper.WriteU32(m, (uint)pstates.Count);
+                    foreach (NetObjPlayerState obj in pstates)
+                    {
+                        NetHelper.WriteU32(m, obj.ID);
+                        obj.WriteUpdate(m);
+                    }
+                    NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.GetEnemySpawnsRes, m.ToArray(), client._sync);
                     break;
                 case BackendCommand.PlayerReadyReq:
                     lock (client._sync)
@@ -322,17 +354,32 @@ namespace Server
                     data = NetHelper.CopyCommandData(m);
                     Backend.BroadcastCommand((uint)BackendCommand.PickupInfiniteItemReq, data);
                     break;
+                case BackendCommand.TryEnterVehicleReq:
+                    playerID = NetHelper.ReadU32(m);
+                    vehicleID = NetHelper.ReadU32(m);
+                    seatIdx = (int)NetHelper.ReadU32(m);
+                    Backend.HandleTryEnterVehicleRequest(client, playerID, vehicleID, seatIdx);
+                    break;
+                case BackendCommand.TryExitVehicleReq:
+                    playerID = NetHelper.ReadU32(m);
+                    vehicleID = NetHelper.ReadU32(m);
+                    seatIdx = (int)NetHelper.ReadU32(m);
+                    neutral = m.ReadByte() == 1;
+                    Backend.HandleTryExitVehicleRequest(client, playerID, vehicleID, seatIdx, neutral);
+                    break;
 
                 //Responses
                 case BackendCommand.DeleteObjectsRes:
                 case BackendCommand.CreateEnemyObjectRes:
                 case BackendCommand.GetAllObjectsRes:
+                case BackendCommand.ChangeVehicleSeatIDRes:
                     break;
                 default:
                     throw new Exception("Unknown command 0x" + cmd.ToString("X"));
 
             }
         }
+
         private static void HandleSpawnGroupItemRequest(Stream s)
         {
             float[] pos = new float[] { NetHelper.ReadFloat(s), NetHelper.ReadFloat(s), NetHelper.ReadFloat(s) };

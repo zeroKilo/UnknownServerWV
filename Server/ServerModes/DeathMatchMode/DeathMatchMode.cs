@@ -38,12 +38,15 @@ namespace Server
             Backend.Start();
             MainServer.Start();
             StatusServer.Start();
+            EnvServer.Start();
             DeathMatchServerLogic.Start();
         }
 
         public static void Stop()
         {
             Log.Print("Stopping death match mode...");
+            Log.Print("Stopping environment server...");
+            EnvServer.Stop();
             Log.Print("Stopping status server...");
             StatusServer.Stop();
             Log.Print("Stopping main server...");
@@ -163,6 +166,7 @@ namespace Server
                     NetHelper.WriteU32(m, client.ID);
                     m.Write(data, 0, data.Length);
                     Backend.BroadcastCommandExcept((uint)BackendCommand.CreateEnemyObjectReq, m.ToArray(), client);
+                    EnvServer.SendPlayerSpawnRequest(m.ToArray());
                     break;
                 case BackendCommand.GetAllObjectsReq:
                     m = new MemoryStream();
@@ -217,6 +221,34 @@ namespace Server
                         NetHelper.WriteU32(m, (uint)di.state);
                     }
                     NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.GetDoorStatesRes, m.ToArray(), client._sync);
+                    break;
+                case BackendCommand.GetEnemySpawnsReq:
+                    m = new MemoryStream();
+                    List<NetObjPlayerState> pstates = new List<NetObjPlayerState>();
+                    foreach (NetObject obj in ObjectManager.objects)
+                        if (obj is NetObjPlayerState pObj)
+                            pstates.Add(pObj);
+                    NetHelper.WriteU32(m, (uint)pstates.Count);
+                    foreach (NetObjPlayerState obj in pstates)
+                    {
+                        NetHelper.WriteU32(m, obj.ID);
+                        obj.WriteUpdate(m);
+                    }
+                    NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.GetEnemySpawnsRes, m.ToArray(), client._sync);
+                    break;
+                case BackendCommand.GetVehicleSpawnsReq:
+                    m = new MemoryStream();
+                    List<NetObjVehicleState> states = new List<NetObjVehicleState>();
+                    foreach (NetObject obj in ObjectManager.objects)
+                        if (obj is NetObjVehicleState)
+                            states.Add((NetObjVehicleState)obj);
+                    NetHelper.WriteU32(m, (uint)states.Count);
+                    foreach (NetObjVehicleState obj in states)
+                    {
+                        NetHelper.WriteU32(m, obj.ID);
+                        obj.WriteUpdate(m);
+                    }
+                    NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.GetVehicleSpawnsRes, m.ToArray(), client._sync);
                     break;
                 case BackendCommand.PlayerReadyReq:
                     lock (client._sync)

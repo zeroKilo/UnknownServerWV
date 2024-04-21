@@ -79,6 +79,8 @@ namespace Server
                             ShutDown();
                             break;
                         }
+                        if (EnvServer.IsRunningTCP && EnvServer.state == EnvServer.State.MainLoop && EnvServer.currentMapName != Backend.currentMap)
+                            EnvServer.SendLoadMapRequest(Backend.currentMap);
                         if (Backend.ClientList.Count != neededPlayers)
                             sw.Stop();
                         else

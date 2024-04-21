@@ -20,12 +20,19 @@ port_udp_range = 40000
 
 #min/max waiting time in lobby in ms
 min_lobby_wait = 3000
-max_lobby_wait = 3000000
+max_lobby_wait = 300000
 
 #game data server
 gds_ip = 127.0.0.1
 gds_port = 4321
 gds_wait = 10
 
-# use https (needs ssl/tls certificate!)
+#use https (needs ssl/tls certificate!)
 use_https = 0
+
+#environment server settings
+env_enabled = 1
+env_ip = 127.0.0.1
+env_port_tcp = 9997
+env_port_udp_tx = 9998
+env_port_udp_rx = 9999

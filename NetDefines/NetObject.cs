@@ -6,7 +6,8 @@ namespace NetDefines
     {
         public enum NetObjectType
         {
-            PlayerState
+            PlayerState,
+            VehicleState
         }
 
         public uint ID;

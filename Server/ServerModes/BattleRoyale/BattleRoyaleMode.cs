@@ -48,11 +48,14 @@ namespace Server
             Backend.Start();
             MainServer.Start();
             StatusServer.Start();
+            EnvServer.Start();
             BattleRoyaleServerLogic.Start();
         }
         public static void Stop()
         {
             Log.Print("Stopping battle royale mode...");
+            Log.Print("Stopping environment server...");
+            EnvServer.Stop();
             Log.Print("Stopping status server...");
             StatusServer.Stop();
             Log.Print("Stopping main server...");
@@ -68,7 +71,8 @@ namespace Server
         {
             uint ID;
             byte[] data;
-            uint index, count, fromID, toID;
+            uint index, count, fromID, toID, playerID, vehicleID;
+            int seatIdx;
             ItemSpawnInfo spawnInfo;
             NetState_Inventory inventory;
             MemoryStream m = new MemoryStream(msg);
@@ -165,6 +169,7 @@ namespace Server
                     NetHelper.WriteU32(m, client.ID);
                     m.Write(data, 0, data.Length);
                     Backend.BroadcastCommandExcept((uint)BackendCommand.CreateEnemyObjectReq, m.ToArray(), client);
+                    EnvServer.SendPlayerSpawnRequest(m.ToArray());
                     break;
                 case BackendCommand.GetAllObjectsReq:
                     m = new MemoryStream();
@@ -219,6 +224,34 @@ namespace Server
                         NetHelper.WriteU32(m, (uint)di.state);
                     }
                     NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.GetDoorStatesRes, m.ToArray(), client._sync);
+                    break;
+                case BackendCommand.GetEnemySpawnsReq:
+                    m = new MemoryStream();
+                    List<NetObjPlayerState> pstates = new List<NetObjPlayerState>();
+                    foreach (NetObject obj in ObjectManager.objects)
+                        if (obj is NetObjPlayerState pObj)
+                            pstates.Add(pObj);
+                    NetHelper.WriteU32(m, (uint)pstates.Count);
+                    foreach (NetObjPlayerState obj in pstates)
+                    {
+                        NetHelper.WriteU32(m, obj.ID);
+                        obj.WriteUpdate(m);
+                    }
+                    NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.GetEnemySpawnsRes, m.ToArray(), client._sync);
+                    break;
+                case BackendCommand.GetVehicleSpawnsReq:
+                    m = new MemoryStream();
+                    List<NetObjVehicleState> states = new List<NetObjVehicleState>();
+                    foreach (NetObject obj in ObjectManager.objects)
+                        if (obj is NetObjVehicleState)
+                            states.Add((NetObjVehicleState)obj);
+                    NetHelper.WriteU32(m, (uint)states.Count);
+                    foreach (NetObjVehicleState obj in states)
+                    {
+                        NetHelper.WriteU32(m, obj.ID);
+                        obj.WriteUpdate(m);
+                    }
+                    NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.GetVehicleSpawnsRes, m.ToArray(), client._sync);
                     break;
                 case BackendCommand.PlayerReadyReq:
                     lock (client._sync)
@@ -356,6 +389,23 @@ namespace Server
                 case BackendCommand.SetTeamReadyStateReq:
                     client.isTeamReady = m.ReadByte() == 1;
                     Backend.BroadcastCommand((uint)BackendCommand.RefreshPlayerListReq, new byte[0]);
+                    break;
+                case BackendCommand.TryEnterVehicleReq:
+                    if (Backend.modeState != ServerModeState.BR_MainGameState)
+                        break;
+                    playerID = NetHelper.ReadU32(m);
+                    vehicleID = NetHelper.ReadU32(m);
+                    seatIdx = (int)NetHelper.ReadU32(m);
+                    Backend.HandleTryEnterVehicleRequest(client, playerID, vehicleID, seatIdx);
+                    break;
+                case BackendCommand.TryExitVehicleReq:
+                    if (Backend.modeState != ServerModeState.BR_MainGameState)
+                        break;
+                    playerID = NetHelper.ReadU32(m);
+                    vehicleID = NetHelper.ReadU32(m);
+                    seatIdx = (int)NetHelper.ReadU32(m);
+                    bool neutral = m.ReadByte() == 1;
+                    Backend.HandleTryExitVehicleRequest(client, playerID, vehicleID, seatIdx, neutral);
                     break;
                 //Responses
                 case BackendCommand.DeleteObjectsRes:

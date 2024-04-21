@@ -11,12 +11,12 @@ namespace Server
     public static class MainServer
     {
         public static ushort port;
-        private static readonly object _syncMain = new object();
+        public static readonly object _syncMain = new object();
+        public static long dataCounter;
+        public static long errorCounter;
         private static readonly object _syncExit = new object();
         private static readonly object _syncRunning = new object();
         private static UdpClient udp;
-        private static long dataCounter;
-        private static long errorCounter;
         private static bool _running = false;
         private static bool _exit = false;
         public static bool IsRunning
@@ -182,24 +182,51 @@ namespace Server
             MemoryStream m = new MemoryStream(data);
             uint accessKey = NetHelper.ReadU32(m);
             NetObject obj = ObjectManager.FindByAccessKey(accessKey);
-            if(obj != null && obj is NetObjPlayerState state)
+            if (obj != null)
             {
-                NetObjPlayerState playerTransform = state;
-                playerTransform.ReadUpdate(m);
-                m = new MemoryStream();
-                NetHelper.WriteU32(m, playerTransform.ID);
-                playerTransform.WriteUpdate(m);
-                foreach (ClientInfo client in Backend.ClientList)
+                MemoryStream envPacket = new MemoryStream();
+                NetHelper.WriteU32(envPacket, obj.ID);
+                envPacket.Write(data, 4, data.Length - 4);
+                if (obj is NetObjPlayerState playerState)
                 {
-                    if(client.objIDs.Contains(playerTransform.ID))
+                    EnvServer.SendUDPPacket(envPacket.ToArray());
+                    playerState.ReadUpdate(m);
+                    m = new MemoryStream();
+                    NetHelper.WriteU32(m, playerState.ID);
+                    playerState.WriteUpdate(m);
+                    foreach (ClientInfo client in Backend.ClientList)
                     {
+                        if (client.objIDs.Contains(playerState.ID))
+                        {
+                            if (client.udp == null)
+                                client.udp = sender;
+                            continue;
+                        }
                         if (client.udp == null)
-                            client.udp = sender;
-                        continue;
+                            continue;
+                        udp.Send(m.ToArray(), (int)m.Length, client.udp);
                     }
-                    if (client.udp == null)
-                        continue;
-                    udp.Send(m.ToArray(), (int)m.Length, client.udp);
+                } 
+                else if (obj is NetObjVehicleState vehicleState)
+                {
+                    vehicleState.ReadUpdate(m);
+                    if (vehicleState.GetSeatPlayerID(0) != 0)
+                        EnvServer.SendUDPPacket(envPacket.ToArray());
+                    m = new MemoryStream();
+                    NetHelper.WriteU32(m, vehicleState.ID);
+                    vehicleState.WriteUpdate(m);
+                    foreach (ClientInfo client in Backend.ClientList)
+                    {
+                        if (client.objIDs.Contains(vehicleState.ID))
+                        {
+                            if (client.udp == null)
+                                client.udp = sender;
+                            continue;
+                        }
+                        if (client.udp == null)
+                            continue;
+                        udp.Send(m.ToArray(), (int)m.Length, client.udp);
+                    }
                 }
             }
         }

@@ -16,7 +16,7 @@ namespace NetDefines
         private static readonly object _client_sync = new object();
         public static Random rnd = new Random();
         public static SHA256 sha = SHA256.Create();
-        public static readonly string version = "8";
+        public static readonly string version = "9";
         public static ushort ReadU16(Stream s)
         {
             byte[] buff = new byte[2];
@@ -45,6 +45,19 @@ namespace NetDefines
             return BitConverter.ToSingle(buff, 0);
         }
 
+        public static string ReadCString(Stream s)
+        {
+            StringBuilder sb = new StringBuilder();
+            while(true)
+            {
+                int b = s.ReadByte();
+                if (b == 0) 
+                    break;
+                sb.Append((char)b);
+            }
+            return sb.ToString();
+        }
+
         public static void WriteU16(Stream s, ushort u)
         {
             s.Write(BitConverter.GetBytes(u), 0, 2);
@@ -69,6 +82,7 @@ namespace NetDefines
         {
             foreach (char c in str)
                 s.WriteByte((byte)c);
+            s.WriteByte(0);
         }
         public static void WriteArray(Stream s, byte[] data)
         {

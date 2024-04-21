@@ -472,5 +472,116 @@ namespace Server
             PlayersReady = ready;
             PlayersWaiting = waiting;
         }
+
+        public static void HandleTryEnterVehicleRequest(ClientInfo client, uint playerID, uint vehicleID, int seatIdx)
+        {
+            Log.Print("Player 0x" + playerID.ToString("X8") + " tries to enter vehicle 0x" + vehicleID.ToString("X8") + ", seat " + seatIdx);
+            Stream s = client.ns;
+            NetObjPlayerState playerState = null;
+            NetObjVehicleState vehicleState = null;
+            foreach (NetObject obj in ObjectManager.objects)
+            {
+                try
+                {
+                    if (obj.ID == playerID)
+                        playerState = obj as NetObjPlayerState;
+                    if (obj.ID == vehicleID)
+                        vehicleState = obj as NetObjVehicleState;
+                    if (playerState != null && vehicleState != null)
+                        break;
+                }
+                catch { }
+            }
+            if (playerState == null || vehicleState == null)
+            {
+                Log.Print("Unable to find netobjects for enter vehicle request");
+                return;
+            }
+            if (seatIdx < 0 || seatIdx >= vehicleState.GetSeatCount())
+            {
+                Log.Print("Seat index (" + seatIdx + ") outside of available seats(" + vehicleState.GetSeatCount() + ")");
+                return;
+            }
+            if (vehicleState.GetSeatPlayerID(seatIdx) != 0)
+            {
+                Log.Print("Seat " + seatIdx + " already occupied");
+                return;
+            }
+            MemoryStream m = new MemoryStream();
+            if (seatIdx == 0)
+            {
+                vehicleState.accessKey = ObjectManager.MakeNewAccessKey();
+                NetHelper.WriteU32(m, vehicleState.accessKey);
+                EnvServer.SendChangeControlVehicleRequest(vehicleID, 0, false, false);
+            }
+            else
+                NetHelper.WriteU32(m, 0);
+            vehicleState.SetSeatPlayerID(seatIdx, playerID);
+            EnvServer.SendChangeVehicleSeatID(vehicleID, playerID, seatIdx);
+            BroadcastChangeVehicleSeatID(client, vehicleID, playerID, seatIdx);
+            vehicleState.RefreshDetails();
+            NetHelper.WriteU32(m, vehicleID);
+            NetHelper.WriteU32(m, (uint)seatIdx);
+            NetHelper.ServerSendCMDPacket(s, (uint)BackendCommand.TryEnterVehicleRes, m.ToArray(), client._sync);
+        }
+
+        public static void HandleTryExitVehicleRequest(ClientInfo client, uint playerID, uint vehicleID, int seatIdx, bool neutral)
+        {
+            Log.Print("Player 0x" + playerID.ToString("X8") + " tries to exit vehicle 0x" + vehicleID.ToString("X8") + ", seat " + seatIdx);
+            Stream s = client.ns;
+            NetObjPlayerState playerState = null;
+            NetObjVehicleState vehicleState = null;
+            foreach (NetObject obj in ObjectManager.objects)
+            {
+                try
+                {
+                    if (obj.ID == playerID)
+                        playerState = obj as NetObjPlayerState;
+                    if (obj.ID == vehicleID)
+                        vehicleState = obj as NetObjVehicleState;
+                    if (playerState != null && vehicleState != null)
+                        break;
+                }
+                catch { }
+            }
+            if (playerState == null || vehicleState == null)
+            {
+                Log.Print("Unable to find netobjects for exit vehicle request");
+                return;
+            }
+            if (seatIdx < 0 || seatIdx >= vehicleState.GetSeatCount())
+            {
+                Log.Print("Seat index (" + seatIdx + ") outside of available seats(" + vehicleState.GetSeatCount() + ")");
+                return;
+            }
+            if (vehicleState.GetSeatPlayerID(seatIdx) != playerID)
+            {
+                Log.Print("Player not at seat " + seatIdx);
+                return;
+            }
+            vehicleState.SetSeatPlayerID(seatIdx, 0);
+            if (seatIdx == 0)
+            {
+                vehicleState.accessKey = ObjectManager.MakeNewAccessKey();
+                vehicleState.RefreshDetails();
+                EnvServer.SendChangeControlVehicleRequest(vehicleID, vehicleState.accessKey, true, neutral);
+            }
+            EnvServer.SendChangeVehicleSeatID(vehicleID, 0, seatIdx);
+            BroadcastChangeVehicleSeatID(client, vehicleID, 0, seatIdx);
+            MemoryStream m = new MemoryStream();
+            NetHelper.WriteU32(m, 0);
+            NetHelper.WriteU32(m, vehicleID);
+            NetHelper.WriteU32(m, (uint)seatIdx);
+            NetHelper.ServerSendCMDPacket(s, (uint)BackendCommand.TryExitVehicleRes, m.ToArray(), client._sync);
+        }
+
+        public static void BroadcastChangeVehicleSeatID(ClientInfo client, uint vehicleID, uint playerID, int seatIdx)
+        {
+            MemoryStream m = new MemoryStream();
+            NetHelper.WriteU32(m, vehicleID);
+            NetHelper.WriteU32(m, playerID);
+            NetHelper.WriteU32(m, (uint)seatIdx);
+            BroadcastCommandExcept((uint)BackendCommand.ChangeVehicleSeatIDReq, m.ToArray(), client);
+        }
     }
 }

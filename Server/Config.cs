@@ -45,6 +45,7 @@ namespace Server
             LoadItemSettings();
             LoadServerKeys();
             StatusServer.Init();
+            EnvServer.Init();
             ReloadPlayerProfiles();
             Log.Print("CONFIG Player profiles loaded:");
             foreach (PlayerProfile p in profiles)

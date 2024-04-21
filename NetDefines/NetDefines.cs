@@ -172,6 +172,10 @@ namespace NetDefines
         DoorStateChangedReq,
         GetDoorStatesReq,
         GetDoorStatesRes,
+        GetEnemySpawnsReq,
+        GetEnemySpawnsRes,
+        GetVehicleSpawnsReq,
+        GetVehicleSpawnsRes,
         ServerStateChangedReq,
         PlayerReadyReq,
         PlayerNotReadyReq,
@@ -202,9 +206,35 @@ namespace NetDefines
         UpdateRoundTimeReq,
         GetPlayerScoresReq,
         GetPlayerScoresRes,
-        AddScoresReq
+        AddScoresReq,
+        TryEnterVehicleReq,
+        TryEnterVehicleRes,
+        TryExitVehicleReq,
+        TryExitVehicleRes,
+        ChangeVehicleSeatIDReq,
+        ChangeVehicleSeatIDRes
     }
-    
+
+    public enum EnvServerCommand
+    {
+        PingReq,
+        PingRes,
+        LoadMapReq,
+        LoadMapRes,
+        MapLoadedReq,
+        MapLoadedRes,
+        SpawnVehiclesReq,
+        SpawnVehiclesRes,
+        SpawnPlayerReq,
+        SpawnPlayerRes,
+        ChangeControlVehicleReq,
+        ChangeControlVehicleRes,
+        ChangeVehicleSeatIDReq,
+        ChangeVehicleSeatIDRes,
+        DeleteObjectsReq,
+        DeleteObjectsRes
+    }
+
     public enum HitLocation
     {
         Limbs,
