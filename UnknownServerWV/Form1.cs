@@ -228,9 +228,7 @@ namespace UnknownServerWV
             ShouldExit = false;
             while (true)
             {
-                ObjectManager.Reset();
-                DoorManager.Reset();
-                SpawnManager.Reset();
+                Backend.CleanUp();
                 PlaylistManager.PlaylistEntry entry = PlaylistManager.playlist[playlistIndex];
                 ServerMode mode = entry.mode;
                 switch (mode)
@@ -242,6 +240,7 @@ namespace UnknownServerWV
                         DeathMatchServerLogic.countDownTime = entry.countDown * 1000;
                         DeathMatchServerLogic.roundTime = entry.roundTime * 60;
                         DeathMatchServerLogic.killsToWin = entry.killsToWin;
+                        DeathMatchServerLogic.botCount = entry.botCount;
                         DeathMatchMode.Start();
                         break;
                     case ServerMode.TeamDeathMatchMode:
@@ -251,6 +250,7 @@ namespace UnknownServerWV
                         TeamDeathMatchServerLogic.countDownTime = entry.countDown * 1000;
                         TeamDeathMatchServerLogic.roundTime = entry.roundTime * 60;
                         TeamDeathMatchServerLogic.killsToWin = entry.killsToWin;
+                        TeamDeathMatchServerLogic.botCount = entry.botCount;
                         TeamDeathMatchMode.Start();
                         break;
                     case ServerMode.BattleRoyaleMode:
@@ -258,9 +258,10 @@ namespace UnknownServerWV
                         BattleRoyaleMode.mapName = BattleRoyaleMode.mapInfos[entry.map].name;
                         BattleRoyaleMode.spawnLocIdx = entry.spawnLoc;
                         BattleRoyaleMode.spawnLocNames = BattleRoyaleMode.mapInfos[entry.spawnLoc].spawnLocations.ToArray();
-                        BattleRoyaleMode.Start();
                         BattleRoyaleServerLogic.neededPlayers = entry.minPlayer;
                         BattleRoyaleServerLogic.countDownTime = entry.countDown * 1000;
+                        BattleRoyaleServerLogic.botCount = entry.botCount;
+                        BattleRoyaleMode.Start();
                         break;
                     case ServerMode.FreeExploreMode:
                         Backend.currentMap =

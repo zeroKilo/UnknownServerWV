@@ -61,7 +61,7 @@ namespace Server
             }
             catch (Exception ex)
             {
-                Log.Print("CONFIG Error loading item settings: " + ex.Message + "\n" + ex.InnerException.Message);
+                Log.Print("CONFIG Error loading item settings: \n" + NetHelper.GetExceptionDetails(ex));
             }
         }
 

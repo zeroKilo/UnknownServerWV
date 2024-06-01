@@ -7,46 +7,89 @@ namespace Server
 {
     public static class ObjectManager
     {
-        public static List<NetObject> objects = new List<NetObject>();
-
-        public static uint objectIDcounter = 0x1000;
+        private static List<NetObject> objects = new List<NetObject>();
+        private static uint objectIDcounter = 0x1000;
+        private static readonly object _sync = new object();
 
         public static void Reset()
         {
+            objectIDcounter = 0x1000;
             objects = new List<NetObject>();
             Log.Print("RESET ObjectManager");
         }
 
+        public static uint GetNextID()
+        {
+            lock (_sync)
+            {
+                return objectIDcounter++;
+            }
+        }
+
+        public static void Add(NetObject obj)
+        {
+            lock (_sync)
+            {
+                objects.Add(obj);
+            }
+        }
+
+        public static List<NetObject> GetCopy()
+        {
+            List<NetObject> result = new List<NetObject>();
+            lock (_sync)
+            {
+                result.AddRange(objects);
+            }
+            return result;
+        }
+
         public static NetObject FindByAccessKey(uint key)
         {
-            foreach (NetObject o in objects)
-                if (o.accessKey == key)
-                    return o;
+            lock (_sync)
+            {
+                foreach (NetObject o in objects)
+                    if (o.accessKey == key)
+                        return o;
+            }
             return null;
         }
 
         public static NetObject FindByID(uint ID)
         {
-            foreach (NetObject o in objects)
-                if (o.ID == ID)
-                    return o;
+            lock (_sync)
+            {
+                foreach (NetObject o in objects)
+                    if (o.ID == ID)
+                        return o;
+            }
             return null;
         }
 
         public static void RemoveClientObjects(ClientInfo c)
         {
             MemoryStream m = new MemoryStream();
-            for (int i = 0; i < objects.Count; i++)
-                if(c.objIDs.Contains(objects[i].ID))
-                {
-                    if (objects[i] is NetObjPlayerState)
-                        RemovePlayerFromVehicles(objects[i].ID);
-                    NetHelper.WriteU32(m, objects[i].ID);
-                    objects.RemoveAt(i);
-                    i--;
-                }
+            lock (_sync)
+            {
+                for (int i = 0; i < objects.Count; i++)
+                    if (c.objIDs.Contains(objects[i].ID))
+                    {
+                        if (objects[i] is NetObjPlayerState)
+                            RemovePlayerFromVehicles(objects[i].ID);
+                        NetHelper.WriteU32(m, objects[i].ID);
+                        objects.RemoveAt(i);
+                        i--;
+                    }
+            }
             Backend.BroadcastCommand((uint)BackendCommand.DeleteObjectsReq, m.ToArray());
-            EnvServer.SendObjectDeleteRequest(m.ToArray());
+            try
+            {
+                EnvServer.SendObjectDeleteRequest(m.ToArray());
+            }
+            catch(Exception ex)
+            {
+                Log.Print("Error:\n" + NetHelper.GetExceptionDetails(ex));
+            }
         }
 
         private static void RemovePlayerFromVehicles(uint id)
@@ -68,7 +111,7 @@ namespace Server
 
         public static uint MakeNewAccessKey()
         {
-            while(true)
+            while (true)
             {
                 byte[] buff = new byte[4];
                 NetHelper.rnd.NextBytes(buff);

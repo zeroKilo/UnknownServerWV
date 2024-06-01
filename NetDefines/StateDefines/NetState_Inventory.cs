@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Collections.Generic;
 using System;
+using System.Text;
 
 namespace NetDefines.StateDefines
 {
@@ -86,6 +87,20 @@ namespace NetDefines.StateDefines
             result += (uint)(hasBag ? 1 : 0);
             result += (uint)activeWeaponIndex;
             return result;
+        }
+
+        public string ToDetails()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("Active Weapon Index : " + activeWeaponIndex);
+            sb.AppendLine("Has bag : " + hasBag);
+            for (int i = 0; i < 5; i++)
+            {
+                sb.AppendLine("Weapon Slot " + i + ": " + (Item)weaponSlots[i].item);
+                for (int j = 0; j < 5; j++)
+                    sb.AppendLine("\tMod Slot " + j + ": " + (Item)weaponSlots[i].modSlots[j]);
+            }
+            return sb.ToString();
         }
     }
 }

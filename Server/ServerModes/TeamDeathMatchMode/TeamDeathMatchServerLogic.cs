@@ -13,7 +13,7 @@ namespace Server
         public static int countDownTime = 10000;
         public static int roundTime;
         public static int killsToWin;
-        public static List<uint[]> playersPerLocation;
+        public static int botCount;
         public static List<PlayerScoreEntry[]> playerScoresPerLocation;
         private static readonly Stopwatch sw = new Stopwatch();
         private static readonly Stopwatch swLobby = new Stopwatch();
@@ -132,15 +132,10 @@ namespace Server
                         {
                             Backend.BroadcastServerStateChange(ServerMode.TeamDeathMatchMode, ServerModeState.TDM_MainGameState);
                             sw.Restart();
-                            lastTick = sw.ElapsedMilliseconds / 1000;
-                            playerScoresPerLocation = new List<PlayerScoreEntry[]>();
-                            foreach(uint[] playerList in playersPerLocation)
-                            {
-                                List<PlayerScoreEntry> list = new List<PlayerScoreEntry>();
-                                foreach (uint playerID in playerList)
-                                    list.Add(new PlayerScoreEntry(playerID));
-                                playerScoresPerLocation.Add(list.ToArray());
-                            }
+                            lastTick = 0;
+                            foreach(PlayerScoreEntry[] entries in playerScoresPerLocation)
+                                foreach (PlayerScoreEntry entry in entries)
+                                    entry.kills = entry.deaths = entry.assists = 0;
                             TeamDeathMatchMode.SendScoreBoardUpdate();
                         }
                         break;
@@ -176,8 +171,8 @@ namespace Server
                                 }
                             }
                         }
-                        if (Backend.ClientList.Count == 0)
-                            ShutDown("All player left");
+                        //if (Backend.ClientList.Count == 0)
+                        //    ShutDown("All player left");
                         break;
                     case ServerModeState.TDM_RoundEndState:
                         if(sw.ElapsedMilliseconds > 60000)
@@ -193,11 +188,9 @@ namespace Server
         private static void ShutDown(string reason)
         {
             Log.Print("Shutting down, reason: " + reason);
-            Backend.BroadcastServerStateChange(ServerMode.TeamDeathMatchMode, ServerModeState.Offline);
-            DoorManager.Reset();
-            SpawnManager.Reset();
-            ObjectManager.Reset();
             TeamDeathMatchMode.ResetPlayerSpawnLocations();
+            Backend.BroadcastServerStateChange(ServerMode.TeamDeathMatchMode, ServerModeState.Offline);
+            Backend.CleanUp();
             sw.Stop();
             swLobby.Stop();
             ShouldExit = true;

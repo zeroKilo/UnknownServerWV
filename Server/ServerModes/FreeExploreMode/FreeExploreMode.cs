@@ -1,4 +1,5 @@
 ﻿using NetDefines;
+using NetDefines.StateDefines;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -70,6 +71,7 @@ namespace Server
             byte[] data;
             bool found, neutral;
             ItemSpawnInfo spawnInfo;
+            NetState_Inventory inventory;
             MemoryStream m = new MemoryStream(msg);
             MemoryStream tmp;
             BackendCommand cmd = (BackendCommand)NetHelper.ReadU32(m);
@@ -159,11 +161,11 @@ namespace Server
                         FreeExploreServerLogic.playerIDs.Add(client.ID);
                     NetObjPlayerState playerTransform = new NetObjPlayerState
                     {
-                        ID = ObjectManager.objectIDcounter++,
+                        ID = ObjectManager.GetNextID(),
                         accessKey = ObjectManager.MakeNewAccessKey()
                     };
                     playerTransform.ReadUpdate(m);
-                    ObjectManager.objects.Add(playerTransform);
+                    ObjectManager.Add(playerTransform);
                     client.objIDs.Add(playerTransform.ID);
                     data = playerTransform.Create(true);
                     m = new MemoryStream();
@@ -176,15 +178,21 @@ namespace Server
                     m.Write(data, 0, data.Length);
                     Backend.BroadcastCommandExcept((uint)BackendCommand.CreateEnemyObjectReq, m.ToArray(), client);
                     EnvServer.SendPlayerSpawnRequest(m.ToArray());
+                    Backend.BroadcastServerPlayerList();
                     break;
                 case BackendCommand.GetAllObjectsReq:
                     m = new MemoryStream();
-                    foreach (NetObject no in ObjectManager.objects)
+                    foreach (NetObject no in ObjectManager.GetCopy())
                     {
                         NetHelper.WriteU32(m, no.ID);
                         NetHelper.WriteU32(m, (uint)no.type);
                         tmp = new MemoryStream();
                         no.WriteUpdate(tmp);
+                        if (no is NetObjPlayerState netObjPlayer)
+                        {
+                            inventory = netObjPlayer.GetStateInventory();
+                            inventory.Write(tmp);
+                        }
                         data = tmp.ToArray();
                         NetHelper.WriteU32(m, (uint)data.Length);
                         m.Write(data, 0, data.Length);
@@ -201,7 +209,10 @@ namespace Server
                     Backend.BroadcastCommandExcept((uint)BackendCommand.ReloadTriggeredReq, data, client);
                     break;
                 case BackendCommand.InventoryUpdateReq:
-                    NetHelper.ReadU32(m);
+                    uint who = NetHelper.ReadU32(m);
+                    NetState_Inventory inv = new NetState_Inventory();
+                    inv.Read(m);
+                    Backend.UpdatePlayerInventory(who, inv);
                     data = NetHelper.CopyCommandData(m);
                     Backend.BroadcastCommandExcept((uint)BackendCommand.InventoryUpdateReq, data, client);
                     break;
@@ -231,34 +242,6 @@ namespace Server
                     }
                     NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.GetDoorStatesRes, m.ToArray(), client._sync);
                     break;
-                case BackendCommand.GetVehicleSpawnsReq:
-                    m = new MemoryStream();
-                    List<NetObjVehicleState> states = new List<NetObjVehicleState>();
-                    foreach (NetObject obj in ObjectManager.objects)
-                        if (obj is NetObjVehicleState)
-                            states.Add((NetObjVehicleState)obj);
-                    NetHelper.WriteU32(m, (uint)states.Count);
-                    foreach (NetObjVehicleState obj in states)
-                    {
-                        NetHelper.WriteU32(m, obj.ID);
-                        obj.WriteUpdate(m);
-                    }
-                    NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.GetVehicleSpawnsRes, m.ToArray(), client._sync);
-                    break;
-                case BackendCommand.GetEnemySpawnsReq:
-                    m = new MemoryStream();
-                    List<NetObjPlayerState> pstates = new List<NetObjPlayerState>();
-                    foreach (NetObject obj in ObjectManager.objects)
-                        if (obj is NetObjPlayerState pObj)
-                            pstates.Add(pObj);
-                    NetHelper.WriteU32(m, (uint)pstates.Count);
-                    foreach (NetObjPlayerState obj in pstates)
-                    {
-                        NetHelper.WriteU32(m, obj.ID);
-                        obj.WriteUpdate(m);
-                    }
-                    NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.GetEnemySpawnsRes, m.ToArray(), client._sync);
-                    break;
                 case BackendCommand.PlayerReadyReq:
                     lock (client._sync)
                     {
@@ -275,16 +258,14 @@ namespace Server
                     ID = NetHelper.ReadU32(m);
                     HitLocation loc = (HitLocation)NetHelper.ReadU32(m);
                     foreach (ClientInfo other in Backend.ClientList)
-                    {
                         if (other.objIDs.Contains(ID))
                         {
                             m = new MemoryStream();
                             NetHelper.WriteU32(m, (uint)loc);
-                            NetHelper.WriteU32(m, (uint)client.ID);
+                            NetHelper.WriteU32(m, client.objIDs[0]);
                             NetHelper.ServerSendCMDPacket(other.ns, (uint)BackendCommand.PlayerHitReq, m.ToArray(), other._sync);
                             break;
                         }
-                    }
                     break;
                 case BackendCommand.SpawnGroupItemReq:
                     HandleSpawnGroupItemRequest(m);
@@ -337,18 +318,7 @@ namespace Server
                     Backend.BroadcastCommandExcept((uint)BackendCommand.PlayFootStepSoundReq, data, client);
                     break;
                 case BackendCommand.GetPlayersOnServerReq:
-                    m = new MemoryStream();
-                    NetHelper.WriteU32(m, (uint)Backend.ClientList.Count);
-                    foreach (ClientInfo other in Backend.ClientList)
-                    {
-                        NetHelper.WriteU32(m, other.ID);
-                        NetHelper.WriteU32(m, other.teamID);
-                        m.WriteByte((byte)(other.isTeamReady ? 1 : 0));
-                        NetHelper.WriteU32(m, (uint)other.profile.name.Length);
-                        foreach (char c in other.profile.name)
-                            m.WriteByte((byte)c);
-                    }
-                    NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.GetPlayersOnServerRes, m.ToArray(), client._sync);
+                    Backend.BroadcastServerPlayerList();
                     break;
                 case BackendCommand.PickupInfiniteItemReq:
                     data = NetHelper.CopyCommandData(m);

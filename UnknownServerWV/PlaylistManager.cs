@@ -17,10 +17,11 @@ namespace UnknownServerWV
             public int countDown;
             public int roundTime;
             public int killsToWin;
+            public int botCount;
             public PlaylistEntry()
             {
                 mode = ServerMode.BattleRoyaleMode;
-                map = spawnLoc = minPlayer = countDown = roundTime = killsToWin = -1;
+                map = spawnLoc = minPlayer = countDown = roundTime = killsToWin = botCount = -1;
             }
 
             public PlaylistEntry(string data)
@@ -32,7 +33,8 @@ namespace UnknownServerWV
                 minPlayer = int.Parse(parts[3]);
                 countDown = int.Parse(parts[4]);
                 roundTime = int.Parse(parts[5]);
-                killsToWin = int.Parse(parts[5]);
+                killsToWin = int.Parse(parts[6]);
+                botCount = int.Parse(parts[7]);
             }
 
             public string Save()
@@ -44,7 +46,8 @@ namespace UnknownServerWV
                 sb.Append(minPlayer + ";");
                 sb.Append(countDown + ";");
                 sb.Append(roundTime + ";");
-                sb.Append(killsToWin);
+                sb.Append(killsToWin + ";");
+                sb.Append(botCount);
                 return sb.ToString();
             }
 
@@ -59,14 +62,17 @@ namespace UnknownServerWV
                     case ServerMode.BattleRoyaleMode:
                         sb.Append(" Map: " + BattleRoyaleMode.mapInfos[map].name);
                         sb.Append(" Loc: " + BattleRoyaleMode.mapInfos[map].spawnLocations[spawnLoc]);
+                        sb.Append(" Bots: " + botCount);
                         break;
                     case ServerMode.DeathMatchMode:
                         sb.Append(" Map: " + DeathMatchMode.mapInfos[map].name);
                         sb.Append(" Time: " + roundTime + "min");
+                        sb.Append(" Bots: " + botCount);
                         break;
                     case ServerMode.TeamDeathMatchMode:
                         sb.Append(" Map: " + TeamDeathMatchMode.mapInfos[map].name);
                         sb.Append(" Time: " + roundTime + "min");
+                        sb.Append(" Bots: " + botCount);
                         break;
                     case ServerMode.FreeExploreMode:
                         sb.Append(" Map: " + FreeExploreMode.mapInfos[map].name);
@@ -91,6 +97,7 @@ namespace UnknownServerWV
                         sb.AppendLine("Minimal Player Count = " + minPlayer);
                         sb.AppendLine("Countdown Seconds = " + countDown);
                         sb.AppendLine("Round Time Minutes = " + roundTime);
+                        sb.AppendLine("Bot count = " + botCount);
                         break;
                     case ServerMode.DeathMatchMode:
                         sb.AppendLine("Map = " + DeathMatchMode.mapInfos[map].name);
@@ -99,6 +106,7 @@ namespace UnknownServerWV
                         sb.AppendLine("Countdown Seconds = " + countDown);
                         sb.AppendLine("Kills To Win = " + killsToWin);
                         sb.AppendLine("Round Time Minutes = " + roundTime);
+                        sb.AppendLine("Bot count = " + botCount);
                         break;
                     case ServerMode.TeamDeathMatchMode:
                         sb.AppendLine("Map = " + TeamDeathMatchMode.mapInfos[map].name);
@@ -107,6 +115,7 @@ namespace UnknownServerWV
                         sb.AppendLine("Countdown Seconds = " + countDown);
                         sb.AppendLine("Kills To Win = " + killsToWin);
                         sb.AppendLine("Round Time Minutes = " + roundTime);
+                        sb.AppendLine("Bot count = " + botCount);
                         break;
                     case ServerMode.FreeExploreMode:
                         sb.AppendLine("Map = " + FreeExploreMode.mapInfos[map].name);
@@ -124,7 +133,7 @@ namespace UnknownServerWV
         public static void Init()
         {
             if (!File.Exists(defaultName))
-                File.WriteAllText(defaultName, "#do no edit by hand!");
+                File.WriteAllText(defaultName, "#do not edit by hand!");
             string[] lines = File.ReadAllLines(defaultName);
             playlist = new List<PlaylistEntry>();
             foreach(string s in lines)

@@ -3,17 +3,19 @@
   <PropertyGroup>
     <TargetFramework>net471</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
-    <Configurations>Any CPU</Configurations>
+    <Configurations>Release</Configurations>
+	<Platforms>x64</Platforms>
     <OutputType>WinExe</OutputType>
     <NoWin32Manifest>true</NoWin32Manifest>
 	<ProduceReferenceAssembly>false</ProduceReferenceAssembly>
-	<Platforms>x64</Platforms>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Any CPU|x64'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Optimize>false</Optimize>
-    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>pdbonly</DebugType>
+    <DefineConstants>$(DefineConstants)DEBUG;TRACE</DefineConstants>
+    <ExcludeGeneratedDebugSymbol>False</ExcludeGeneratedDebugSymbol>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,6 +24,10 @@
 
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
 
 </Project>

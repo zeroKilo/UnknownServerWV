@@ -8,6 +8,8 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Net.Sockets;
 using System.Threading;
+using System.Diagnostics;
+using System.Reflection;
 
 namespace NetDefines
 {
@@ -271,9 +273,9 @@ namespace NetDefines
         {
             float[] diff =
             {
-                b[0]- a[0],
-                b[1]- a[1],
-                b[2]- a[2],
+                b[0] - a[0],
+                b[1] - a[1],
+                b[2] - a[2],
             };
             double sum = 0;
             sum += diff[0] * diff[0];
@@ -281,6 +283,30 @@ namespace NetDefines
             sum += diff[2] * diff[2];
             double magnitude = Math.Sqrt(sum);
             return magnitude < maxDistance;
+        }
+
+        public static string GetExceptionDetails(Exception ex)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("Full Caller Stack Trace:");
+            StackTrace st = new StackTrace(true);
+            StackFrame[] frames = st.GetFrames();
+            foreach (var frame in frames)
+            {
+                MethodBase method = frame.GetMethod();
+                string methodPath = method.ReflectedType.Name + "." + method.Name;
+                methodPath = methodPath.PadRight(50);
+                sb.AppendLine(" -> Line:" + frame.GetFileLineNumber().ToString().PadRight(10) + methodPath + " File:" + frame.GetFileName());
+            }
+            sb.AppendLine("Full Exception Stack Trace:");
+            Exception tmp = ex;
+            while (tmp != null)
+            {
+                sb.AppendLine(tmp.Message);
+                sb.AppendLine(tmp.StackTrace);
+                tmp = tmp.InnerException;
+            }
+            return sb.ToString();
         }
     }
 }

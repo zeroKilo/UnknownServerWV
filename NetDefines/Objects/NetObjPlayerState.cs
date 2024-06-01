@@ -9,6 +9,7 @@ namespace NetDefines
     {
         private readonly object _sync = new object();
         private uint playerID;
+        private ushort teamID;
         private float[] position = new float[3];
         private float[] rotation = new float[4];
         private float[] input = new float[2];
@@ -90,6 +91,7 @@ namespace NetDefines
         {
             lock (_sync)
             {
+                teamID = NetHelper.ReadU16(s);
                 for (int i = 0; i < 3; i++)
                     position[i] = NetHelper.ReadFloat(s);
                 for (int i = 0; i < 4; i++)
@@ -119,6 +121,7 @@ namespace NetDefines
         {
             lock (_sync)
             {
+                NetHelper.WriteU16(s, teamID);
                 for (int i = 0; i < 3; i++)
                     NetHelper.WriteFloat(s, position[i]);
                 for (int i = 0; i < 4; i++)
@@ -151,7 +154,8 @@ namespace NetDefines
         private void MakeDetails()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("\n Pos = (");
+            sb.AppendLine("\n Team ID      = " + teamID);
+            sb.Append(" Pos = (");
             foreach (float f in position)
                 sb.Append(f + " ");
             sb.AppendLine(")");
@@ -204,6 +208,24 @@ namespace NetDefines
             lock(_sync)
             {
                 playerID = ID;
+            }
+        }
+
+        public ushort GetTeamID()
+        {
+            ushort result = 0;
+            lock (_sync)
+            {
+                result = teamID;
+            }
+            return result;
+        }
+
+        public void SetTeamID(ushort ID)
+        {
+            lock (_sync)
+            {
+                teamID = ID;
             }
         }
 

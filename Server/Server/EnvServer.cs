@@ -1,7 +1,10 @@
 ﻿using NetDefines;
+using NetDefines.StateDefines;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
@@ -222,7 +225,7 @@ namespace Server
                 }
                 catch (Exception ex)
                 {
-                    Log.Print("ENVSERVER Fatal error, shutting down: " + ex.Message);
+                    Log.Print("ENVSERVER Fatal error, shutting down:\n" + NetHelper.GetExceptionDetails(ex));
                     state = State.Error;
                     break;
                 }
@@ -247,7 +250,6 @@ namespace Server
                     Log.Print("ENVSERVER main udp loop is exiting...");
                     break;
                 }
-
                 IPEndPoint sender = new IPEndPoint(IPAddress.Any, 0);
                 try
                 {
@@ -281,14 +283,13 @@ namespace Server
                     }
                     else
                     {
-                        Log.Print("ENVSERVER SocketException error: " + ex);
+                        Log.Print("ENVSERVER SocketException error:\n" + NetHelper.GetExceptionDetails(ex));
                         break;
                     }
                 }
                 catch (Exception ex)
                 {
-
-                    Log.Print("ENVSERVER Exception error: " + ex);
+                    Log.Print("ENVSERVER Exception error:\n" + NetHelper.GetExceptionDetails(ex));
                     break;
                 }
             }
@@ -298,6 +299,9 @@ namespace Server
 
         private static void HandlePacket(byte[] data)
         {
+            uint who, byWho;
+            List<uint> hitList;
+            byte[] buff;
             NetObjVehicleState netVehicle;
             MemoryStream m = new MemoryStream(data);
             MemoryStream mRes = new MemoryStream();
@@ -309,6 +313,7 @@ namespace Server
                     Log.Print("ENVSERVER Loading map done");
                     isMapLoaded = true;
                     NetHelper.ClientSendCMDPacket(tcpStream, (uint)EnvServerCommand.MapLoadedRes, new byte[0]);
+                    SendSetBotCountRequest();
                     break;
                 case EnvServerCommand.SpawnVehiclesReq:
                     Log.Print("ENVSERVER Got spawn request for vehicles");
@@ -321,11 +326,80 @@ namespace Server
                         VehiclePrefab vehicle = (VehiclePrefab)NetHelper.ReadU32(m);
                         Log.Print(" -> ID=" + id + "\tVehicle=" + vehicle);
                         netVehicle = CreateVehicleNetObj(vehicle, prefabTypeMap[vehicle]);
-                        ObjectManager.objects.Add(netVehicle);
-                        byte[] buff = netVehicle.Create(true);
+                        ObjectManager.Add(netVehicle);
+                        buff = netVehicle.Create(true);
                         mRes.Write(buff,0, buff.Length);
                     }
                     NetHelper.ClientSendCMDPacket(tcpStream, (uint)EnvServerCommand.SpawnVehiclesRes, mRes.ToArray());
+                    break;
+                case EnvServerCommand.ShotTriggeredReq:
+                    Backend.BroadcastCommand((uint)BackendCommand.ShotTriggeredReq, NetHelper.CopyCommandData(m));
+                    break;
+                case EnvServerCommand.PlayerHitReq:
+                    who = NetHelper.ReadU32(m);
+                    byWho = NetHelper.ReadU32(m);
+                    HitLocation loc = (HitLocation)NetHelper.ReadU32(m);
+                    foreach (ClientInfo other in Backend.ClientList)
+                        if (other.objIDs.Contains(who))
+                        {
+                            m = new MemoryStream();
+                            NetHelper.WriteU32(m, (uint)loc);
+                            NetHelper.WriteU32(m, byWho);
+                            NetHelper.ServerSendCMDPacket(other.ns, (uint)BackendCommand.PlayerHitReq, m.ToArray(), other._sync);
+                            break;
+                        }
+                    break;
+                case EnvServerCommand.ImpactTriggeredReq:
+                    Backend.BroadcastCommand((uint)BackendCommand.ImpactTriggeredReq, NetHelper.CopyCommandData(m));
+                    break;
+                case EnvServerCommand.InventoryUpdateReq:
+                    who = NetHelper.ReadU32(m);
+                    NetState_Inventory inv = new NetState_Inventory();
+                    inv.Read(m);
+                    Backend.UpdatePlayerInventory(who, inv);
+                    buff = NetHelper.CopyCommandData(m);
+                    Backend.BroadcastCommand((uint)BackendCommand.InventoryUpdateReq, buff);
+                    break;
+                case EnvServerCommand.PlayerDiedReq:
+                    who = NetHelper.ReadU32(m);
+                    count = NetHelper.ReadU32(m);
+                    hitList = new List<uint>();
+                    for (int i = 0; i < count; i++)
+                    {
+                        uint u = NetHelper.ReadU32(m);
+                        if (!hitList.Contains(u))
+                            hitList.Add(u);
+                    }
+                    if (hitList.Count == 0)
+                        break;
+                    byWho = hitList.Last();
+                    switch (Backend.mode)
+                    {
+                        case ServerMode.TeamDeathMatchMode:
+                            for (int i = 0; i < 2; i++)
+                            {
+                                PlayerScoreEntry[] scores = TeamDeathMatchServerLogic.playerScoresPerLocation[i];
+                                for (int j = 0; j < scores.Length; j++)
+                                {
+                                    PlayerScoreEntry entry = scores[j];
+                                    if (entry.netObjID == who)
+                                        entry.deaths++;
+                                    else if (entry.netObjID == byWho)
+                                        entry.kills++;
+                                    else if (hitList.Contains(entry.netObjID))
+                                        entry.assists++;
+                                    scores[j] = entry;
+                                }
+                                TeamDeathMatchServerLogic.playerScoresPerLocation[i] = scores;
+                            }
+                            TeamDeathMatchMode.SendScoreBoardUpdate();
+                            break;
+                    }
+                    NetHelper.ClientSendCMDPacket(tcpStream, (uint)EnvServerCommand.PlayerDiedRes, new byte[0]);
+                    break;
+                case EnvServerCommand.ReloadTriggeredReq:
+                    Backend.BroadcastCommand((uint)BackendCommand.ReloadTriggeredReq, NetHelper.CopyCommandData(m));
+                    NetHelper.ClientSendCMDPacket(tcpStream, (uint)EnvServerCommand.ReloadTriggeredRes, new byte[0]);
                     break;
                 //Responses
                 case EnvServerCommand.PingRes:
@@ -336,6 +410,9 @@ namespace Server
                 case EnvServerCommand.ChangeControlVehicleRes:
                 case EnvServerCommand.ChangeVehicleSeatIDRes:
                 case EnvServerCommand.DeleteObjectsRes:
+                case EnvServerCommand.SetBotCountRes:
+                case EnvServerCommand.BackendStateChangedRes:
+                case EnvServerCommand.ScoresUpdateRes:
                     break;
                 default:
                     Log.Print("ENVSERVER Got unknown comman, ignoring (0x" + cmd.ToString("X8") + ")");
@@ -347,7 +424,7 @@ namespace Server
         {
             NetObjVehicleState vehicleObject = new NetObjVehicleState
             {
-                ID = ObjectManager.objectIDcounter++,
+                ID = ObjectManager.GetNextID(),
                 accessKey = ObjectManager.MakeNewAccessKey()
             };
             vehicleObject.SetVehiclePrefab(prefab);
@@ -373,8 +450,22 @@ namespace Server
             MemoryStream m = new MemoryStream();
             NetHelper.WriteCString(m, name);
             NetHelper.ClientSendCMDPacket(tcpStream, (uint)EnvServerCommand.LoadMapReq, m.ToArray());
+            SendBackendStateChangedRequest();
             currentMapName = name;
             isMapLoaded = false;
+        }
+
+        public static void SendBackendStateChangedRequest()
+        {
+            if (state != State.MainLoop)
+            {
+                Log.Print("ENVSERVER Error: Tried to send backend state change request when not connected");
+                return;
+            }
+            MemoryStream m = new MemoryStream();
+            NetHelper.WriteU32(m, (uint)Backend.mode);
+            NetHelper.WriteU32(m, (uint)Backend.modeState);
+            NetHelper.ClientSendCMDPacket(tcpStream, (uint)EnvServerCommand.BackendStateChangedReq, m.ToArray());
         }
 
         public static void SendPlayerSpawnRequest(byte[] data)
@@ -385,6 +476,16 @@ namespace Server
                 return;
             }
             NetHelper.ClientSendCMDPacket(tcpStream, (uint)EnvServerCommand.SpawnPlayerReq, data);
+        }
+
+        public static void SendPlayerHitRequest(byte[] data)
+        {
+            if (state != State.MainLoop)
+            {
+                Log.Print("ENVSERVER Error: Tried to send player hit request when not connected");
+                return;
+            }
+            NetHelper.ClientSendCMDPacket(tcpStream, (uint)EnvServerCommand.PlayerHitReq, data);
         }
 
         public static void SendChangeControlVehicleRequest(uint vehicleID, uint accessKey, bool takeControl, bool neutral)
@@ -420,22 +521,102 @@ namespace Server
         {
             if (state != State.MainLoop)
             {
-                Log.Print("ENVSERVER Error: Tried to objects delete request when not connected");
+                Log.Print("ENVSERVER Error: Tried to send objects delete request when not connected");
                 return;
             }
             NetHelper.ClientSendCMDPacket(tcpStream, (uint)EnvServerCommand.DeleteObjectsReq, data);
         }
 
+        public static void SendScoresUpdateRequest(byte[] data)
+        {
+            if (state != State.MainLoop)
+            {
+                Log.Print("ENVSERVER Error: Tried to send scores update request when not connected");
+                return;
+            }
+            NetHelper.ClientSendCMDPacket(tcpStream, (uint)EnvServerCommand.ScoresUpdateReq, data);
+        }
+
+        public static void SendSetBotCountRequest()
+        {
+            if (state != State.MainLoop)
+            {
+                Log.Print("ENVSERVER Error: Tried to send set bot count request when not connected");
+                return;
+            }
+            int botCount;
+            switch (Backend.mode)
+            {
+                case ServerMode.BattleRoyaleMode:
+                    botCount = BattleRoyaleServerLogic.botCount;
+                    break;
+                case ServerMode.DeathMatchMode:
+                    botCount = DeathMatchServerLogic.botCount;
+                    break;
+                case ServerMode.TeamDeathMatchMode:
+                    botCount = TeamDeathMatchServerLogic.botCount;
+                    break;
+                default:
+                    botCount = 0;
+                    break;
+            }
+            MemoryStream m = new MemoryStream();
+            NetHelper.WriteU32(m, (uint)botCount);
+            List<uint> ids = new List<uint>();
+            for (int i = 0; i < botCount; i++)
+            {
+                NetObjPlayerState netPlayer = new NetObjPlayerState
+                {
+                    ID = ObjectManager.GetNextID(),
+                    accessKey = ObjectManager.MakeNewAccessKey()
+                };
+                ObjectManager.Add(netPlayer);
+                NetHelper.WriteU32(m, netPlayer.ID);
+                NetHelper.WriteU32(m, netPlayer.accessKey);
+                ids.Add(netPlayer.ID);
+            }
+            RefreshScoreboardsWithBots(botCount, ids);
+            NetHelper.ClientSendCMDPacket(tcpStream, (uint)EnvServerCommand.SetBotCountReq, m.ToArray());
+            switch (Backend.mode)
+            {
+                case ServerMode.TeamDeathMatchMode:
+                    TeamDeathMatchMode.SendScoreBoardUpdate();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private static void RefreshScoreboardsWithBots(int botCount, List<uint> ids)
+        {
+            switch(Backend.mode)
+            {
+                case ServerMode.TeamDeathMatchMode:
+                    int countA = botCount / 2;
+                    int countB = botCount - countA;
+                    List<PlayerScoreEntry> sideScores = new List<PlayerScoreEntry>();
+                    for (int i = 0; i < countA; i++)
+                        sideScores.Add(new PlayerScoreEntry(ids[i], true));
+                    TeamDeathMatchServerLogic.playerScoresPerLocation[0] = sideScores.ToArray();
+                    sideScores = new List<PlayerScoreEntry>();
+                    for (int i = 0; i < countB; i++)
+                        sideScores.Add(new PlayerScoreEntry(ids[i + countA], true));
+                    TeamDeathMatchServerLogic.playerScoresPerLocation[1] = sideScores.ToArray();
+                    break;
+                default:
+                    break;
+            }
+        }
 
         private static byte[] ReadPacket()
         {
-            uint magic = NetDefines.NetHelper.ReadU32(tcpStream);
+            uint magic = NetHelper.ReadU32(tcpStream);
             if (magic != NetConstants.PACKET_MAGIC)
             {
                 Log.Print("ENVSERVER Error client send invalid message, abort");
                 return null;
             }
-            uint size = NetDefines.NetHelper.ReadU32(tcpStream);
+            uint size = NetHelper.ReadU32(tcpStream);
             if (size > 0x100000)//1MB
             {
                 Log.Print("ENVSERVER Error client send too big message, abort");

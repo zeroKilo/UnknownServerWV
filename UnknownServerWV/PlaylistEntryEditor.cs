@@ -15,7 +15,7 @@ namespace UnknownServerWV
 
         private void PlaylistEntryEditor_Load(object sender, EventArgs e)
         {
-            SetVisible(true, false, false, false, false, false);
+            SetVisible(true, false, false, false, false, false, false);
             comboBoxMode.Items.Clear();
             foreach(ServerMode mode in Enum.GetValues(typeof(ServerMode)))
             {
@@ -28,6 +28,7 @@ namespace UnknownServerWV
             textBoxKills.Text = entry.killsToWin.ToString();
             textBoxMinPlayer.Text = entry.minPlayer.ToString();
             textBoxRoundTime.Text = entry.roundTime.ToString();
+            textBoxBots.Text = entry.botCount.ToString();
         }
 
         private void ComboBoxMode_SelectedIndexChanged(object sender, EventArgs e)
@@ -39,22 +40,22 @@ namespace UnknownServerWV
                 case ServerMode.BattleRoyaleMode:
                     foreach (NetMapInfo map in BattleRoyaleMode.mapInfos)
                         comboBoxMap.Items.Add(map.name);
-                    SetVisible(true, true, true, true, false, false);
+                    SetVisible(true, true, true, true, false, false, true);
                     break;
                 case ServerMode.DeathMatchMode:
                     foreach (NetMapInfo map in DeathMatchMode.mapInfos)
                         comboBoxMap.Items.Add(map.name);
-                    SetVisible(true, false, true, true, true, true);
+                    SetVisible(true, false, true, true, true, true, true);
                     break;
                 case ServerMode.TeamDeathMatchMode:
                     foreach (NetMapInfo map in TeamDeathMatchMode.mapInfos)
                         comboBoxMap.Items.Add(map.name);
-                    SetVisible(true, false, true, true, true, true);
+                    SetVisible(true, false, true, true, true, true, true);
                     break;
                 case ServerMode.FreeExploreMode:
                     foreach (NetMapInfo map in FreeExploreMode.mapInfos)
                         comboBoxMap.Items.Add(map.name);
-                    SetVisible(true, true, false, false, true, false);
+                    SetVisible(true, true, false, false, true, false, false);
                     break;
             }
             if (comboBoxMap.Items.Count > 0)
@@ -92,7 +93,7 @@ namespace UnknownServerWV
             entry.spawnLoc = comboBoxLocation.SelectedIndex;
         }
 
-        private void SetVisible(bool map, bool spawnLoc, bool minPlayer, bool countDown, bool roundTime, bool kills)
+        private void SetVisible(bool map, bool spawnLoc, bool minPlayer, bool countDown, bool roundTime, bool kills, bool bots)
         {
             comboBoxMap.Visible =
             labelMap.Visible = map;
@@ -106,6 +107,8 @@ namespace UnknownServerWV
             labelRoundTime.Visible = roundTime;
             textBoxKills.Visible =
             labelKills.Visible = kills;
+            textBoxBots.Visible =
+            labelBots.Visible = bots;
         }
 
         private void ButtonOK_Click(object sender, EventArgs e)
@@ -114,13 +117,13 @@ namespace UnknownServerWV
             entry.killsToWin = int.Parse(textBoxKills.Text);
             entry.minPlayer = int.Parse(textBoxMinPlayer.Text);
             entry.roundTime = int.Parse(textBoxRoundTime.Text);
+            entry.botCount = int.Parse(textBoxBots.Text);
             DialogResult = DialogResult.OK;
             Close();
         }
 
         private void ButtonCancel_Click(object sender, EventArgs e)
         {
-
             DialogResult = DialogResult.Cancel;
             Close();
         }

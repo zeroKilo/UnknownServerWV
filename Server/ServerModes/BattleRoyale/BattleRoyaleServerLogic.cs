@@ -11,6 +11,7 @@ namespace Server
     {
         public static int neededPlayers;
         public static int countDownTime = 10000;
+        public static int botCount;
         private static readonly Stopwatch sw = new Stopwatch();
         private static readonly Stopwatch swLobby = new Stopwatch();
         private static int minWaitTimeLobbyMs = 3000;
@@ -154,9 +155,7 @@ namespace Server
         private static void ShutDown()
         {
             Backend.BroadcastServerStateChange(ServerMode.BattleRoyaleMode, ServerModeState.Offline);
-            DoorManager.Reset();
-            SpawnManager.Reset();
-            ObjectManager.Reset();
+            Backend.CleanUp();
             sw.Stop();
             swLobby.Stop();
             ShouldExit = true;

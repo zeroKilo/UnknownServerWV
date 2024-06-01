@@ -13,6 +13,7 @@ namespace Server
         public static int countDownTime = 10000;
         public static int roundTime;
         public static int killsToWin;
+        public static int botCount;
         public static List<uint> playerIDs = new List<uint>();
         public static List<PlayerScoreEntry> playerScores = new List<PlayerScoreEntry>();
         private static readonly Stopwatch sw = new Stopwatch();
@@ -186,9 +187,7 @@ namespace Server
         private static void ShutDown()
         {
             Backend.BroadcastServerStateChange(ServerMode.DeathMatchMode, ServerModeState.Offline);
-            DoorManager.Reset();
-            SpawnManager.Reset();
-            ObjectManager.Reset();
+            Backend.CleanUp();
             playerIDs = new List<uint>();
             playerScores = new List<PlayerScoreEntry>();
             sw.Stop();

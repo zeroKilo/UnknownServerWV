@@ -159,14 +159,13 @@ namespace Server
                     }
                     else
                     {
-                        Log.Print("MAINSERVER SocketException error: " + ex);
+                        Log.Print("MAINSERVER SocketException error:\n" + NetHelper.GetExceptionDetails(ex));
                         break;
                     }
                 }
                 catch(Exception ex)
                 {
-
-                    Log.Print("MAINSERVER Exception error: " + ex);
+                    Log.Print("MAINSERVER Exception error:\n" + NetHelper.GetExceptionDetails(ex));
                     break;
                 }
             }

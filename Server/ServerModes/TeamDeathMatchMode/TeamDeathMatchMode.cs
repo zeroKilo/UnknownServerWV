@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using NetDefines;
+using NetDefines.StateDefines;
 
 namespace Server
 {
@@ -20,28 +21,25 @@ namespace Server
             foreach(NetMapInfo netmap in mapInfos)
                 if(netmap.name == mapName)
                 {
-                    TeamDeathMatchServerLogic.playersPerLocation = new List<uint[]>();
                     TeamDeathMatchServerLogic.playerScoresPerLocation = new List<PlayerScoreEntry[]>();
                     for (int i = 0; i < netmap.spawnLocations.Count; i++)
-                    {
-                        TeamDeathMatchServerLogic.playersPerLocation.Add(new uint[0]);
                         TeamDeathMatchServerLogic.playerScoresPerLocation.Add(new PlayerScoreEntry[0]);
-                    }
                     break;
                 }
         }
 
         public static void RemovePlayer(uint id)
         {
-            for (int i = 0; i < TeamDeathMatchServerLogic.playersPerLocation.Count; i++)
+            for (int i = 0; i < TeamDeathMatchServerLogic.playerScoresPerLocation.Count; i++)
             {
-                List<uint> players = new List<uint>(TeamDeathMatchServerLogic.playersPerLocation[i]);
-                if (players.Contains(id))
-                {
-                    players.Remove(id);
-                    TeamDeathMatchServerLogic.playersPerLocation[i] = players.ToArray();
-                    break;
-                }
+                List<PlayerScoreEntry> scores = new List<PlayerScoreEntry>(TeamDeathMatchServerLogic.playerScoresPerLocation[i]);
+                for (int j = 0; j < scores.Count; j++)
+                    if (scores[j].netObjID == id)
+                    {
+                        scores.RemoveAt(j);
+                        break;
+                    }
+                TeamDeathMatchServerLogic.playerScoresPerLocation[i] = scores.ToArray();
             }
         }
 
@@ -78,8 +76,9 @@ namespace Server
             uint ID;
             byte[] data;
             uint index, count, fromID, toID;
+            bool found;
             ItemSpawnInfo spawnInfo;
-            NetDefines.StateDefines.NetState_Inventory inventory;
+            NetState_Inventory inventory;
             MemoryStream m = new MemoryStream(msg);
             MemoryStream tmp;
             BackendCommand cmd = (BackendCommand)NetHelper.ReadU32(m);
@@ -139,7 +138,7 @@ namespace Server
                         foreach (char c in target.name)
                             m.WriteByte((byte)c);
                         NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.LoginSuccessRes, m.ToArray(), client._sync);
-                        Backend.BroadcastCommandExcept((uint)BackendCommand.RefreshPlayerListReq, new byte[0], client);
+                        Backend.BroadcastCommand((uint)BackendCommand.RefreshPlayerListReq, new byte[0]);
                         StatusServer.LoginCount++;
                     }
                     break;
@@ -153,13 +152,15 @@ namespace Server
                     //check if team already exists on a spawn location
                     bool foundTeam = false;
                     uint foundLocIdx = 0;
-                    foreach (uint[] players in TeamDeathMatchServerLogic.playersPerLocation)
+                    PlayerScoreEntry playerScore = null;
+                    foreach (PlayerScoreEntry[] entries in TeamDeathMatchServerLogic.playerScoresPerLocation)
                     {
-                        foreach (uint playerID in players)
+                        foreach (PlayerScoreEntry entry in entries)
                             if (!foundTeam)
                                 foreach (ClientInfo info in Backend.ClientList)
-                                    if (info.ID == playerID && info.teamID == client.teamID)
+                                    if (!entry.isBot && info.objIDs.Contains(entry.netObjID) && info.teamID == client.teamID)
                                     {
+                                        playerScore = entry;
                                         foundTeam = true;
                                         break;
                                     }
@@ -174,30 +175,35 @@ namespace Server
                     else //otherwise choose the location with least amount of players
                     {
                         foundLocIdx = 0;
-                        int foundCount = TeamDeathMatchServerLogic.playersPerLocation[0].Length;
-                        for (int i = 1; i < TeamDeathMatchServerLogic.playersPerLocation.Count; i++)
-                            if (TeamDeathMatchServerLogic.playersPerLocation[i].Length < foundCount)
+                        int foundCount = TeamDeathMatchServerLogic.playerScoresPerLocation[0].Length;
+                        for (int i = 1; i < TeamDeathMatchServerLogic.playerScoresPerLocation.Count; i++)
+                            if (TeamDeathMatchServerLogic.playerScoresPerLocation[i].Length < foundCount)
                             {
                                 foundLocIdx = (uint)i;
-                                foundCount = TeamDeathMatchServerLogic.playersPerLocation[i].Length;
+                                foundCount = TeamDeathMatchServerLogic.playerScoresPerLocation[i].Length;
                             }
                         //now add all players of the team to the found location
-                        List<uint> list = new List<uint>();
-                        list.AddRange(TeamDeathMatchServerLogic.playersPerLocation[(int)foundLocIdx]);
+                        List<PlayerScoreEntry> list = new List<PlayerScoreEntry>();
+                        list.AddRange(TeamDeathMatchServerLogic.playerScoresPerLocation[(int)foundLocIdx]);
                         foreach (ClientInfo info in Backend.ClientList)
                             if (info.teamID == client.teamID)
-                                list.Add(info.ID);
-                        TeamDeathMatchServerLogic.playersPerLocation[(int)foundLocIdx] = list.ToArray();
+                            {
+                                playerScore = new PlayerScoreEntry(info.ID);
+                                list.Add(playerScore);
+                            }
+                        TeamDeathMatchServerLogic.playerScoresPerLocation[(int)foundLocIdx] = list.ToArray();
                         spawnLoc = foundLocIdx;
                     }
                     NetObjPlayerState playerState = new NetObjPlayerState
                     {
-                        ID = ObjectManager.objectIDcounter++,
+                        ID = ObjectManager.GetNextID(),
                         accessKey = ObjectManager.MakeNewAccessKey()
                     };
                     playerState.ReadUpdate(m);
-                    ObjectManager.objects.Add(playerState);
+                    playerState.SetTeamID((ushort)spawnLoc);
+                    ObjectManager.Add(playerState);
                     client.objIDs.Add(playerState.ID);
+                    playerScore.netObjID = playerState.ID;
                     data = playerState.Create(true);
                     m = new MemoryStream();
                     NetHelper.WriteU32(m, spawnLoc);
@@ -209,15 +215,22 @@ namespace Server
                     m.Write(data, 0, data.Length);
                     Backend.BroadcastCommandExcept((uint)BackendCommand.CreateEnemyObjectReq, m.ToArray(), client);
                     EnvServer.SendPlayerSpawnRequest(m.ToArray());
+                    SendScoreBoardUpdate();
+                    Backend.BroadcastServerPlayerList();
                     break;
                 case BackendCommand.GetAllObjectsReq:
                     m = new MemoryStream();
-                    foreach (NetObject no in ObjectManager.objects)
+                    foreach (NetObject no in ObjectManager.GetCopy())
                     {
                         NetHelper.WriteU32(m, no.ID);
                         NetHelper.WriteU32(m, (uint)no.type);
                         tmp = new MemoryStream();
                         no.WriteUpdate(tmp);
+                        if (no is NetObjPlayerState netObjPlayer)
+                        {
+                            inventory = netObjPlayer.GetStateInventory();
+                            inventory.Write(tmp);
+                        }
                         data = tmp.ToArray();
                         NetHelper.WriteU32(m, (uint)data.Length);
                         m.Write(data, 0, data.Length);
@@ -234,7 +247,10 @@ namespace Server
                     Backend.BroadcastCommandExcept((uint)BackendCommand.ReloadTriggeredReq, data, client);
                     break;
                 case BackendCommand.InventoryUpdateReq:
-                    NetHelper.ReadU32(m);
+                    uint who = NetHelper.ReadU32(m);
+                    NetState_Inventory inv = new NetState_Inventory();
+                    inv.Read(m);
+                    Backend.UpdatePlayerInventory(who, inv);
                     data = NetHelper.CopyCommandData(m);
                     Backend.BroadcastCommandExcept((uint)BackendCommand.InventoryUpdateReq, data, client);
                     break;
@@ -264,34 +280,6 @@ namespace Server
                     }
                     NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.GetDoorStatesRes, m.ToArray(), client._sync);
                     break;
-                case BackendCommand.GetEnemySpawnsReq:
-                    m = new MemoryStream();
-                    List<NetObjPlayerState> pstates = new List<NetObjPlayerState>();
-                    foreach (NetObject obj in ObjectManager.objects)
-                        if (obj is NetObjPlayerState pObj)
-                            pstates.Add(pObj);
-                    NetHelper.WriteU32(m, (uint)pstates.Count);
-                    foreach (NetObjPlayerState obj in pstates)
-                    {
-                        NetHelper.WriteU32(m, obj.ID);
-                        obj.WriteUpdate(m);
-                    }
-                    NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.GetEnemySpawnsRes, m.ToArray(), client._sync);
-                    break;
-                case BackendCommand.GetVehicleSpawnsReq:
-                    m = new MemoryStream();
-                    List<NetObjVehicleState> states = new List<NetObjVehicleState>();
-                    foreach (NetObject obj in ObjectManager.objects)
-                        if (obj is NetObjVehicleState)
-                            states.Add((NetObjVehicleState)obj);
-                    NetHelper.WriteU32(m, (uint)states.Count);
-                    foreach (NetObjVehicleState obj in states)
-                    {
-                        NetHelper.WriteU32(m, obj.ID);
-                        obj.WriteUpdate(m);
-                    }
-                    NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.GetVehicleSpawnsRes, m.ToArray(), client._sync);
-                    break;
                 case BackendCommand.PlayerReadyReq:
                     lock (client._sync)
                     {
@@ -307,32 +295,27 @@ namespace Server
                 case BackendCommand.PlayerHitReq:
                     ID = NetHelper.ReadU32(m);
                     HitLocation loc = (HitLocation)NetHelper.ReadU32(m);
+                    found = false;
                     foreach (ClientInfo other in Backend.ClientList)
-                    {
                         if (other.objIDs.Contains(ID))
                         {
                             m = new MemoryStream();
                             NetHelper.WriteU32(m, (uint)loc);
-                            NetHelper.WriteU32(m, (uint)client.ID);
+                            NetHelper.WriteU32(m, client.objIDs[0]);
                             NetHelper.ServerSendCMDPacket(other.ns, (uint)BackendCommand.PlayerHitReq, m.ToArray(), other._sync);
+                            found = true;
                             break;
                         }
+                    if (!found)
+                    {
+                        m = new MemoryStream();
+                        NetHelper.WriteU32(m, client.objIDs[0]);
+                        NetHelper.WriteU32(m, ID);
+                        NetHelper.WriteU32(m, (uint)loc);
+                        EnvServer.SendPlayerHitRequest(m.ToArray());
                     }
                     break;
                 case BackendCommand.PlayerDiedReq:
-                    ID = NetHelper.ReadU32(m);
-                    Log.Print("Player with id 0x" + ID.ToString("X8") + " died!");
-                    pos = new float[] { NetHelper.ReadFloat(m), NetHelper.ReadFloat(m), NetHelper.ReadFloat(m) };
-                    inventory = new NetDefines.StateDefines.NetState_Inventory();
-                    inventory.Read(m);
-                    count = NetHelper.ReadU32(m);
-                    name = "";
-                    for (int i = 0; i < count; i++)
-                        name += (char)m.ReadByte();
-                    SpawnManager.RegisterItemContainer(pos, ItemContainerType.PlayerCrate, name, inventory);
-                    data = NetHelper.CopyCommandData(m);
-                    Backend.BroadcastCommand((uint)BackendCommand.PlayerDiedReq, data);
-                    ObjectManager.RemoveClientObjects(client);
                     break;
                 case BackendCommand.SpawnGroupItemRemoveReq:
                     pos = new float[] { NetHelper.ReadFloat(m), NetHelper.ReadFloat(m), NetHelper.ReadFloat(m) };
@@ -382,18 +365,7 @@ namespace Server
                     Backend.BroadcastCommandExcept((uint)BackendCommand.PlayFootStepSoundReq, data, client);
                     break;
                 case BackendCommand.GetPlayersOnServerReq:
-                    m = new MemoryStream();
-                    NetHelper.WriteU32(m, (uint)Backend.ClientList.Count);
-                    foreach (ClientInfo other in Backend.ClientList)
-                    {
-                        NetHelper.WriteU32(m, other.ID);
-                        NetHelper.WriteU32(m, other.teamID);
-                        m.WriteByte((byte)(other.isTeamReady ? 1 : 0));
-                        NetHelper.WriteU32(m, (uint)other.profile.name.Length);
-                        foreach (char c in other.profile.name)
-                            m.WriteByte((byte)c);
-                    }
-                    NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.GetPlayersOnServerRes, m.ToArray(), client._sync);
+                    Backend.BroadcastServerPlayerList();
                     break;
                 case BackendCommand.TeamInviteReq:
                     fromID = NetHelper.ReadU32(m);
@@ -450,11 +422,11 @@ namespace Server
                         assists.Add(NetHelper.ReadU32(m));
                     foreach (PlayerScoreEntry[] list in TeamDeathMatchServerLogic.playerScoresPerLocation)
                         foreach (PlayerScoreEntry e in list)
-                            if (e.playerID == killer)
+                            if (e.netObjID == killer)
                                 e.kills++;
-                            else if (e.playerID == client.ID)
+                            else if (client.objIDs.Contains(e.netObjID))
                                 e.deaths++;
-                            else if (assists.Contains(e.playerID))
+                            else if (assists.Contains(e.netObjID))
                                 e.assists++;
                     SendScoreBoardUpdate();
                     break;
@@ -481,6 +453,7 @@ namespace Server
                     e.Write(m);
             }
             Backend.BroadcastCommand((uint)BackendCommand.GetPlayerScoresRes, m.ToArray());
+            EnvServer.SendScoresUpdateRequest(m.ToArray());
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using System.IO;
 using System.Collections.Generic;
+using System.Text;
+using System.Drawing;
 
 namespace NetDefines
 {
@@ -172,10 +174,6 @@ namespace NetDefines
         DoorStateChangedReq,
         GetDoorStatesReq,
         GetDoorStatesRes,
-        GetEnemySpawnsReq,
-        GetEnemySpawnsRes,
-        GetVehicleSpawnsReq,
-        GetVehicleSpawnsRes,
         ServerStateChangedReq,
         PlayerReadyReq,
         PlayerNotReadyReq,
@@ -232,7 +230,25 @@ namespace NetDefines
         ChangeVehicleSeatIDReq,
         ChangeVehicleSeatIDRes,
         DeleteObjectsReq,
-        DeleteObjectsRes
+        DeleteObjectsRes,
+        SetBotCountReq,
+        SetBotCountRes,
+        BackendStateChangedReq,
+        BackendStateChangedRes,
+        ShotTriggeredReq,
+        ShotTriggeredRes,
+        PlayerHitReq,
+        PlayerHitRes,
+        ImpactTriggeredReq,
+        ImpactTriggeredRes,
+        InventoryUpdateReq,
+        InventoryUpdateRes,
+        PlayerDiedReq,
+        PlayerDiedRes,
+        ScoresUpdateReq,
+        ScoresUpdateRes,
+        ReloadTriggeredReq,
+        ReloadTriggeredRes,
     }
 
     public enum HitLocation
@@ -302,16 +318,81 @@ namespace NetDefines
         };
     }
 
+    public class ServerPlayerInfo
+    {
+        public uint ID;
+        public uint teamID;
+        public bool isReady;
+        public string name;
+        public List<uint> netObjList = new List<uint>();
+
+        public ServerPlayerInfo() { }
+
+        public ServerPlayerInfo(Stream s)
+        {
+            Read(s);
+        }
+
+        public ServerPlayerInfo(uint id, uint tID, bool ready, string n)
+        {
+            ID = id;
+            teamID = tID;
+            isReady = ready;
+            name = n;
+        }
+
+        public void Write(Stream s)
+        {
+            NetHelper.WriteU32(s, ID);
+            NetHelper.WriteU32(s, teamID);
+            s.WriteByte((byte)(isReady ? 1 : 0));
+            NetHelper.WriteU32(s, (uint)name.Length);
+            foreach (char c in name)
+                s.WriteByte((byte)c);
+            NetHelper.WriteU32(s, (uint)netObjList.Count);
+            foreach (uint u in netObjList)
+                NetHelper.WriteU32(s, u);
+        }
+
+        public void Read(Stream s)
+        {
+            ID = NetHelper.ReadU32(s);
+            teamID = NetHelper.ReadU32(s);
+            isReady = s.ReadByte() != 0;
+            int count = (int)NetHelper.ReadU32(s);
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < count; i++)
+                sb.Append((char)s.ReadByte());
+            name = sb.ToString();
+            netObjList.Clear();
+            count = (int)NetHelper.ReadU32(s);
+            for (int i = 0; i < count; i++)
+                netObjList.Add(NetHelper.ReadU32(s));
+        }
+
+        public uint Hash()
+        {
+            uint result = ID + teamID + (uint)name.Length + (uint)(isReady ? 123 : 321);
+            foreach (char c in name)
+                result += (uint)c;
+            foreach (uint u in netObjList)
+                result += u;
+            return result;
+        }
+    }
+
     public class PlayerScoreEntry
     {
-        public uint playerID;
+        public uint netObjID;
         public uint kills;
         public uint deaths;
         public uint assists;
-        public PlayerScoreEntry(uint ID)
+        public bool isBot;
+        public PlayerScoreEntry(uint ID, bool bot = false)
         {
-            playerID = ID;
+            netObjID = ID;
             kills = deaths = assists = 0;
+            isBot = bot;
         }
 
         public PlayerScoreEntry(Stream s)
@@ -321,18 +402,20 @@ namespace NetDefines
 
         public void Read(Stream s)
         {
-            playerID = NetHelper.ReadU32(s);
+            netObjID = NetHelper.ReadU32(s);
             kills = NetHelper.ReadU32(s);
             deaths = NetHelper.ReadU32(s);
             assists = NetHelper.ReadU32(s);
+            isBot = s.ReadByte() != 0;
         }
 
         public void Write(Stream s)
         {
-            NetHelper.WriteU32(s, playerID);
+            NetHelper.WriteU32(s, netObjID);
             NetHelper.WriteU32(s, kills);
             NetHelper.WriteU32(s, deaths);
             NetHelper.WriteU32(s, assists);
+            s.WriteByte((byte)(isBot ? 1 : 0));
         }
     }
 

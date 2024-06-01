@@ -46,6 +46,8 @@ namespace UnknownServerWV
             this.labelMap = new System.Windows.Forms.Label();
             this.comboBoxMode = new System.Windows.Forms.ComboBox();
             this.labelMode = new System.Windows.Forms.Label();
+            this.textBoxBots = new System.Windows.Forms.TextBox();
+            this.labelBots = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -53,9 +55,9 @@ namespace UnknownServerWV
             // 
             this.buttonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.buttonOK.Dock = System.Windows.Forms.DockStyle.Right;
-            this.buttonOK.Location = new System.Drawing.Point(326, 299);
+            this.buttonOK.Location = new System.Drawing.Point(326, 341);
             this.buttonOK.Name = "buttonOK";
-            this.buttonOK.Size = new System.Drawing.Size(75, 27);
+            this.buttonOK.Size = new System.Drawing.Size(75, 30);
             this.buttonOK.TabIndex = 28;
             this.buttonOK.Text = "OK";
             this.buttonOK.UseVisualStyleBackColor = true;
@@ -65,9 +67,9 @@ namespace UnknownServerWV
             // 
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.buttonCancel.Dock = System.Windows.Forms.DockStyle.Left;
-            this.buttonCancel.Location = new System.Drawing.Point(0, 299);
+            this.buttonCancel.Location = new System.Drawing.Point(0, 341);
             this.buttonCancel.Name = "buttonCancel";
-            this.buttonCancel.Size = new System.Drawing.Size(75, 27);
+            this.buttonCancel.Size = new System.Drawing.Size(75, 30);
             this.buttonCancel.TabIndex = 29;
             this.buttonCancel.Text = "Cancel";
             this.buttonCancel.UseVisualStyleBackColor = true;
@@ -75,6 +77,8 @@ namespace UnknownServerWV
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.textBoxBots);
+            this.panel1.Controls.Add(this.labelBots);
             this.panel1.Controls.Add(this.textBoxKills);
             this.panel1.Controls.Add(this.labelKills);
             this.panel1.Controls.Add(this.textBoxRoundTime);
@@ -92,7 +96,7 @@ namespace UnknownServerWV
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(401, 299);
+            this.panel1.Size = new System.Drawing.Size(401, 341);
             this.panel1.TabIndex = 30;
             // 
             // textBoxKills
@@ -249,13 +253,35 @@ namespace UnknownServerWV
             this.labelMode.Text = "Mode";
             this.labelMode.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // textBoxBots
+            // 
+            this.textBoxBots.Dock = System.Windows.Forms.DockStyle.Top;
+            this.textBoxBots.Font = new System.Drawing.Font("Courier New", 8.25F);
+            this.textBoxBots.Location = new System.Drawing.Point(0, 322);
+            this.textBoxBots.Name = "textBoxBots";
+            this.textBoxBots.Size = new System.Drawing.Size(401, 20);
+            this.textBoxBots.TabIndex = 48;
+            this.textBoxBots.Text = "0";
+            this.textBoxBots.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // labelBots
+            // 
+            this.labelBots.Dock = System.Windows.Forms.DockStyle.Top;
+            this.labelBots.Font = new System.Drawing.Font("Courier New", 8.25F);
+            this.labelBots.Location = new System.Drawing.Point(0, 300);
+            this.labelBots.Name = "labelBots";
+            this.labelBots.Size = new System.Drawing.Size(401, 22);
+            this.labelBots.TabIndex = 47;
+            this.labelBots.Text = "Bot Count";
+            this.labelBots.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // PlaylistEntryEditor
             // 
             this.AcceptButton = this.buttonOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCancel;
-            this.ClientSize = new System.Drawing.Size(401, 326);
+            this.ClientSize = new System.Drawing.Size(401, 371);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonOK);
             this.Controls.Add(this.panel1);
@@ -290,5 +316,7 @@ namespace UnknownServerWV
         private System.Windows.Forms.Label labelMap;
         private System.Windows.Forms.ComboBox comboBoxMode;
         private System.Windows.Forms.Label labelMode;
+        private System.Windows.Forms.TextBox textBoxBots;
+        private System.Windows.Forms.Label labelBots;
     }
 }

@@ -107,7 +107,7 @@ namespace GameDataServer
             }
             catch(Exception ex)
             {
-                sb.AppendLine("Error: " + ex);
+                sb.AppendLine("Error: \n" + NetHelper.GetExceptionDetails(ex));
             }
             return sb.ToString();
         }

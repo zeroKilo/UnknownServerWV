@@ -7,6 +7,7 @@ using System.Threading;
 using System.Windows.Forms;
 using NetDefines;
 using System.ComponentModel;
+using NetDefines.StateDefines;
 
 namespace Server
 {
@@ -233,7 +234,7 @@ namespace Server
                         if (code == 0x80004005) //ignore error on tcp accept
                             break;
                     }
-                    Log.Print("BACKEND mainloop error: " + ex);
+                    Log.Print("BACKEND mainloop error: \n" + NetHelper.GetExceptionDetails(ex));
                     break;
                 }
             }
@@ -256,10 +257,17 @@ namespace Server
             }
             catch (Exception ex)
             {
-                Log.Print("BACKEND error stopping listener:" + ex.ToString());
+                Log.Print("BACKEND error stopping listener:\n" + NetHelper.GetExceptionDetails(ex));
             }
             Log.Print("BACKEND main loop stopped");
             IsRunning = false;
+        }
+
+        public static void CleanUp()
+        {
+            DoorManager.Reset();
+            SpawnManager.Reset();
+            ObjectManager.Reset();
         }
 
         public static void ThreadClient(object obj)
@@ -340,7 +348,7 @@ namespace Server
             } 
             catch (Exception ex)
             {
-                Log.Print("BACKEND Error client ID=" + cInfo.ID + " threw exception: " + ex.Message);
+                Log.Print("BACKEND Error client ID=" + cInfo.ID + " threw exception:\n" + NetHelper.GetExceptionDetails(ex));
             }
             RemoveClient(cInfo);
             Log.Print("BACKEND Client disconnected with ID=" + cInfo.ID);
@@ -419,14 +427,14 @@ namespace Server
                         }
                         catch (Exception ex)
                         {
-                            Log.Print("BACKEND Broadcast failed for client with : " + ex.Message);
+                            Log.Print("BACKEND Broadcast failed for client with:\n" + NetHelper.GetExceptionDetails(ex));
                             client.cleanUp = true;
                         }
                 }
             }
             catch (Exception ex)
             {
-                Log.Print("BACKEND Broadcast failed with : " + ex.Message);
+                Log.Print("BACKEND Broadcast failed with:\n" + NetHelper.GetExceptionDetails(ex));
             }
         }
 
@@ -438,6 +446,8 @@ namespace Server
             NetHelper.WriteU32(m, (uint)mode);
             NetHelper.WriteU32(m, (uint)modeState);
             BroadcastCommand((uint)BackendCommand.ServerStateChangedReq, m.ToArray());
+            if (EnvServer.IsRunningTCP && EnvServer.state == EnvServer.State.MainLoop)
+                EnvServer.SendBackendStateChangedRequest();
             Log.Print("BACKEND changed mode to " + mode + " : " + modeState);
         }
 
@@ -473,13 +483,22 @@ namespace Server
             PlayersWaiting = waiting;
         }
 
+        public static void UpdatePlayerInventory(uint who, NetState_Inventory inv)
+        {
+            NetObject netObj = ObjectManager.FindByID(who);
+            if (netObj == null)
+                return;
+            NetObjPlayerState netPlayer = netObj as NetObjPlayerState;
+            netPlayer.SetStateInventory(inv);
+        }
+
         public static void HandleTryEnterVehicleRequest(ClientInfo client, uint playerID, uint vehicleID, int seatIdx)
         {
             Log.Print("Player 0x" + playerID.ToString("X8") + " tries to enter vehicle 0x" + vehicleID.ToString("X8") + ", seat " + seatIdx);
             Stream s = client.ns;
             NetObjPlayerState playerState = null;
             NetObjVehicleState vehicleState = null;
-            foreach (NetObject obj in ObjectManager.objects)
+            foreach (NetObject obj in ObjectManager.GetCopy())
             {
                 try
                 {
@@ -531,7 +550,7 @@ namespace Server
             Stream s = client.ns;
             NetObjPlayerState playerState = null;
             NetObjVehicleState vehicleState = null;
-            foreach (NetObject obj in ObjectManager.objects)
+            foreach (NetObject obj in ObjectManager.GetCopy())
             {
                 try
                 {
@@ -582,6 +601,22 @@ namespace Server
             NetHelper.WriteU32(m, playerID);
             NetHelper.WriteU32(m, (uint)seatIdx);
             BroadcastCommandExcept((uint)BackendCommand.ChangeVehicleSeatIDReq, m.ToArray(), client);
+        }
+
+        public static void BroadcastServerPlayerList()
+        {
+            MemoryStream m = new MemoryStream();
+            NetHelper.WriteU32(m, (uint)ClientList.Count);
+            foreach (ClientInfo other in ClientList)
+                GetPlayerInfo(other).Write(m);
+            BroadcastCommand((uint)BackendCommand.GetPlayersOnServerRes, m.ToArray());
+        }
+
+        public static ServerPlayerInfo GetPlayerInfo(ClientInfo client)
+        {
+            ServerPlayerInfo result = new ServerPlayerInfo(client.ID, client.teamID, client.isTeamReady, client.profile.name);
+            result.netObjList.AddRange(client.objIDs);
+            return result;
         }
     }
 }

@@ -2,22 +2,15 @@
 
   <PropertyGroup>
     <TargetFramework>net471</TargetFramework>
-    <UseWindowsForms>true</UseWindowsForms>
-    <Configurations>Any CPU</Configurations>
+    <Configurations>Release</Configurations>
 	<ProduceReferenceAssembly>false</ProduceReferenceAssembly>
-	<Platforms>x64;AnyCPU</Platforms>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Any CPU|x64'">
-    <Optimize>false</Optimize>
-    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Any CPU|AnyCPU'">
-    <Optimize>false</Optimize>
-    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Platforms>x64</Platforms>
+    <IsPublishable>False</IsPublishable>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <DebugType>pdbonly</DebugType>
+    <DefineConstants>$(DefineConstants)DEBUG;TRACE</DefineConstants>
+    <Optimize>False</Optimize>
+    <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
   
   <ItemGroup>
