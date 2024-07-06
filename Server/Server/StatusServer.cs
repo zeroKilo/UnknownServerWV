@@ -140,12 +140,13 @@ namespace Server
 
         private static void SendStatus()
         {
-            if(DateTime.Now.Day != lastDay)
+            StringBuilder sb = new StringBuilder();
+            if (DateTime.Now.Day != lastDay)
             {
                 LoginCount = 0;
                 lastDay = DateTime.Now.Day;
             }
-            StringBuilder sb = new StringBuilder();
+            sb = new StringBuilder();
             sb.Append("{");
             sb.Append("\"timestamp\":\"" + DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToLongTimeString() + "\",");
             sb.Append("\"server\":{");

@@ -9,7 +9,27 @@ namespace NetDefines
     {
         public enum VehiclePrefab
         {
-            Buggy
+            Buggy,
+            Pickup1,
+            Pickup2,
+            MiradoOpen,
+            MiradoClosed,
+            Rony,
+            MiniBus,
+            Dacia,
+            UAZ1,
+            UAZ2,
+            UAZ3,
+            UAZ4,
+            UAZ5,
+            UAZ6,
+        }
+
+        public enum VehicleFlags
+        {
+            IS_IN_NEUTRAL = 0x01,
+            PLAY_START_SOUND = 0x02,
+            MOTOR_RUNNING = 0x04
         }
 
         public enum VehicleType
@@ -20,7 +40,22 @@ namespace NetDefines
         public static Dictionary<VehiclePrefab, VehicleType> prefabTypeMap = new Dictionary<VehiclePrefab, VehicleType>
         {
             { VehiclePrefab.Buggy, VehicleType.Car },
+            { VehiclePrefab.Pickup1, VehicleType.Car },
+            { VehiclePrefab.Pickup2, VehicleType.Car },
+            { VehiclePrefab.MiradoOpen, VehicleType.Car },
+            { VehiclePrefab.MiradoClosed, VehicleType.Car },
+            { VehiclePrefab.Rony, VehicleType.Car },
+            { VehiclePrefab.MiniBus, VehicleType.Car },
+            { VehiclePrefab.Dacia, VehicleType.Car },
+            { VehiclePrefab.UAZ1, VehicleType.Car },
+            { VehiclePrefab.UAZ2, VehicleType.Car },
+            { VehiclePrefab.UAZ3, VehicleType.Car },
+            { VehiclePrefab.UAZ4, VehicleType.Car },
+            { VehiclePrefab.UAZ5, VehicleType.Car },
+            { VehiclePrefab.UAZ6, VehicleType.Car },
         };
+
+        public static readonly int MAX_SEAT_COUNT = 6;
 
         private VehiclePrefab vehiclePrefab;
         private VehicleType vehicleType;
@@ -28,11 +63,12 @@ namespace NetDefines
         private float[] position = new float[3];
         private float[] velocity = new float[3];
         private float[] rotation = new float[3];
-        private uint[] seatPlayerIds = new uint[4];
+        private uint[] seatPlayerIds = new uint[MAX_SEAT_COUNT];
         private byte wheelCount = 0;
         private byte seatCount = 0;
         private float[][] wheelRotations;
         private string details = "";
+        private byte flags = 0;
         private readonly object _sync = new object();
 
         public NetObjVehicleState()
@@ -65,7 +101,7 @@ namespace NetDefines
                     velocity[i] = NetHelper.ReadFloat(s);
                 for (int i = 0; i < 3; i++)
                     rotation[i] = NetHelper.ReadFloat(s);
-                for (int i = 0; i < 4; i++)
+                for (int i = 0; i < MAX_SEAT_COUNT; i++)
                     seatPlayerIds[i] = NetHelper.ReadU32(s);
                 seatCount = (byte)s.ReadByte();
                 wheelCount = (byte)s.ReadByte();
@@ -76,6 +112,7 @@ namespace NetDefines
                     for (int j = 0; j < 3; j++)
                         wheelRotations[i][j] = NetHelper.ReadFloat(s);
                 }
+                flags = (byte)s.ReadByte();
             }
         }
 
@@ -92,13 +129,14 @@ namespace NetDefines
                     NetHelper.WriteFloat(s, velocity[i]);
                 for (int i = 0; i < 3; i++)
                     NetHelper.WriteFloat(s, rotation[i]);
-                for (int i = 0; i < 4; i++)
+                for (int i = 0; i < MAX_SEAT_COUNT; i++)
                     NetHelper.WriteU32(s, seatPlayerIds[i]);
                 s.WriteByte(seatCount);
                 s.WriteByte(wheelCount);
                 for (int i = 0; i < wheelCount; i++)
                     for (int j = 0; j < 3; j++)
                         NetHelper.WriteFloat(s, wheelRotations[i][j]);
+                s.WriteByte(flags);
                 MakeDetails();
             }
         }
@@ -122,7 +160,7 @@ namespace NetDefines
                 sb.Append(rotation[i] + " ");
             sb.AppendLine(")");
             sb.Append(" Seat Player IDs = (");
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < MAX_SEAT_COUNT; i++)
                 sb.Append(seatPlayerIds[i].ToString("X8") + " ");
             sb.AppendLine(")");
             sb.AppendLine(" Seat Count = " + seatCount);
@@ -134,6 +172,12 @@ namespace NetDefines
                     sb.Append(wheelRotations[i][j] + " ");
                 sb.AppendLine(")");
             }
+            sb.Append(" Flags =");
+            VehicleFlags[] fs = (VehicleFlags[])Enum.GetValues(typeof(VehicleFlags));
+            foreach (VehicleFlags f in fs)
+                if ((flags & (byte)f) != 0)
+                    sb.Append(" " + f);
+            sb.AppendLine();
             details = sb.ToString();
         }
 
@@ -352,6 +396,24 @@ namespace NetDefines
                     for (int j = 0; j < 3; j++)
                         wheelRotations[i][j] = f[i][j];
                 }
+            }
+        }
+
+        public byte GetFlags()
+        {
+            byte result;
+            lock (_sync)
+            {
+                result = flags;
+            }
+            return result;
+        }
+
+        public void SetFlags(byte b)
+        {
+            lock (_sync)
+            {
+                flags = b;
             }
         }
     }

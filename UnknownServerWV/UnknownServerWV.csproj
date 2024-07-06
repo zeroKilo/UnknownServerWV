@@ -8,6 +8,7 @@
     <OutputType>WinExe</OutputType>
     <NoWin32Manifest>true</NoWin32Manifest>
 	<ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+	<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

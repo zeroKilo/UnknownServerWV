@@ -98,6 +98,7 @@ namespace Server
             sb.Append("\"loginCount\":" + loginCount + ",");
             sb.Append("\"machineInfo\":\"" + NetHelper.Base64Encode(machineInfo) + "\"}");
             HttpServerWV.SendSignedRestRequest(Config.rsaParams, Config.pubKey, HttpMethod.Post, Config.GetGdsBaseAddress(), "/set_player_meta", sb.ToString());
+            HttpServerWV.SendSignedRestRequest(Config.rsaParams, Config.pubKey, HttpMethod.Post, Config.GetGdsBaseAddress(), "/add_single_login", profile.id.ToString());
         }
     }
 }

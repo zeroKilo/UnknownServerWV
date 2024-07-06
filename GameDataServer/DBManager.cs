@@ -1,11 +1,25 @@
 ﻿using System.IO;
 using System.Data.SQLite;
 using System.Collections.Generic;
+using System;
 
 namespace GameDataServer
 {
     public static class DBManager
     {
+        public class LoginHistoryEntry
+        {
+            public long timestamp;
+            public int serverId;
+            public int userId;
+            public LoginHistoryEntry(long timestamp, int serverId, int userId)
+            {
+                this.timestamp = timestamp;
+                this.serverId = serverId;
+                this.userId = userId;
+            }
+        }
+
         private static string db_path = "";
         private static SQLiteConnection connection = null;
         private static List<PlayerProfile> profiles = new List<PlayerProfile>();
@@ -15,6 +29,7 @@ namespace GameDataServer
         private const string table_servers = "servers";
         private const string table_profiles = "profiles";
         private const string table_stats = "stats";
+        private const string table_history = "history";
 
         private static bool needsUpdate = false;
 
@@ -32,7 +47,7 @@ namespace GameDataServer
 
         private static bool CheckAllTablesPresent()
         {
-            List<string> names = new List<string>(new string[] { table_servers, table_profiles, table_stats });
+            List<string> names = new List<string>(new string[] { table_servers, table_profiles, table_stats, table_history });
             foreach (string name in names)
             {
                 SQLiteDataReader r = ExecuteSQL("SELECT COUNT(name) FROM sqlite_master WHERE type='table' AND name='" + name + "';");
@@ -62,6 +77,9 @@ namespace GameDataServer
                     break;
                 case table_stats:
                     sql = "CREATE TABLE " + table_stats + " (id INTEGER PRIMARY KEY,name TEXT NOT NULL,data TEXT NOT NULL)";
+                    break;
+                case table_history:
+                    sql = "CREATE TABLE " + table_history + " (id INTEGER PRIMARY KEY, timestamp INTEGER, server_id INTEGER, user_id INTEGER)";
                     break;
                 default:
                     return;
@@ -123,6 +141,23 @@ namespace GameDataServer
             return result.ToArray();
         }
 
+        public static List<LoginHistoryEntry> GetLoginsSince(long timestamp)
+        {
+            List<LoginHistoryEntry> result = new List<LoginHistoryEntry>();
+            lock (_sync)
+            {
+                SQLiteDataReader r = ExecuteSQL("SELECT * FROM " + table_history + " WHERE timestamp >= " + timestamp);
+                r.Read();
+                while (r.HasRows)
+                {
+                    result.Add(new LoginHistoryEntry(r.GetInt64(0), r.GetInt32(0), r.GetInt32(0)));
+                    r.Read();
+                }
+                r.Close();
+            }
+            return result;
+        }
+
         public static ulong GetPageViews()
         {
             ulong result = 1;
@@ -147,6 +182,22 @@ namespace GameDataServer
                 cmd.ExecuteNonQuery();
             }
             return result;
+        }
+
+        public static void AddServerLoginHistory(int serverId, int userId)
+        {
+            lock (_sync)
+            {
+                string sql = "INSERT INTO " + table_history
+                           + " (timestamp, server_id, user_id)"
+                           + " VALUES (@timestamp, @server_id, @user_id)";
+                SQLiteCommand cmd = connection.CreateCommand();
+                cmd.CommandText = sql;
+                cmd.Parameters.AddWithValue("@timestamp", DateTimeOffset.Now.ToUnixTimeSeconds());
+                cmd.Parameters.AddWithValue("@server_id", serverId);
+                cmd.Parameters.AddWithValue("@user_id", userId);
+                cmd.ExecuteNonQuery();
+            }
         }
 
         public static void AddGameServer(GameServer g)

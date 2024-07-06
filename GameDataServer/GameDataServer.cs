@@ -36,6 +36,7 @@ namespace GameDataServer
             serverHttp.AddHandlerPOST("/get_player_meta", HandlePostGetPlayerMeta);
             serverHttp.AddHandlerPOST("/server_status", HandlePostServerStatus);
             serverHttp.AddHandlerPOST("/set_player_meta", HandlePostSetPlayerMeta);
+            serverHttp.AddHandlerPOST("/add_single_login", HandlePostAddSingleLogin);
             serverHttp.Start();
             Log.Print("GDS started");
         }
@@ -231,6 +232,21 @@ namespace GameDataServer
                 DBManager.UpdatePlayerProfile(p);
                 DBManager.Update();
                 Log.Print("HandlePostSetPlayerMeta: updated profile id " + profileId);
+            }
+            catch { }
+            HttpServerWV.SendJsonResponse(ctx, "");
+            return 0;
+        }
+
+        public static int HandlePostAddSingleLogin(HttpListenerContext ctx)
+        {
+            try
+            {
+                string content = HttpServerWV.GetRequestData(ctx);
+                GameServer gs = CheckServerSignature(ctx, content);
+                int profileId = int.Parse(content);
+                Log.Print("HandlePostAddSingleLogin: adding login for server " + gs.Id + " " + gs.Name);
+                DBManager.AddServerLoginHistory(gs.Id, profileId);
             }
             catch { }
             HttpServerWV.SendJsonResponse(ctx, "");
