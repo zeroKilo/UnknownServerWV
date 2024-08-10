@@ -2,6 +2,7 @@
 using System.Data.SQLite;
 using System.Collections.Generic;
 using System;
+using System.Text;
 
 namespace GameDataServer
 {
@@ -25,6 +26,7 @@ namespace GameDataServer
         private static List<PlayerProfile> profiles = new List<PlayerProfile>();
         private static List<GameServer> servers = new List<GameServer>();
         private static readonly object _sync = new object();
+        private static readonly object _syncRL = new object();
 
         private const string table_servers = "servers";
         private const string table_profiles = "profiles";
@@ -34,6 +36,9 @@ namespace GameDataServer
         private static bool needsUpdate = false;
 
         private static uint playerProfileUpdateCounter = 1;
+
+        private static DateTime lastRLUpdate = DateTime.MinValue;
+        private static string lastRLUpdateResult = "";
         public static void Init(string path)
         {
             db_path = path;
@@ -150,12 +155,77 @@ namespace GameDataServer
                 r.Read();
                 while (r.HasRows)
                 {
-                    result.Add(new LoginHistoryEntry(r.GetInt64(0), r.GetInt32(0), r.GetInt32(0)));
+                    result.Add(new LoginHistoryEntry(r.GetInt64(1), r.GetInt32(2), r.GetInt32(3)));
                     r.Read();
                 }
                 r.Close();
             }
             return result;
+        }
+
+        public static string GetRecentLogins(int days = 14)
+        {
+            lock (_syncRL)
+            {
+                var hours = (DateTime.Now - lastRLUpdate).TotalHours;
+                if (hours < 2)
+                    return lastRLUpdateResult;
+                else
+                {
+                    Log.Print("HandleGetRecentLogins: refreshing recent logins");
+                    lastRLUpdate = DateTime.Now;
+                    StringBuilder sb = new StringBuilder();
+                    DateTime target = DateTime.Now.AddDays(-1 - days);
+                    long timestamp = new DateTimeOffset(target).ToUnixTimeSeconds();
+                    List<LoginHistoryEntry> logins = GetLoginsSince(timestamp);
+                    GameServer[] listGS = GetServerProfiles();
+                    Dictionary<string, List<DateTime>> loginsPerServer = new Dictionary<string, List<DateTime>>();
+                    foreach (GameServer g in listGS)
+                        foreach (LoginHistoryEntry log in logins)
+                            if (g.Id == log.serverId)
+                            {
+                                DateTime d = Helper.UnixTimeStampToDateTime(log.timestamp);
+                                if (!loginsPerServer.ContainsKey(g.Name))
+                                    loginsPerServer.Add(g.Name, new List<DateTime>());
+                                loginsPerServer[g.Name].Add(d);
+                            }
+                    Dictionary<string, Dictionary<DateTime, int>> loginsPerServerPerDay = new Dictionary<string, Dictionary<DateTime, int>>();
+                    foreach (KeyValuePair<string, List<DateTime>> pair in loginsPerServer)
+                    {
+                        string serverName = pair.Key;
+                        if (!loginsPerServerPerDay.ContainsKey(serverName))
+                            loginsPerServerPerDay.Add(serverName, new Dictionary<DateTime, int>());
+                        Dictionary<DateTime, int> dateDic = loginsPerServerPerDay[serverName];
+                        foreach (DateTime d in pair.Value)
+                        {
+                            DateTime t = d.Date;
+                            if (!dateDic.ContainsKey(t))
+                                dateDic.Add(t, 0);
+                            dateDic[t] = dateDic[t] + 1;
+                        }
+                    }
+                    sb.Append("[");
+                    foreach (string serverName in loginsPerServerPerDay.Keys)
+                    {
+                        sb.Append("{\"name\":\"" + serverName + "\",");
+                        sb.Append("\"series\":[");
+                        foreach (KeyValuePair<DateTime, int> pair in loginsPerServerPerDay[serverName])
+                        {
+                            sb.Append("{\"value\":" + pair.Value);
+                            sb.Append(",\"name\":\"" + pair.Key.ToString("yyyy-MM-dd") + "\"},");
+                        }
+                        if (loginsPerServerPerDay[serverName].Count > 0)
+                            sb.Length--;
+                        sb.Append("]},");
+                    }
+                    if (loginsPerServerPerDay.Keys.Count > 0)
+                        sb.Length--;
+                    sb.Append("]");
+                    lastRLUpdateResult = sb.ToString();
+                    Log.Print("HandleGetRecentLogins: recent logins refreshed");
+                    return lastRLUpdateResult;
+                }
+            }
         }
 
         public static ulong GetPageViews()

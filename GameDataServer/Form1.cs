@@ -81,7 +81,7 @@ namespace GameDataServer
         private void Timer1_Tick(object sender, EventArgs e)
         {
             bool needsUpdate = DBManager.NeedsUpdate();
-            if(needsUpdate)
+            if (needsUpdate)
             {
                 foreach (GameServer gs in servers)
                     if (gs.NeedsUpdate)
@@ -251,7 +251,7 @@ namespace GameDataServer
                 sb.AppendLine("use_https = 0");
                 d.rtb1.Text = sb.ToString();
             }
-            if(d.ShowDialog() == DialogResult.OK)
+            if (d.ShowDialog() == DialogResult.OK)
             {
                 File.WriteAllText("config.txt", d.rtb1.Text);
                 Config.Init();
@@ -268,7 +268,7 @@ namespace GameDataServer
             {
                 string path = Path.GetDirectoryName(d.FileName) + "\\";
                 ServerSetupDialog d2 = new ServerSetupDialog();
-                if(d2.ShowDialog() == DialogResult.OK)
+                if (d2.ShowDialog() == DialogResult.OK)
                 {
                     StringBuilder sb = new StringBuilder();
                     sb.AppendLine("#server name");

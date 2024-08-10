@@ -32,6 +32,7 @@ namespace GameDataServer
             serverHttp.AddHandlerGET("/profile_list", HandleGetProfileList);
             serverHttp.AddHandlerGET("/server_list", HandleGetServerList);
             serverHttp.AddHandlerGET("/status_list", HandleGetStatusList);
+            serverHttp.AddHandlerGET("/recent_logins", HandleGetRecentLogins);
             serverHttp.AddHandlerPOST("/register_player", HandlePostRegisterPlayer);
             serverHttp.AddHandlerPOST("/get_player_meta", HandlePostGetPlayerMeta);
             serverHttp.AddHandlerPOST("/server_status", HandlePostServerStatus);
@@ -313,6 +314,13 @@ namespace GameDataServer
             }
             sb.Append("]}");
             HttpServerWV.SendJsonResponse(ctx, sb.ToString());
+            return 0;
+        }
+
+        public static int HandleGetRecentLogins(HttpListenerContext ctx)
+        {
+            Log.Print("HandleGetRecentLogins: sending recent logins");
+            HttpServerWV.SendJsonResponse(ctx, DBManager.GetRecentLogins());
             return 0;
         }
 
