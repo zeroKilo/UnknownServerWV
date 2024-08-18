@@ -179,29 +179,36 @@ namespace GameDataServer
                     long timestamp = new DateTimeOffset(target).ToUnixTimeSeconds();
                     List<LoginHistoryEntry> logins = GetLoginsSince(timestamp);
                     GameServer[] listGS = GetServerProfiles();
-                    Dictionary<string, List<DateTime>> loginsPerServer = new Dictionary<string, List<DateTime>>();
+                    Dictionary<string, List<long>> loginsPerServer = new Dictionary<string, List<long>>();
                     foreach (GameServer g in listGS)
                         foreach (LoginHistoryEntry log in logins)
                             if (g.Id == log.serverId)
                             {
-                                DateTime d = Helper.UnixTimeStampToDateTime(log.timestamp);
                                 if (!loginsPerServer.ContainsKey(g.Name))
-                                    loginsPerServer.Add(g.Name, new List<DateTime>());
-                                loginsPerServer[g.Name].Add(d);
+                                    loginsPerServer.Add(g.Name, new List<long>());
+
+                                loginsPerServer[g.Name].Add(log.timestamp);
                             }
-                    Dictionary<string, Dictionary<DateTime, int>> loginsPerServerPerDay = new Dictionary<string, Dictionary<DateTime, int>>();
-                    foreach (KeyValuePair<string, List<DateTime>> pair in loginsPerServer)
+                    Dictionary<string, Dictionary<long, int>> loginsPerServerPerDay = new Dictionary<string, Dictionary<long, int>>();
+                    foreach (GameServer g in listGS)
+                    {
+                        loginsPerServerPerDay.Add(g.Name, new Dictionary<long, int>());
+                        for (int i = 0; i < 15; i++)
+                        {
+                            DateTime recent = DateTime.Now.AddDays(-i).Date;
+                            long rtimestamp = new DateTimeOffset(recent).ToUnixTimeSeconds();
+                            loginsPerServerPerDay[g.Name].Add(rtimestamp, 0);
+                        }
+                    }
+                    foreach (KeyValuePair<string, List<long>> pair in loginsPerServer)
                     {
                         string serverName = pair.Key;
-                        if (!loginsPerServerPerDay.ContainsKey(serverName))
-                            loginsPerServerPerDay.Add(serverName, new Dictionary<DateTime, int>());
-                        Dictionary<DateTime, int> dateDic = loginsPerServerPerDay[serverName];
-                        foreach (DateTime d in pair.Value)
+                        Dictionary<long, int> dateDic = loginsPerServerPerDay[serverName];
+                        foreach (long t in pair.Value)
                         {
-                            DateTime t = d.Date;
-                            if (!dateDic.ContainsKey(t))
-                                dateDic.Add(t, 0);
-                            dateDic[t] = dateDic[t] + 1;
+                            DateTime d = Helper.UnixTimeStampToDateTime(t).Date;
+                            long ltimestamp = new DateTimeOffset(d).ToUnixTimeSeconds();
+                            dateDic[ltimestamp] = dateDic[ltimestamp] + 1;
                         }
                     }
                     sb.Append("[");
@@ -209,10 +216,10 @@ namespace GameDataServer
                     {
                         sb.Append("{\"name\":\"" + serverName + "\",");
                         sb.Append("\"series\":[");
-                        foreach (KeyValuePair<DateTime, int> pair in loginsPerServerPerDay[serverName])
+                        foreach (KeyValuePair<long, int> pair in loginsPerServerPerDay[serverName])
                         {
                             sb.Append("{\"value\":" + pair.Value);
-                            sb.Append(",\"name\":\"" + pair.Key.ToString("yyyy-MM-dd") + "\"},");
+                            sb.Append(",\"name\":" + pair.Key + "},");
                         }
                         if (loginsPerServerPerDay[serverName].Count > 0)
                             sb.Length--;
