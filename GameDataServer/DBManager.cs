@@ -168,7 +168,7 @@ namespace GameDataServer
             lock (_syncRL)
             {
                 var hours = (DateTime.Now - lastRLUpdate).TotalHours;
-                if (hours < 2)
+                if (hours < 2 && lastRLUpdateResult != "")
                     return lastRLUpdateResult;
                 else
                 {
@@ -193,7 +193,7 @@ namespace GameDataServer
                     foreach (GameServer g in listGS)
                     {
                         loginsPerServerPerDay.Add(g.Name, new Dictionary<long, int>());
-                        for (int i = 0; i < 15; i++)
+                        for (int i = 0; i < 16; i++)
                         {
                             DateTime recent = DateTime.Now.AddDays(-i).Date;
                             long rtimestamp = new DateTimeOffset(recent).ToUnixTimeSeconds();
