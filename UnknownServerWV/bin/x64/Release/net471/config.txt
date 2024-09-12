@@ -36,3 +36,7 @@ env_ip = 127.0.0.1
 env_port_tcp = 9997
 env_port_udp_tx = 9998
 env_port_udp_rx = 9999
+
+#replay settings
+replay_save = 1
+replay_folder = Replays

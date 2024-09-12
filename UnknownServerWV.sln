@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetDefines", "NetDefines\Ne
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameDataServer", "GameDataServer\GameDataServer.csproj", "{FE83C463-B4EC-4A5A-B648-D79C2D09960D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReplayExplorer", "ReplayExplorer\ReplayExplorer.csproj", "{A48C7DA8-C6B0-41AF-98BB-C3F88BB57BB2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Release|x64 = Release|x64
@@ -24,6 +26,8 @@ Global
 		{4AA0D837-7AC1-43FD-B291-9146D545D3D9}.Release|x64.Build.0 = Release|x64
 		{FE83C463-B4EC-4A5A-B648-D79C2D09960D}.Release|x64.ActiveCfg = Release|x64
 		{FE83C463-B4EC-4A5A-B648-D79C2D09960D}.Release|x64.Build.0 = Release|x64
+		{A48C7DA8-C6B0-41AF-98BB-C3F88BB57BB2}.Release|x64.ActiveCfg = Release|x64
+		{A48C7DA8-C6B0-41AF-98BB-C3F88BB57BB2}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

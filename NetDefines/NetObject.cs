@@ -7,7 +7,8 @@ namespace NetDefines
         public enum NetObjectType
         {
             PlayerState,
-            VehicleState
+            VehicleState,
+            MovingTargetState
         }
 
         public uint ID;

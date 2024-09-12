@@ -70,6 +70,7 @@ namespace Server
             int seatIdx;
             byte[] data;
             bool found, neutral;
+            float t;
             ItemSpawnInfo spawnInfo;
             NetState_Inventory inventory;
             MemoryStream m = new MemoryStream(msg);
@@ -81,7 +82,7 @@ namespace Server
             {
                 //Requests
                 case BackendCommand.WelcomeReq:
-                    NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.WelcomeRes, Encoding.UTF8.GetBytes(Config.settings["name"]), client._sync);
+                    ReplayManager.ServerSendCMDPacketToPlayer(client, (uint)BackendCommand.WelcomeRes, Encoding.UTF8.GetBytes(Config.settings["name"]), client._sync);
                     break;
                 case BackendCommand.PingReq:
                     Backend.HandlePing(client);
@@ -99,7 +100,7 @@ namespace Server
                     if (target == null)
                     {
                         Log.Print("cant find player profile for client ID=" + client.ID + " with key " + key);
-                        NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.LoginFailRes, new byte[0], client._sync);
+                        ReplayManager.ServerSendCMDPacketToPlayer(client, (uint)BackendCommand.LoginFailRes, new byte[0], client._sync);
                     }
                     else
                     {
@@ -130,24 +131,24 @@ namespace Server
                         NetHelper.WriteU32(m, (uint)target.name.Length);
                         foreach (char c in target.name)
                             m.WriteByte((byte)c);
-                        NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.LoginSuccessRes, m.ToArray(), client._sync);
-                        NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.RefreshPlayerListReq, new byte[0], client._sync);
+                        ReplayManager.ServerSendCMDPacketToPlayer(client, (uint)BackendCommand.LoginSuccessRes, m.ToArray(), client._sync);
+                        ReplayManager.ServerSendCMDPacketToPlayer(client, (uint)BackendCommand.RefreshPlayerListReq, new byte[0], client._sync);
                         Backend.BroadcastCommandExcept((uint)BackendCommand.RefreshPlayerListReq, new byte[0], client);
                         StatusServer.LoginCount++;
                     }
                     break;
                 case BackendCommand.GetItemConfigReq:
-                    NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.GetItemConfigRes, Encoding.UTF8.GetBytes(Config.itemSettingsJson), client._sync);
+                    ReplayManager.ServerSendCMDPacketToPlayer(client, (uint)BackendCommand.GetItemConfigRes, Encoding.UTF8.GetBytes(Config.itemSettingsJson), client._sync);
                     break;
                 case BackendCommand.GetMapReq:
-                    NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.GetMapRes, Encoding.UTF8.GetBytes(mapName), client._sync);
+                    ReplayManager.ServerSendCMDPacketToPlayer(client, (uint)BackendCommand.GetMapRes, Encoding.UTF8.GetBytes(mapName), client._sync);
                     break;
                 case BackendCommand.GetSpawnLocReq:
                     tmp = new MemoryStream();
                     NetHelper.WriteU32(tmp, (uint)spawnLocIdx);
                     byte[] spawnLocName = Encoding.UTF8.GetBytes(spawnLocNames[spawnLocIdx]);
                     tmp.Write(spawnLocName, 0, spawnLocName.Length);
-                    NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.GetSpawnLocRes, tmp.ToArray(), client._sync);
+                    ReplayManager.ServerSendCMDPacketToPlayer(client, (uint)BackendCommand.GetSpawnLocRes, tmp.ToArray(), client._sync);
                     break;
                 case BackendCommand.CreatePlayerObjectReq:
                     found = false;
@@ -171,7 +172,7 @@ namespace Server
                     m = new MemoryStream();
                     NetHelper.WriteU32(m, 0);
                     m.Write(data, 0, data.Length);
-                    NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.CreatePlayerObjectRes, m.ToArray(), client._sync);
+                    ReplayManager.ServerSendCMDPacketToPlayer(client, (uint)BackendCommand.CreatePlayerObjectRes, m.ToArray(), client._sync);
                     data = playerTransform.Create(false);
                     m = new MemoryStream();
                     NetHelper.WriteU32(m, client.ID);
@@ -197,7 +198,7 @@ namespace Server
                         NetHelper.WriteU32(m, (uint)data.Length);
                         m.Write(data, 0, data.Length);
                     }
-                    NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.GetAllObjectsRes, m.ToArray(), client._sync);
+                    ReplayManager.ServerSendCMDPacketToPlayer(client, (uint)BackendCommand.GetAllObjectsRes, m.ToArray(), client._sync);
                     break;
                 case BackendCommand.ReloadTriggeredReq:
                     NetHelper.ReadU32(m);
@@ -240,7 +241,7 @@ namespace Server
                             NetHelper.WriteFloat(m, f);
                         NetHelper.WriteU32(m, (uint)di.state);
                     }
-                    NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.GetDoorStatesRes, m.ToArray(), client._sync);
+                    ReplayManager.ServerSendCMDPacketToPlayer(client, (uint)BackendCommand.GetDoorStatesRes, m.ToArray(), client._sync);
                     break;
                 case BackendCommand.PlayerReadyReq:
                     lock (client._sync)
@@ -263,7 +264,7 @@ namespace Server
                             m = new MemoryStream();
                             NetHelper.WriteU32(m, (uint)loc);
                             NetHelper.WriteU32(m, client.objIDs[0]);
-                            NetHelper.ServerSendCMDPacket(other.ns, (uint)BackendCommand.PlayerHitReq, m.ToArray(), other._sync);
+                            ReplayManager.ServerSendCMDPacketToPlayer(other, (uint)BackendCommand.PlayerHitReq, m.ToArray(), other._sync);
                             break;
                         }
                     break;
@@ -301,17 +302,17 @@ namespace Server
                     pos = new float[] { NetHelper.ReadFloat(m), NetHelper.ReadFloat(m), NetHelper.ReadFloat(m) };
                     m = new MemoryStream();
                     SpawnManager.WriteSpawnGroupRemovals(m, pos);
-                    NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.SpawnGroupRemovalsReq, m.ToArray(), client._sync);
+                    ReplayManager.ServerSendCMDPacketToPlayer(client, (uint)BackendCommand.SpawnGroupRemovalsReq, m.ToArray(), client._sync);
                     break;
                 case BackendCommand.GetAllPickupsReq:
                     m = new MemoryStream();
                     SpawnManager.WriteDroppedItems(m);
-                    NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.GetAllPickupsReq, m.ToArray(), client._sync);
+                    ReplayManager.ServerSendCMDPacketToPlayer(client, (uint)BackendCommand.GetAllPickupsReq, m.ToArray(), client._sync);
                     break;
                 case BackendCommand.GetAllItemContainersReq:
                     m = new MemoryStream();
                     SpawnManager.WriteItemContainers(m);
-                    NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.GetAllItemContainersReq, m.ToArray(), client._sync);
+                    ReplayManager.ServerSendCMDPacketToPlayer(client, (uint)BackendCommand.GetAllItemContainersReq, m.ToArray(), client._sync);
                     break;
                 case BackendCommand.PlayFootStepSoundReq:
                     data = NetHelper.CopyCommandData(m);
@@ -337,7 +338,14 @@ namespace Server
                     neutral = m.ReadByte() == 1;
                     Backend.HandleTryExitVehicleRequest(client, playerID, vehicleID, seatIdx, neutral);
                     break;
-
+                case BackendCommand.GetAllMovingTargetsReq:
+                    Backend.HandleGetAllMovingTargetsRequest(client);
+                    break;
+                case BackendCommand.MovingTargetHitReq:
+                    data = new byte[20];
+                    m.Read(data, 0, 20);
+                    Backend.HandleMovingTargetHitRequest(client, data);
+                    break;
                 //Responses
                 case BackendCommand.DeleteObjectsRes:
                 case BackendCommand.CreateEnemyObjectRes:

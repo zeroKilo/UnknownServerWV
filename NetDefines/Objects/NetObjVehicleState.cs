@@ -88,6 +88,16 @@ namespace NetDefines
             return m.ToArray();
         }
 
+        public override string GetDetails()
+        {
+            string result;
+            lock (_sync)
+            {
+                result = details;
+            }
+            return result;
+        }
+
         public override void ReadUpdate(Stream s)
         {
             lock (_sync)
@@ -187,16 +197,6 @@ namespace NetDefines
             {
                 MakeDetails();
             }
-        }
-
-        public override string GetDetails()
-        {
-            string result;
-            lock (_sync)
-            {
-                result = details;
-            }
-            return result;
         }
 
         public byte GetWheelCount()

@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using NetDefines;
 using System.ComponentModel;
 using NetDefines.StateDefines;
+using NetDefines.Objects;
 
 namespace Server
 {
@@ -179,6 +180,7 @@ namespace Server
                 Application.DoEvents();
             }
         }
+
         public static ushort GetNextPort()
         {
             int min = Convert.ToInt32(Config.settings["port_tcp_min"]);
@@ -276,7 +278,7 @@ namespace Server
             Log.Print("BACKEND Client connected with ID=" + cInfo.ID);
             try
             {
-                NetHelper.ServerSendCMDPacket(cInfo.ns, (uint)mode, BitConverter.GetBytes((uint)modeState), cInfo._sync);
+                ReplayManager.ServerSendCMDPacketToPlayer(cInfo, (uint)mode, BitConverter.GetBytes((uint)modeState), cInfo._sync);
                 while (true)
                 {
                     if (ShouldExit)
@@ -311,6 +313,8 @@ namespace Server
                         }
                         try
                         {
+                            if (ReplayManager.enabled)
+                                ReplayManager.WriteTcpPacketPlayer(buff, cInfo, true);
                             switch (mode)
                             {
                                 case ServerMode.DeathMatchMode:
@@ -408,49 +412,6 @@ namespace Server
             }
         }
 
-        public static void BroadcastCommand(uint cmd, byte[] data)
-        {
-            BroadcastCommandExcept(cmd, data, null);
-        }
-
-        public static void BroadcastCommandExcept(uint cmd, byte[] data, ClientInfo except)
-        {
-            try
-            {
-                foreach (ClientInfo client in ClientList)
-                {
-                    if (client != except)
-                        try
-                        {
-                            if (!client.cleanUp)
-                                NetHelper.ServerSendCMDPacket(client.ns, cmd, data, client._sync);
-                        }
-                        catch (Exception ex)
-                        {
-                            Log.Print("BACKEND Broadcast failed for client with:\n" + NetHelper.GetExceptionDetails(ex));
-                            client.cleanUp = true;
-                        }
-                }
-            }
-            catch (Exception ex)
-            {
-                Log.Print("BACKEND Broadcast failed with:\n" + NetHelper.GetExceptionDetails(ex));
-            }
-        }
-
-        public static void BroadcastServerStateChange(ServerMode newMode, ServerModeState newState)
-        {
-            mode = newMode;
-            modeState = newState;
-            MemoryStream m = new MemoryStream();
-            NetHelper.WriteU32(m, (uint)mode);
-            NetHelper.WriteU32(m, (uint)modeState);
-            BroadcastCommand((uint)BackendCommand.ServerStateChangedReq, m.ToArray());
-            if (EnvServer.IsRunningTCP && EnvServer.state == EnvServer.State.MainLoop)
-                EnvServer.SendBackendStateChangedRequest();
-            Log.Print("BACKEND changed mode to " + mode + " : " + modeState);
-        }
-
         public static bool ShouldFilterInLog(BackendCommand cmd)
         {
             return backendCmdFilter.Contains(cmd);
@@ -462,7 +423,7 @@ namespace Server
             NetHelper.WriteU32(m, PlayersReady);
             NetHelper.WriteU32(m, PlayersWaiting);
             NetHelper.WriteU32(m, PlayersNeeded);
-            NetHelper.ServerSendCMDPacket(client.ns, (uint)BackendCommand.PingRes, m.ToArray(), client._sync);
+            ReplayManager.ServerSendCMDPacketToPlayer(client, (uint)BackendCommand.PingRes, m.ToArray(), client._sync);
             client.sw.Restart();
         }
 
@@ -495,7 +456,6 @@ namespace Server
         public static void HandleTryEnterVehicleRequest(ClientInfo client, uint playerID, uint vehicleID, int seatIdx)
         {
             Log.Print("Player 0x" + playerID.ToString("X8") + " tries to enter vehicle 0x" + vehicleID.ToString("X8") + ", seat " + seatIdx);
-            Stream s = client.ns;
             NetObjPlayerState playerState = null;
             NetObjVehicleState vehicleState = null;
             foreach (NetObject obj in ObjectManager.GetCopy())
@@ -541,13 +501,12 @@ namespace Server
             vehicleState.RefreshDetails();
             NetHelper.WriteU32(m, vehicleID);
             NetHelper.WriteU32(m, (uint)seatIdx);
-            NetHelper.ServerSendCMDPacket(s, (uint)BackendCommand.TryEnterVehicleRes, m.ToArray(), client._sync);
+            ReplayManager.ServerSendCMDPacketToPlayer(client, (uint)BackendCommand.TryEnterVehicleRes, m.ToArray(), client._sync);
         }
 
         public static void HandleTryExitVehicleRequest(ClientInfo client, uint playerID, uint vehicleID, int seatIdx, bool neutral)
         {
             Log.Print("Player 0x" + playerID.ToString("X8") + " tries to exit vehicle 0x" + vehicleID.ToString("X8") + ", seat " + seatIdx);
-            Stream s = client.ns;
             NetObjPlayerState playerState = null;
             NetObjVehicleState vehicleState = null;
             foreach (NetObject obj in ObjectManager.GetCopy())
@@ -591,8 +550,79 @@ namespace Server
             NetHelper.WriteU32(m, 0);
             NetHelper.WriteU32(m, vehicleID);
             NetHelper.WriteU32(m, (uint)seatIdx);
-            NetHelper.ServerSendCMDPacket(s, (uint)BackendCommand.TryExitVehicleRes, m.ToArray(), client._sync);
+            ReplayManager.ServerSendCMDPacketToPlayer(client, (uint)BackendCommand.TryExitVehicleRes, m.ToArray(), client._sync);
         }
+
+        public static void HandleGetAllMovingTargetsRequest(ClientInfo client)
+        {
+            Log.Print("Clinet 0x" + client.ID.ToString("X8") + " requested all moving target net objects");
+            MemoryStream m = new MemoryStream();
+            List<NetObject> list = ObjectManager.GetCopy();
+            uint count = 0;
+            foreach (NetObject no in list)
+                if (no is NetObjMovingTargetState state)
+                    count++;
+            NetHelper.WriteU32(m, count);
+            foreach (NetObject no in list)
+                if (no is NetObjMovingTargetState state)
+                {
+                    NetHelper.WriteU32(m, (uint)state.ID);
+                    float[] pos = state.GetPos();
+                    for (int i = 0; i < 3; i++)
+                        NetHelper.WriteFloat(m, pos[i]);
+                }
+            ReplayManager.ServerSendCMDPacketToPlayer(client, (uint)BackendCommand.GetAllMovingTargetsRes, m.ToArray(), client._sync);
+        }
+
+        public static void HandleMovingTargetHitRequest(ClientInfo client, byte[] data)
+        {
+            EnvServer.SendMovingTargetHitRequest(data);
+            BroadcastCommandExcept((uint)BackendCommand.MovingTargetHitReq, data, client);
+        }
+
+        public static void BroadcastCommand(uint cmd, byte[] data)
+        {
+            BroadcastCommandExcept(cmd, data, null);
+        }
+
+        public static void BroadcastCommandExcept(uint cmd, byte[] data, ClientInfo except)
+        {
+            try
+            {
+                foreach (ClientInfo client in ClientList)
+                {
+                    if (client != except)
+                        try
+                        {
+                            if (!client.cleanUp)
+                                ReplayManager.ServerSendCMDPacketToPlayer(client, cmd, data, client._sync);
+                        }
+                        catch (Exception ex)
+                        {
+                            Log.Print("BACKEND Broadcast failed for client with:\n" + NetHelper.GetExceptionDetails(ex));
+                            client.cleanUp = true;
+                        }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Print("BACKEND Broadcast failed with:\n" + NetHelper.GetExceptionDetails(ex));
+            }
+        }
+
+        public static void BroadcastServerStateChange(ServerMode newMode, ServerModeState newState)
+        {
+            mode = newMode;
+            modeState = newState;
+            MemoryStream m = new MemoryStream();
+            NetHelper.WriteU32(m, (uint)mode);
+            NetHelper.WriteU32(m, (uint)modeState);
+            BroadcastCommand((uint)BackendCommand.ServerStateChangedReq, m.ToArray());
+            if (EnvServer.IsRunningTCP && EnvServer.state == EnvServer.State.MainLoop)
+                EnvServer.SendBackendStateChangedRequest();
+            Log.Print("BACKEND changed mode to " + mode + " : " + modeState);
+        }
+
 
         public static void BroadcastChangeVehicleSeatID(ClientInfo client, uint vehicleID, uint playerID, int seatIdx)
         {

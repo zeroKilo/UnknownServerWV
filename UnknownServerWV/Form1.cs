@@ -64,6 +64,7 @@ namespace UnknownServerWV
             Log.Init(rtb1);
             Config.Init();
             PlaylistManager.Init();
+            ReplayManager.Init();
             RefreshPlaylist();
             if (Config.settings.ContainsKey("autostart"))
             {
@@ -231,6 +232,26 @@ namespace UnknownServerWV
                 Backend.CleanUp();
                 PlaylistManager.PlaylistEntry entry = PlaylistManager.playlist[playlistIndex];
                 ServerMode mode = entry.mode;
+                if (ReplayManager.enabled)
+                {
+                    string map = "";
+                    switch (mode)
+                    {
+                        case ServerMode.DeathMatchMode:
+                            map = DeathMatchMode.mapInfos[entry.map].name;
+                            break;
+                        case ServerMode.BattleRoyaleMode:
+                            map = BattleRoyaleMode.mapInfos[entry.map].name;
+                            break;
+                        case ServerMode.TeamDeathMatchMode:
+                            map = TeamDeathMatchMode.mapInfos[entry.map].name;
+                            break;
+                        case ServerMode.FreeExploreMode:
+                            map = FreeExploreMode.mapInfos[entry.map].name;
+                            break;
+                    }
+                    ReplayManager.StartNewReplaySession(mode.ToString() + "_" + map);
+                }
                 switch (mode)
                 {
                     case ServerMode.DeathMatchMode:
@@ -299,6 +320,8 @@ namespace UnknownServerWV
                         FreeExploreMode.Stop();
                         break;
                 }
+                if (ReplayManager.enabled)
+                    ReplayManager.CloseReplaySession();
                 if (ShouldExit)
                     break;
                 playlistIndex = (playlistIndex + 1) % playlistCount;

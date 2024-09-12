@@ -210,7 +210,11 @@ namespace NetDefines
         TryExitVehicleReq,
         TryExitVehicleRes,
         ChangeVehicleSeatIDReq,
-        ChangeVehicleSeatIDRes
+        ChangeVehicleSeatIDRes,
+        GetAllMovingTargetsReq,
+        GetAllMovingTargetsRes,
+        MovingTargetHitReq,
+        MovingTargetHitRes
     }
 
     public enum EnvServerCommand
@@ -249,6 +253,10 @@ namespace NetDefines
         ScoresUpdateRes,
         ReloadTriggeredReq,
         ReloadTriggeredRes,
+        CreateMovingTargetNetIdsReq,
+        CreateMovingTargetNetIdsRes,
+        MovingTargetHitReq, 
+        MovingTargetHitRes,
     }
 
     public enum HitLocation
@@ -302,6 +310,13 @@ namespace NetDefines
         DM_MainGameState,
         DM_RoundEndState,
         FEM_LobbyState
+    }
+
+    public enum ReplayPacketTypes
+    {
+        TCP_Player,
+        TCP_Env,
+        UDP
     }
 
     public static class NetConstants

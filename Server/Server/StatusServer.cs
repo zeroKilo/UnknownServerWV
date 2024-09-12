@@ -117,9 +117,9 @@ namespace Server
                     {
                         SendStatus();
                     }
-                    catch
+                    catch (Exception ex)
                     {
-                        Log.Print("STATUSSRV failed to send status!");
+                        Log.Print("STATUSSRV failed to send status!\n" + ex);
                     }
                     for (int i = 0; i < 100; i++)
                     {

@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Windows.Forms;
 using NetDefines;
+using NetDefines.Objects;
 
 namespace Server
 {
@@ -178,6 +179,8 @@ namespace Server
 
         public static void ProcessData(IPEndPoint sender, byte[] data)
         {
+            if (ReplayManager.enabled)
+                ReplayManager.WriteUdpPacket(data);
             MemoryStream m = new MemoryStream(data);
             uint accessKey = NetHelper.ReadU32(m);
             NetObject obj = ObjectManager.FindByAccessKey(accessKey);
@@ -205,7 +208,7 @@ namespace Server
                             continue;
                         udp.Send(m.ToArray(), (int)m.Length, client.udp);
                     }
-                } 
+                }
                 else if (obj is NetObjVehicleState vehicleState)
                 {
                     vehicleState.ReadUpdate(m);
@@ -226,6 +229,16 @@ namespace Server
                             continue;
                         udp.Send(m.ToArray(), (int)m.Length, client.udp);
                     }
+                }
+                else if (obj is NetObjMovingTargetState movingTargetState)
+                {
+                    movingTargetState.ReadUpdate(m);
+                    m = new MemoryStream();
+                    NetHelper.WriteU32(m, movingTargetState.ID);
+                    movingTargetState.WriteUpdate(m);
+                    foreach (ClientInfo client in Backend.ClientList)
+                        if (client.udp != null)
+                            udp.Send(m.ToArray(), (int)m.Length, client.udp);
                 }
             }
         }

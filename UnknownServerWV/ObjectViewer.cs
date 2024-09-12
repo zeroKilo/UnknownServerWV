@@ -2,6 +2,7 @@
 using System.Text;
 using System.Windows.Forms;
 using NetDefines;
+using NetDefines.Objects;
 using NetDefines.StateDefines;
 using Server;
 
@@ -40,6 +41,17 @@ namespace UnknownServerWV
                     TreeNode t = new TreeNode("Player ID=" + player.ID.ToString("X8") + " AK=" + player.accessKey.ToString("X8"));
                     t.Name = player.ID.ToString();
                     players.Nodes.Add(t);
+                    if (no.ID == selId)
+                        tv1.SelectedNode = t;
+                }
+            TreeNode movingTargets = new TreeNode("Moving Targets");
+            tv1.Nodes.Add(movingTargets);
+            foreach (NetObject no in ObjectManager.GetCopy())
+                if (no is NetObjMovingTargetState movingTarget)
+                {
+                    TreeNode t = new TreeNode("Moving Target ID=" + movingTarget.ID.ToString("X8") + " AK=" + movingTarget.accessKey.ToString("X8"));
+                    t.Name = movingTarget.ID.ToString();
+                    movingTargets.Nodes.Add(t);
                     if (no.ID == selId)
                         tv1.SelectedNode = t;
                 }
