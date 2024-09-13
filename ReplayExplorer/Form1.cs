@@ -9,6 +9,7 @@ namespace ReplayExplorer
     public partial class Form1 : Form
     {
         public List<PacketHelper.Packet> packets = new List<PacketHelper.Packet>();
+        public List<PacketHelper.Packet> packetsFiltered = new List<PacketHelper.Packet>();
         public List<int> selIndicies = new List<int>();
         public Form1()
         {
@@ -31,10 +32,37 @@ namespace ReplayExplorer
                     packets.Add(new PacketHelper.Packet(fs, index++));
                 fs.Close();
                 statusLabel.Text = "Loaded packets: " + packets.Count;
-                vScrollBar1.Value = 0;
-                vScrollBar1.Maximum = packets.Count - 1;
+                UpdateFilter();
                 RefreshList();
             }
+        }
+
+        public void UpdateFilter()
+        {
+            packetsFiltered.Clear();
+            foreach (PacketHelper.Packet p in packets)
+                switch (p.type)
+                {
+                    case ReplayPacketTypes.UDP:
+                        if (toolStripButton1.Checked)
+                            packetsFiltered.Add(p);
+                        break;
+                    case ReplayPacketTypes.TCP_Player:
+                        if (toolStripButton2.Checked)
+                            packetsFiltered.Add(p);
+                        break;
+                    case ReplayPacketTypes.TCP_Env:
+                        if (toolStripButton3.Checked)
+                            packetsFiltered.Add(p);
+                        break;
+                }
+            if (packetsFiltered.Count > 0)
+            {
+                vScrollBar1.Value = 0;
+                vScrollBar1.Maximum = packetsFiltered.Count - 1;
+            }
+            else
+                vScrollBar1.Maximum = vScrollBar1.Value = 0;
         }
 
         private void listBox1_Resize(object sender, EventArgs e)
@@ -44,16 +72,19 @@ namespace ReplayExplorer
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
+            UpdateFilter();
             RefreshList();
         }
 
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
+            UpdateFilter();
             RefreshList();
         }
 
         private void toolStripButton3_Click(object sender, EventArgs e)
         {
+            UpdateFilter();
             RefreshList();
         }
 
@@ -66,21 +97,12 @@ namespace ReplayExplorer
             selIndicies.Clear();
             int start = vScrollBar1.Value;
             int count = listBox1.Height / listBox1.ItemHeight;
-            for (int i = 0; listBox1.Items.Count < count && start + i < packets.Count; i++)
+            for (int i = 0; listBox1.Items.Count < count && start + i < packetsFiltered.Count; i++)
             {
                 int n = start + i;
-                PacketHelper.Packet p = packets[n];
-                bool addIndex = true;
-                if (showUdp && p.type == ReplayPacketTypes.UDP)
-                    listBox1.Items.Add(p);
-                else if (showTcpPlayer && p.type == ReplayPacketTypes.TCP_Player)
-                    listBox1.Items.Add(p);
-                else if (showTcpEnv && p.type == ReplayPacketTypes.TCP_Env)
-                    listBox1.Items.Add(p);
-                else
-                    addIndex = false;
-                if (addIndex)
-                    selIndicies.Add(n);
+                PacketHelper.Packet p = packetsFiltered[n];
+                listBox1.Items.Add(p);
+                selIndicies.Add(n);
             }
         }
 
@@ -95,7 +117,7 @@ namespace ReplayExplorer
             if (n == -1 || n >= selIndicies.Count)
                 return;
             int index = selIndicies[n];
-            PacketHelper.Packet p = packets[index];
+            PacketHelper.Packet p = packetsFiltered[index];
             rtb1.Text = PacketHelper.HexDump(p.data);
         }
     }

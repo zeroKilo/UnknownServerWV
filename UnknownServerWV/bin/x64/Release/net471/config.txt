@@ -39,4 +39,5 @@ env_port_udp_rx = 9999
 
 #replay settings
 replay_save = 1
+replay_max_hrs = 24
 replay_folder = Replays

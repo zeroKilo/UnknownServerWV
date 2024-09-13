@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using System.Windows.Forms;
+using System.IO.Compression;
 using NetDefines;
 
 namespace Server
@@ -10,8 +10,12 @@ namespace Server
         public static bool enabled = false;
         public static string outputFolder = null;
         private static readonly object _sync = new object();
+        private static FileStream fileStream;
+        private static ZipArchive zipArchive;
+        private static ZipArchiveEntry zipEntry;
         private static Stream replayStream = null;
         private static bool isOpen = false;
+        private static int max_hrs = 1;
 
         public static void Init()
         {
@@ -25,18 +29,60 @@ namespace Server
             }
             if (Config.settings.ContainsKey("replay_save"))
                 enabled = Config.settings["replay_save"] == "1";
+            if (Config.settings.ContainsKey("replay_max_hrs"))
+                max_hrs = int.Parse(Config.settings["replay_max_hrs"]);
+            CheckCleanUp();
+        }
+
+        public static void CheckCleanUp()
+        {
+            TimeSpan maxDiff = TimeSpan.FromHours(max_hrs);            
+            string[] files = Directory.GetFiles(outputFolder);
+            foreach (string file in files)
+            {
+                string name = Path.GetFileName(file);
+                string[] parts = name.Split('_');
+                if(parts.Length > 6)
+                {
+                    try
+                    {
+                        DateTime date = new DateTime(
+                            int.Parse(parts[0]),
+                            int.Parse(parts[1]),
+                            int.Parse(parts[2]),
+                            int.Parse(parts[3]),
+                            int.Parse(parts[4]),
+                            int.Parse(parts[5])
+                            );
+                        TimeSpan diff = DateTime.Now - date;
+                        if (diff > maxDiff)
+                        {
+                            File.Delete(file);
+                            Log.Print("Deleted old replay " + name);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Print("Error on replay cleanup: " + e);
+                    }
+                }
+            }
         }
 
         public static void StartNewReplaySession(string name)
         {
             if (!enabled)
                 return;
+            CheckCleanUp();
             lock (_sync)
             {
                 if (isOpen)
                     CloseReplaySession();
-                string filename = DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss") + "_" + name + ".replay";
-                replayStream = new FileStream(outputFolder + filename, FileMode.CreateNew, FileAccess.Write);
+                string filename = DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss") + "_" + name;
+                fileStream = new FileStream(outputFolder + filename + ".zip", FileMode.CreateNew, FileAccess.Write);
+                zipArchive = new ZipArchive(fileStream, ZipArchiveMode.Create, true);
+                zipEntry = zipArchive.CreateEntry(filename + ".replay", CompressionLevel.Optimal);
+                replayStream = zipEntry.Open();
                 isOpen = true;
                 Log.Print("REPLAY Opened replay session file: " + filename);
             }
@@ -46,7 +92,11 @@ namespace Server
         {
             lock (_sync)
             {
+                replayStream.Flush();
                 replayStream.Close();
+                zipArchive.Dispose();
+                fileStream.Flush();
+                fileStream.Close();
                 isOpen = false;
                 Log.Print("REPLAY Closed replay session file");
             }

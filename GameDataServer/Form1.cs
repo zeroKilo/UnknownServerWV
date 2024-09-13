@@ -309,6 +309,11 @@ namespace GameDataServer
                     sb.AppendLine("env_port_tcp = 9997");
                     sb.AppendLine("env_port_udp_tx = 9998");
                     sb.AppendLine("env_port_udp_rx = 9999");
+                    sb.AppendLine();
+                    sb.AppendLine("#replay settings");
+                    sb.AppendLine("replay_save = 0");
+                    sb.AppendLine("replay_folder = Replays");
+                    sb.AppendLine("replay_max_hrs = 24");
                     File.WriteAllText(path + "config.txt", sb.ToString());
                     string[] keys = NetHelper.MakeSigningKeys();
                     sb = new StringBuilder();
