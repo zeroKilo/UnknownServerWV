@@ -61,6 +61,7 @@ namespace Server
 
         public static void HandleMessage(byte[] msg, ClientInfo client)
         {
+            string chatMsg;
             uint ID;
             byte[] data;
             bool found;
@@ -383,6 +384,15 @@ namespace Server
                         else if (assists.Contains(e.netObjID))
                             e.assists++;
                     SendScoreBoardUpdate();
+                    break;
+                case BackendCommand.BroadCastChatMessageReq:
+                    chatMsg = Encoding.UTF8.GetString(NetHelper.ReadArray(m));
+                    chatMsg = client.profile.name + " : " + chatMsg;
+                    tmp = new MemoryStream();
+                    data = Encoding.UTF8.GetBytes(chatMsg);
+                    NetDefines.NetHelper.WriteArray(tmp, data);
+                    Backend.BroadcastCommand((uint)BackendCommand.BroadCastChatMessageRes, tmp.ToArray());
+                    EnvServer.SendChatMessage(tmp.ToArray());
                     break;
 
                 //Responses

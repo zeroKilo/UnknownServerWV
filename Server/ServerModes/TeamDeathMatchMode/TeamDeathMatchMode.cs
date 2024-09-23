@@ -9,8 +9,8 @@ namespace Server
 {
     public static class TeamDeathMatchMode
     {
-
         public static string mapName;
+        public static bool allowFriendlyFire = true;
         public static List<NetMapInfo> mapInfos = new List<NetMapInfo>()
         {
             new NetMapInfo("bodie", new List<string>(){"SpawnLocA", "SpawnLocB"})
@@ -73,6 +73,7 @@ namespace Server
 
         public static void HandleMessage(byte[] msg, ClientInfo client)
         {
+            string chatMsg;
             uint ID;
             byte[] data;
             uint index, count, fromID, toID;
@@ -299,6 +300,8 @@ namespace Server
                     foreach (ClientInfo other in Backend.ClientList)
                         if (other.objIDs.Contains(ID))
                         {
+                            if (client.teamID == other.teamID && !allowFriendlyFire)
+                                break;
                             m = new MemoryStream();
                             NetHelper.WriteU32(m, (uint)loc);
                             NetHelper.WriteU32(m, client.objIDs[0]);
@@ -309,6 +312,7 @@ namespace Server
                     if (!found)
                     {
                         m = new MemoryStream();
+                        m.WriteByte((byte)(allowFriendlyFire ? 1 : 0));
                         NetHelper.WriteU32(m, client.objIDs[0]);
                         NetHelper.WriteU32(m, ID);
                         NetHelper.WriteU32(m, (uint)loc);
@@ -430,6 +434,15 @@ namespace Server
                                 e.assists++;
                     SendScoreBoardUpdate();
                     break;
+                case BackendCommand.BroadCastChatMessageReq:
+                    chatMsg = Encoding.UTF8.GetString(NetHelper.ReadArray(m));
+                    chatMsg = client.profile.name + " : " + chatMsg;
+                    tmp = new MemoryStream();
+                    data = Encoding.UTF8.GetBytes(chatMsg);
+                    NetDefines.NetHelper.WriteArray(tmp, data);
+                    Backend.BroadcastCommand((uint)BackendCommand.BroadCastChatMessageRes, tmp.ToArray());
+                    EnvServer.SendChatMessage(tmp.ToArray());
+                    break;
 
                 //Responses
                 case BackendCommand.DeleteObjectsRes:
@@ -438,7 +451,6 @@ namespace Server
                     break;
                 default:
                     throw new Exception("Unknown command 0x" + cmd.ToString("X"));
-
             }
         }
 

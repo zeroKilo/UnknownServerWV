@@ -214,7 +214,9 @@ namespace NetDefines
         GetAllMovingTargetsReq,
         GetAllMovingTargetsRes,
         MovingTargetHitReq,
-        MovingTargetHitRes
+        MovingTargetHitRes,
+        BroadCastChatMessageReq,
+        BroadCastChatMessageRes
     }
 
     public enum EnvServerCommand
@@ -257,6 +259,8 @@ namespace NetDefines
         CreateMovingTargetNetIdsRes,
         MovingTargetHitReq, 
         MovingTargetHitRes,
+        BroadCastChatMessageReq,
+        BroadCastChatMessageRes
     }
 
     public enum HitLocation

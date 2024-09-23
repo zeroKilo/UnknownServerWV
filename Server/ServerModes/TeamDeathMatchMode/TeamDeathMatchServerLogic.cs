@@ -66,6 +66,8 @@ namespace Server
             ShouldExit = false;
             IsRunning = false;
             TeamDeathMatchMode.ResetPlayerSpawnLocations();
+            if (Config.settings.ContainsKey("allow_friendly_fire"))
+                TeamDeathMatchMode.allowFriendlyFire = Config.settings["allow_friendly_fire"] == "1";
             new Thread(ThreadMain).Start();
         }
 

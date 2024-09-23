@@ -635,6 +635,16 @@ namespace Server
             ReplayManager.ServerSendCMDPacketToEnv(tcpStream, (uint)EnvServerCommand.MovingTargetHitReq, data);
         }
 
+        public static void SendChatMessage(byte[] data)
+        {
+            if (state != State.MainLoop)
+            {
+                Log.Print("ENVSERVER Error: Tried to send chat message when not connected");
+                return;
+            }
+            ReplayManager.ServerSendCMDPacketToEnv(tcpStream, (uint)EnvServerCommand.BroadCastChatMessageReq, data);
+        }
+
         private static void RefreshScoreboardsWithBots(int botCount, List<uint> ids)
         {
             switch(Backend.mode)

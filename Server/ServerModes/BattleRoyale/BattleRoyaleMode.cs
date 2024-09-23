@@ -51,6 +51,7 @@ namespace Server
             EnvServer.Start();
             BattleRoyaleServerLogic.Start();
         }
+
         public static void Stop()
         {
             Log.Print("Stopping battle royale mode...");
@@ -69,6 +70,7 @@ namespace Server
 
         public static void HandleMessage(byte[] msg, ClientInfo client)
         {
+            string chatMsg;
             uint ID;
             byte[] data;
             uint index, count, fromID, toID, playerID, vehicleID;
@@ -375,6 +377,15 @@ namespace Server
                     seatIdx = (int)NetHelper.ReadU32(m);
                     bool neutral = m.ReadByte() == 1;
                     Backend.HandleTryExitVehicleRequest(client, playerID, vehicleID, seatIdx, neutral);
+                    break;
+                case BackendCommand.BroadCastChatMessageReq:
+                    chatMsg = Encoding.UTF8.GetString(NetHelper.ReadArray(m));
+                    chatMsg = client.profile.name + " : " + chatMsg;
+                    tmp = new MemoryStream();
+                    data = Encoding.UTF8.GetBytes(chatMsg);
+                    NetDefines.NetHelper.WriteArray(tmp, data);
+                    Backend.BroadcastCommand((uint)BackendCommand.BroadCastChatMessageRes, tmp.ToArray());
+                    EnvServer.SendChatMessage(tmp.ToArray());
                     break;
                 //Responses
                 case BackendCommand.DeleteObjectsRes:
