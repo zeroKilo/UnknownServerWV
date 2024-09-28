@@ -9,7 +9,7 @@
             "Single",
             "Auto"
         ],
-        "fireRateAuto": "0,05",
+        "fireRateAuto": "0,1",
         "fireRateBurst": "1",
         "fireRateSingle": "0,05",
         "fixedZoom": "-1",
@@ -58,7 +58,7 @@
         ],
         "itemMagSize": 30,
         "itemMagSizeEx": 40,
-        "itemName": "AK47",
+        "itemName": "AKM",
         "itemPreview3DcamDis": "0,4",
         "itemPreview3Dcolor": [
             "1",
@@ -82,23 +82,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            12,
+            4,
             [
-                0.9,
+                0.2,
                 0.9
             ],
             [
-                0.6,
-                0.6
+                0.1,
+                0.7
             ],
             [
-                0.3,
+                0.1,
                 0.3
             ],
             [
-                0.8,
-                0.8
+                0.2,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -440,23 +440,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -786,23 +786,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -1132,23 +1132,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -1478,23 +1478,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -1824,23 +1824,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -2170,23 +2170,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -2516,23 +2516,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -2862,23 +2862,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -3184,7 +3184,7 @@
         ],
         "itemMagSize": 0,
         "itemMagSizeEx": 0,
-        "itemName": "Angled Grip",
+        "itemName": "Angled Foregrip",
         "itemPreview3DcamDis": "0,4",
         "itemPreview3Dcolor": [
             "1",
@@ -3208,23 +3208,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
                 0.8,
-                0.8
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -3482,9 +3482,9 @@
             "Single",
             "Auto"
         ],
-        "fireRateAuto": "0,05",
+        "fireRateAuto": "0,08571429",
         "fireRateBurst": "1",
-        "fireRateSingle": "0,05",
+        "fireRateSingle": "0,5",
         "fixedZoom": "-1",
         "itemAmmoType": "Nato556mm",
         "itemAnimReloadCrouch": "AUG_Reload_Crouch",
@@ -3531,7 +3531,7 @@
         ],
         "itemMagSize": 30,
         "itemMagSizeEx": 40,
-        "itemName": "Steyr AUG A3",
+        "itemName": "AUG",
         "itemPreview3DcamDis": "0,4",
         "itemPreview3Dcolor": [
             "1",
@@ -3555,23 +3555,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            13,
+            7,
             [
-                0.9,
+                0.3,
                 0.9
             ],
             [
-                0.6,
-                0.6
+                0.35,
+                0.8
+            ],
+            [
+                0.2,
+                0.5
             ],
             [
                 0.3,
-                0.3
-            ],
-            [
-                0.8,
-                0.8
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -3847,7 +3847,7 @@
         ],
         "fireRateAuto": "0,05",
         "fireRateBurst": "1",
-        "fireRateSingle": "3",
+        "fireRateSingle": "1,875",
         "fixedZoom": "-1",
         "itemAmmoType": "Magnum300",
         "itemAnimReloadCrouch": "AWM_Reload_Crouch",
@@ -3918,23 +3918,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            17,
+            10,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -4278,23 +4278,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -4600,7 +4600,7 @@
         ],
         "itemMagSize": 0,
         "itemMagSizeEx": 0,
-        "itemName": "Big Mag EX",
+        "itemName": "Extended Mag (AR, DMR, S12K)",
         "itemPreview3DcamDis": "0,4",
         "itemPreview3Dcolor": [
             "0,5",
@@ -4624,23 +4624,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -4946,7 +4946,7 @@
         ],
         "itemMagSize": 0,
         "itemMagSizeEx": 0,
-        "itemName": "Big Mag EXQ",
+        "itemName": "Extended Quickdraw Mag (AR, DMR, S12K)",
         "itemPreview3DcamDis": "0,4",
         "itemPreview3Dcolor": [
             "0,5",
@@ -4970,23 +4970,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -5292,7 +5292,7 @@
         ],
         "itemMagSize": 0,
         "itemMagSizeEx": 0,
-        "itemName": "Big Mag Q",
+        "itemName": "Quickdraw Mag (AR, DMR, S12K)",
         "itemPreview3DcamDis": "0,4",
         "itemPreview3Dcolor": [
             "1",
@@ -5316,23 +5316,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -5638,7 +5638,7 @@
         ],
         "itemMagSize": 0,
         "itemMagSizeEx": 0,
-        "itemName": "Choke",
+        "itemName": "Choke (SG)",
         "itemPreview3DcamDis": "0,4",
         "itemPreview3Dcolor": [
             "1",
@@ -5662,19 +5662,19 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
                 0.8,
@@ -5935,7 +5935,7 @@
         "availableFireModes": [
             "Auto"
         ],
-        "fireRateAuto": "0,05",
+        "fireRateAuto": "0,1090909",
         "fireRateBurst": "1",
         "fireRateSingle": "3",
         "fixedZoom": "-1",
@@ -5984,7 +5984,7 @@
         ],
         "itemMagSize": 47,
         "itemMagSizeEx": 47,
-        "itemName": "DP28",
+        "itemName": "DP-28",
         "itemPreview3DcamDis": "0,4",
         "itemPreview3Dcolor": [
             "1",
@@ -6008,23 +6008,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            4,
             [
-                0.9,
+                0.3,
                 0.9
             ],
             [
-                0.6,
-                0.6
+                0.25,
+                0.8
             ],
             [
-                0.3,
+                0.1,
                 0.3
             ],
             [
-                0.8,
-                0.8
+                0.3,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -6336,7 +6336,7 @@
         ],
         "itemMagSize": 0,
         "itemMagSizeEx": 0,
-        "itemName": "Duck Bill",
+        "itemName": "Duck Bill (SG)",
         "itemPreview3DcamDis": "0,4",
         "itemPreview3Dcolor": [
             "1",
@@ -6360,23 +6360,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                0.75,
+                0.75
             ]
         ],
         "itemRightHandPos": [
@@ -6706,23 +6706,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -7028,7 +7028,7 @@
         ],
         "itemMagSize": 0,
         "itemMagSizeEx": 0,
-        "itemName": "First Aid",
+        "itemName": "First Aid Kit",
         "itemPreview3DcamDis": "0,4",
         "itemPreview3Dcolor": [
             "1",
@@ -7052,23 +7052,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -7374,7 +7374,7 @@
         ],
         "itemMagSize": 0,
         "itemMagSizeEx": 0,
-        "itemName": "First Aid Box",
+        "itemName": "Med Kit",
         "itemPreview3DcamDis": "0,4",
         "itemPreview3Dcolor": [
             "1",
@@ -7398,23 +7398,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -7672,7 +7672,7 @@
             "Single",
             "Auto"
         ],
-        "fireRateAuto": "0,05",
+        "fireRateAuto": "0,08571429",
         "fireRateBurst": "1",
         "fireRateSingle": "0,05",
         "fixedZoom": "-1",
@@ -7745,23 +7745,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            4,
             [
-                0.9,
+                0.3,
                 0.9
             ],
             [
-                0.6,
-                0.6
+                0.25,
+                0.8
             ],
             [
-                0.3,
+                0.1,
                 0.3
             ],
             [
-                0.8,
-                0.8
+                0.3,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -8107,23 +8107,23 @@
             "100"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -8463,23 +8463,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                0.92,
+                0.92
             ]
         ],
         "itemRightHandPos": [
@@ -8809,23 +8809,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -9155,23 +9155,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -9477,7 +9477,7 @@
         ],
         "itemMagSize": 0,
         "itemMagSizeEx": 0,
-        "itemName": "Helmet Level 3",
+        "itemName": "Lv. 3 Helmet",
         "itemPreview3DcamDis": "0,4",
         "itemPreview3Dcolor": [
             "1",
@@ -9501,23 +9501,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -9823,7 +9823,7 @@
         ],
         "itemMagSize": 0,
         "itemMagSizeEx": 0,
-        "itemName": "Injection",
+        "itemName": "Adrenaline Syringe",
         "itemPreview3DcamDis": "0,4",
         "itemPreview3Dcolor": [
             "1",
@@ -9847,23 +9847,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -10169,7 +10169,7 @@
         ],
         "itemMagSize": 5,
         "itemMagSizeEx": 0,
-        "itemName": "Kar98",
+        "itemName": "Kar98k",
         "itemPreview3DcamDis": "0,5",
         "itemPreview3Dcolor": [
             "1",
@@ -10193,23 +10193,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -10527,7 +10527,7 @@
         ],
         "itemMagSize": 0,
         "itemMagSizeEx": 0,
-        "itemName": "Large Compensator",
+        "itemName": "Compensator (AR, DMR, S12K)",
         "itemPreview3DcamDis": "0,4",
         "itemPreview3Dcolor": [
             "1",
@@ -10551,23 +10551,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                0.85,
+                0.85
             ]
         ],
         "itemRightHandPos": [
@@ -10873,7 +10873,7 @@
         ],
         "itemMagSize": 0,
         "itemMagSizeEx": 0,
-        "itemName": "Large FlashHider",
+        "itemName": "Flash Hider (AR, DMR, S12K)",
         "itemPreview3DcamDis": "0,4",
         "itemPreview3Dcolor": [
             "1",
@@ -10897,23 +10897,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
+            [
+                1,
+                1
+            ],
+            [
+                1,
+                1
+            ],
+            [
+                1,
+                1
+            ],
             [
                 0.9,
                 0.9
-            ],
-            [
-                0.6,
-                0.6
-            ],
-            [
-                0.3,
-                0.3
-            ],
-            [
-                0.8,
-                0.8
             ]
         ],
         "itemRightHandPos": [
@@ -11219,7 +11219,7 @@
         ],
         "itemMagSize": 0,
         "itemMagSizeEx": 0,
-        "itemName": "Large Suppressor",
+        "itemName": "Suppressor (AR, DMR, S12K)",
         "itemPreview3DcamDis": "0,4",
         "itemPreview3Dcolor": [
             "1",
@@ -11243,23 +11243,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -11565,7 +11565,7 @@
         ],
         "itemMagSize": 0,
         "itemMagSizeEx": 0,
-        "itemName": "Light Grip",
+        "itemName": "Lightweight Grip",
         "itemPreview3DcamDis": "0,4",
         "itemPreview3Dcolor": [
             "1",
@@ -11589,23 +11589,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -11864,8 +11864,8 @@
             "Burst"
         ],
         "fireRateAuto": "0,05",
-        "fireRateBurst": "0,5",
-        "fireRateSingle": "0,05",
+        "fireRateBurst": "0,75",
+        "fireRateSingle": "0,075",
         "fixedZoom": "-1",
         "itemAmmoType": "Nato556mm",
         "itemAnimReloadCrouch": "M16A4_Reload_Crouch",
@@ -11936,23 +11936,23 @@
             "100"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -12295,23 +12295,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -12655,23 +12655,23 @@
             "100"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -12935,9 +12935,9 @@
             "Single",
             "Auto"
         ],
-        "fireRateAuto": "0,05",
+        "fireRateAuto": "0,08571429",
         "fireRateBurst": "1",
-        "fireRateSingle": "0,05",
+        "fireRateSingle": "0,5",
         "fixedZoom": "-1",
         "itemAmmoType": "Nato556mm",
         "itemAnimReloadCrouch": "M416_Reload_Crouch",
@@ -13008,23 +13008,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            4,
             [
-                0.9,
+                0.3,
                 0.9
             ],
             [
                 0.6,
-                0.6
+                0.85
             ],
             [
-                0.3,
+                0.1,
                 0.3
             ],
             [
-                0.8,
-                0.8
+                0.3,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -13301,9 +13301,9 @@
             "Burst",
             "Auto"
         ],
-        "fireRateAuto": "0,05",
-        "fireRateBurst": "0,5",
-        "fireRateSingle": "0,05",
+        "fireRateAuto": "0,08571429",
+        "fireRateBurst": "0,08571429",
+        "fireRateSingle": "0,5",
         "fixedZoom": "-1",
         "itemAmmoType": "Nato762mm",
         "itemAnimReloadCrouch": "M762_Reload_Crouch",
@@ -13374,23 +13374,23 @@
             "100"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            15,
+            6,
             [
-                0.9,
+                0.3,
                 0.9
             ],
             [
-                0.6,
-                0.6
+                0.3,
+                0.85
             ],
             [
-                0.3,
+                0.1,
                 0.3
             ],
             [
-                0.8,
-                0.8
+                0.3,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -13737,23 +13737,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -14083,23 +14083,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -14429,23 +14429,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -14751,7 +14751,7 @@
         ],
         "itemMagSize": 0,
         "itemMagSizeEx": 0,
-        "itemName": "Mid Compensator",
+        "itemName": "Compensator (SMG)",
         "itemPreview3DcamDis": "0,4",
         "itemPreview3Dcolor": [
             "1",
@@ -14775,23 +14775,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                0.85,
+                0.85
             ]
         ],
         "itemRightHandPos": [
@@ -15097,7 +15097,7 @@
         ],
         "itemMagSize": 0,
         "itemMagSizeEx": 0,
-        "itemName": "Mid FlashHider",
+        "itemName": "Flash Hider (SMG)",
         "itemPreview3DcamDis": "0,4",
         "itemPreview3Dcolor": [
             "1",
@@ -15121,23 +15121,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
+            [
+                1,
+                1
+            ],
+            [
+                1,
+                1
+            ],
+            [
+                1,
+                1
+            ],
             [
                 0.9,
                 0.9
-            ],
-            [
-                0.6,
-                0.6
-            ],
-            [
-                0.3,
-                0.3
-            ],
-            [
-                0.8,
-                0.8
             ]
         ],
         "itemRightHandPos": [
@@ -15443,7 +15443,7 @@
         ],
         "itemMagSize": 0,
         "itemMagSizeEx": 0,
-        "itemName": "Mid Suppressor",
+        "itemName": "Suppressor (Handgun, SMG)",
         "itemPreview3DcamDis": "0,4",
         "itemPreview3Dcolor": [
             "1",
@@ -15467,23 +15467,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -15813,23 +15813,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            11,
+            3,
             [
-                0.9,
+                0.3,
                 0.9
             ],
             [
-                0.6,
-                0.6
+                0.3,
+                0.85
             ],
             [
-                0.3,
+                0.1,
                 0.3
             ],
             [
-                0.8,
-                0.8
+                0.3,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -16106,7 +16106,7 @@
             "Single",
             "Auto"
         ],
-        "fireRateAuto": "0,05",
+        "fireRateAuto": "0,09009009",
         "fireRateBurst": "1",
         "fireRateSingle": "0,05",
         "fixedZoom": "-1",
@@ -16179,23 +16179,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            13,
+            6,
             [
-                0.9,
+                0.3,
                 0.9
             ],
             [
-                0.6,
-                0.6
+                0.3,
+                0.85
             ],
             [
-                0.3,
+                0.1,
                 0.3
             ],
             [
-                0.8,
-                0.8
+                0.3,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -16522,7 +16522,7 @@
         ],
         "itemMagSize": 30,
         "itemMagSizeEx": 40,
-        "itemName": "MK47",
+        "itemName": "Mk47 Mutant",
         "itemPreview3DcamDis": "0,4",
         "itemPreview3Dcolor": [
             "1",
@@ -16546,23 +16546,23 @@
             "100"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            9,
+            3,
             [
-                0.9,
+                0.3,
                 0.9
             ],
             [
-                0.6,
-                0.6
+                0.3,
+                0.85
             ],
             [
-                0.3,
+                0.1,
                 0.3
             ],
             [
-                0.8,
-                0.8
+                0.3,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -16910,23 +16910,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            11,
+            7,
             [
-                0.9,
+                0.3,
                 0.9
             ],
             [
-                0.6,
-                0.6
+                0.3,
+                0.85
             ],
             [
-                0.3,
+                0.1,
                 0.3
             ],
             [
-                0.8,
-                0.8
+                0.3,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -17244,7 +17244,7 @@
         ],
         "itemMagSize": 17,
         "itemMagSizeEx": 25,
-        "itemName": "P18",
+        "itemName": "P18C",
         "itemPreview3DcamDis": "0,4",
         "itemPreview3Dcolor": [
             "1",
@@ -17268,23 +17268,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -17621,23 +17621,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -17974,23 +17974,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -18327,23 +18327,23 @@
             "50"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -18673,23 +18673,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -18996,7 +18996,7 @@
         ],
         "itemMagSize": 53,
         "itemMagSizeEx": 53,
-        "itemName": "Bizon PP19",
+        "itemName": "PP-19 Bizon",
         "itemPreview3DcamDis": "0,4",
         "itemPreview3Dcolor": [
             "1",
@@ -19020,23 +19020,23 @@
             "100"
         ],
         "itemRecoilInfo": [
-            5,
+            6,
             2,
             [
-                0.9,
+                0.3,
                 0.9
             ],
             [
-                0.6,
-                0.6
+                0.3,
+                0.85
             ],
             [
-                0.3,
+                0.1,
                 0.3
             ],
             [
-                0.8,
-                0.8
+                0.3,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -19304,7 +19304,7 @@
         ],
         "fireRateAuto": "0,05",
         "fireRateBurst": "1",
-        "fireRateSingle": "0,05",
+        "fireRateSingle": "0,1",
         "fixedZoom": "-1",
         "itemAmmoType": "Nato556mm",
         "itemAnimReloadCrouch": "QBU88_Reload_Crouch",
@@ -19375,23 +19375,23 @@
             "100"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            11,
+            3,
             [
-                0.9,
+                0.3,
                 0.9
             ],
             [
-                0.6,
-                0.6
+                0.3,
+                0.85
             ],
             [
-                0.3,
+                0.1,
                 0.3
             ],
             [
-                0.8,
-                0.8
+                0.3,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -19668,7 +19668,7 @@
             "Single",
             "Auto"
         ],
-        "fireRateAuto": "0,05",
+        "fireRateAuto": "0,09230769",
         "fireRateBurst": "1",
         "fireRateSingle": "0,05",
         "fixedZoom": "-1",
@@ -19741,23 +19741,23 @@
             "1"
         ],
         "itemRecoilInfo": [
+            11,
             5,
-            2,
             [
-                0.9,
+                0.3,
                 0.9
             ],
             [
                 0.6,
-                0.6
+                0.85
             ],
             [
-                0.3,
+                0.1,
                 0.3
             ],
             [
-                0.8,
-                0.8
+                0.3,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -20104,23 +20104,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -20457,23 +20457,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            14,
+            6,
             [
-                0.9,
+                0.3,
                 0.9
             ],
             [
                 0.6,
-                0.6
+                0.85
             ],
             [
-                0.3,
+                0.1,
                 0.3
             ],
             [
-                0.8,
-                0.8
+                0.3,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -20816,23 +20816,23 @@
             "1"
         ],
         "itemRecoilInfo": [
+            10,
             5,
-            2,
             [
-                0.9,
+                0.3,
                 0.9
             ],
             [
                 0.6,
-                0.6
+                0.85
             ],
             [
-                0.3,
+                0.1,
                 0.3
             ],
             [
-                0.8,
-                0.8
+                0.3,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -21141,7 +21141,7 @@
         ],
         "itemMagSize": 2,
         "itemMagSizeEx": 2,
-        "itemName": "Sawed Off Shotgun",
+        "itemName": "Sawed Off",
         "itemPreview3DcamDis": "0,4",
         "itemPreview3Dcolor": [
             "1",
@@ -21165,23 +21165,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -21439,7 +21439,7 @@
             "Single",
             "Auto"
         ],
-        "fireRateAuto": "0,05",
+        "fireRateAuto": "0,096",
         "fireRateBurst": "1",
         "fireRateSingle": "0,05",
         "fixedZoom": "-1",
@@ -21512,23 +21512,23 @@
             "1"
         ],
         "itemRecoilInfo": [
+            11,
             5,
-            2,
             [
-                0.9,
+                0.3,
                 0.9
             ],
             [
                 0.6,
-                0.6
+                0.85
             ],
             [
-                0.3,
+                0.1,
                 0.3
             ],
             [
-                0.8,
-                0.8
+                0.3,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -21875,23 +21875,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -22221,23 +22221,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -22567,23 +22567,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -22913,23 +22913,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -23259,23 +23259,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -23581,7 +23581,7 @@
         ],
         "itemMagSize": 0,
         "itemMagSizeEx": 0,
-        "itemName": "HD Scope",
+        "itemName": "Red Dot Scope",
         "itemPreview3DcamDis": "0,4",
         "itemPreview3Dcolor": [
             "1",
@@ -23605,23 +23605,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -23927,7 +23927,7 @@
         ],
         "itemMagSize": 0,
         "itemMagSizeEx": 0,
-        "itemName": "Red Dot Scope",
+        "itemName": "Holographic Sight",
         "itemPreview3DcamDis": "0,4",
         "itemPreview3Dcolor": [
             "1",
@@ -23951,23 +23951,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -24273,7 +24273,7 @@
         ],
         "itemMagSize": 0,
         "itemMagSizeEx": 0,
-        "itemName": "Shotgun Bullet Loop",
+        "itemName": "Bullet Loops (SG)",
         "itemPreview3DcamDis": "0,4",
         "itemPreview3Dcolor": [
             "1",
@@ -24297,23 +24297,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -24644,23 +24644,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -24997,23 +24997,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            12,
+            6,
             [
-                0.9,
+                0.3,
                 0.9
             ],
             [
-                0.6,
-                0.6
+                0.3,
+                0.85
             ],
             [
-                0.3,
+                0.1,
                 0.3
             ],
             [
-                0.8,
-                0.8
+                0.3,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -25368,23 +25368,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            15,
+            7,
             [
-                0.9,
+                0.3,
                 0.9
             ],
             [
-                0.6,
-                0.6
+                0.3,
+                0.85
             ],
             [
-                0.3,
+                0.1,
                 0.3
             ],
             [
-                0.8,
-                0.8
+                0.3,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -25710,7 +25710,7 @@
         ],
         "itemMagSize": 0,
         "itemMagSizeEx": 0,
-        "itemName": "Small Suppressor",
+        "itemName": "Suppressor (Handgun, SMG)",
         "itemPreview3DcamDis": "0,4",
         "itemPreview3Dcolor": [
             "1",
@@ -25734,23 +25734,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -26056,7 +26056,7 @@
         ],
         "itemMagSize": 0,
         "itemMagSizeEx": 0,
-        "itemName": "Small Mag EX",
+        "itemName": "Extended Mag (Handgun, SMG)",
         "itemPreview3DcamDis": "0,4",
         "itemPreview3Dcolor": [
             "1",
@@ -26080,23 +26080,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -26402,7 +26402,7 @@
         ],
         "itemMagSize": 0,
         "itemMagSizeEx": 0,
-        "itemName": "Small Mag EXQ",
+        "itemName": "Extended Quickdraw Mag (Handgun, SMG)",
         "itemPreview3DcamDis": "0,4",
         "itemPreview3Dcolor": [
             "1",
@@ -26426,23 +26426,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -26748,7 +26748,7 @@
         ],
         "itemMagSize": 0,
         "itemMagSizeEx": 0,
-        "itemName": "Small Mag Q",
+        "itemName": "Quickdraw Mag (Handgun, SMG)",
         "itemPreview3DcamDis": "0,4",
         "itemPreview3Dcolor": [
             "1",
@@ -26772,23 +26772,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -27118,23 +27118,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -27440,7 +27440,7 @@
         ],
         "itemMagSize": 0,
         "itemMagSizeEx": 0,
-        "itemName": "Sniper Compensator",
+        "itemName": "Compensator (DMR, SR)",
         "itemPreview3DcamDis": "0,4",
         "itemPreview3Dcolor": [
             "1",
@@ -27464,23 +27464,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                0.85,
+                0.85
             ]
         ],
         "itemRightHandPos": [
@@ -27786,7 +27786,7 @@
         ],
         "itemMagSize": 0,
         "itemMagSizeEx": 0,
-        "itemName": "Sniper FlashHider",
+        "itemName": "Flash Hider (DMR, SR)",
         "itemPreview3DcamDis": "0,4",
         "itemPreview3Dcolor": [
             "1",
@@ -27810,23 +27810,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
+            [
+                1,
+                1
+            ],
+            [
+                1,
+                1
+            ],
+            [
+                1,
+                1
+            ],
             [
                 0.9,
                 0.9
-            ],
-            [
-                0.6,
-                0.6
-            ],
-            [
-                0.3,
-                0.3
-            ],
-            [
-                0.8,
-                0.8
             ]
         ],
         "itemRightHandPos": [
@@ -28132,7 +28132,7 @@
         ],
         "itemMagSize": 0,
         "itemMagSizeEx": 0,
-        "itemName": "Sniper Suppressor",
+        "itemName": "Suppressor (DMR, SR)",
         "itemPreview3DcamDis": "0,4",
         "itemPreview3Dcolor": [
             "1",
@@ -28156,23 +28156,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -28478,7 +28478,7 @@
         ],
         "itemMagSize": 0,
         "itemMagSizeEx": 0,
-        "itemName": "Sniper Bullet Loop",
+        "itemName": "Bullet Loops (Win94, Kar98k)",
         "itemPreview3DcamDis": "0,4",
         "itemPreview3Dcolor": [
             "1",
@@ -28502,23 +28502,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -28824,7 +28824,7 @@
         ],
         "itemMagSize": 0,
         "itemMagSizeEx": 0,
-        "itemName": "Sniper Mag EX",
+        "itemName": "Extended Mag (DMR, SR)",
         "itemPreview3DcamDis": "0,4",
         "itemPreview3Dcolor": [
             "0,5",
@@ -28848,23 +28848,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -29170,7 +29170,7 @@
         ],
         "itemMagSize": 0,
         "itemMagSizeEx": 0,
-        "itemName": "Sniper Mag EXQ",
+        "itemName": "Extended Quickdraw Mag (DMR, SR)",
         "itemPreview3DcamDis": "0,4",
         "itemPreview3Dcolor": [
             "0,5",
@@ -29194,23 +29194,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -29516,7 +29516,7 @@
         ],
         "itemMagSize": 0,
         "itemMagSizeEx": 0,
-        "itemName": "Sniper Mag Q",
+        "itemName": "Quickdraw Mag (DMR. SR)",
         "itemPreview3DcamDis": "0,4",
         "itemPreview3Dcolor": [
             "1",
@@ -29540,23 +29540,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -29862,7 +29862,7 @@
         ],
         "itemMagSize": 0,
         "itemMagSizeEx": 0,
-        "itemName": "Sniper Stock",
+        "itemName": "Cheek Pad (DMR, SR)",
         "itemPreview3DcamDis": "0,4",
         "itemPreview3Dcolor": [
             "1",
@@ -29886,22 +29886,22 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
+                1,
                 0.8
             ]
         ],
@@ -30232,23 +30232,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                0.95,
+                0.95
             ]
         ],
         "itemRightHandPos": [
@@ -30508,7 +30508,7 @@
         ],
         "fireRateAuto": "0,05",
         "fireRateBurst": "1",
-        "fireRateSingle": "0,05",
+        "fireRateSingle": "0,086",
         "fixedZoom": "-1",
         "itemAmmoType": "ACP45",
         "itemAnimReloadCrouch": "Tommygun_Reload_Crouch",
@@ -30579,23 +30579,23 @@
             "100"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            8,
+            4,
             [
-                0.9,
+                0.3,
                 0.9
             ],
             [
-                0.6,
-                0.6
+                0.3,
+                0.85
             ],
             [
-                0.3,
+                0.1,
                 0.3
             ],
             [
-                0.8,
-                0.8
+                0.3,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -30932,23 +30932,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                0.92
             ]
         ],
         "itemRightHandPos": [
@@ -31207,8 +31207,8 @@
             "Burst",
             "Auto"
         ],
-        "fireRateAuto": "0,05",
-        "fireRateBurst": "0,5",
+        "fireRateAuto": "0,092",
+        "fireRateBurst": "0,092",
         "fireRateSingle": "0,05",
         "fixedZoom": "-1",
         "itemAmmoType": "ACP45",
@@ -31256,7 +31256,7 @@
         ],
         "itemMagSize": 25,
         "itemMagSizeEx": 35,
-        "itemName": "UMP",
+        "itemName": "UMP45",
         "itemPreview3DcamDis": "0,4",
         "itemPreview3Dcolor": [
             "1",
@@ -31280,23 +31280,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            9,
+            4,
             [
-                0.9,
+                0.3,
                 0.9
             ],
             [
-                0.6,
-                0.6
+                0.3,
+                0.85
             ],
             [
-                0.3,
+                0.1,
                 0.3
             ],
             [
-                0.8,
-                0.8
+                0.3,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -31643,23 +31643,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -31917,7 +31917,7 @@
             "Single",
             "Auto"
         ],
-        "fireRateAuto": "0,05",
+        "fireRateAuto": "0,048",
         "fireRateBurst": "1",
         "fireRateSingle": "0,05",
         "fixedZoom": "-1",
@@ -31966,7 +31966,7 @@
         ],
         "itemMagSize": 25,
         "itemMagSizeEx": 35,
-        "itemName": "UZI",
+        "itemName": "Micro UZI",
         "itemPreview3DcamDis": "0,4",
         "itemPreview3Dcolor": [
             "1",
@@ -31990,23 +31990,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            11,
+            6,
             [
-                0.9,
+                0.3,
                 0.9
             ],
             [
-                0.6,
-                0.6
+                0.3,
+                0.85
             ],
             [
-                0.3,
+                0.1,
                 0.3
             ],
             [
-                0.8,
-                0.8
+                0.3,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -32273,7 +32273,7 @@
             "Single",
             "Auto"
         ],
-        "fireRateAuto": "0,05",
+        "fireRateAuto": "0,048",
         "fireRateBurst": "1",
         "fireRateSingle": "0,05",
         "fixedZoom": "-1",
@@ -32346,23 +32346,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            15,
+            10,
             [
-                0.9,
+                0.3,
                 0.9
             ],
             [
-                0.6,
-                0.6
+                0.3,
+                0.85
             ],
             [
-                0.3,
+                0.1,
                 0.3
             ],
             [
-                0.8,
-                0.8
+                0.3,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -32699,19 +32699,19 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
                 0.8,
@@ -32974,8 +32974,8 @@
             "Burst",
             "Auto"
         ],
-        "fireRateAuto": "0,05",
-        "fireRateBurst": "0,2",
+        "fireRateAuto": "0,054",
+        "fireRateBurst": "0,054",
         "fireRateSingle": "0,05",
         "fixedZoom": "-1",
         "itemAmmoType": "Pistol9mm",
@@ -33047,23 +33047,23 @@
             "100"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            14,
+            8,
             [
-                0.9,
+                0.3,
                 0.9
             ],
             [
-                0.6,
-                0.6
+                0.3,
+                0.85
             ],
             [
-                0.3,
+                0.1,
                 0.3
             ],
             [
-                0.8,
-                0.8
+                0.3,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -33387,7 +33387,7 @@
         ],
         "itemMagSize": 0,
         "itemMagSizeEx": 0,
-        "itemName": "Vertical Grip",
+        "itemName": "Vertical Foregrip",
         "itemPreview3DcamDis": "0,4",
         "itemPreview3Dcolor": [
             "1",
@@ -33411,23 +33411,23 @@
             "1"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            10,
+            0,
             [
-                0.9,
-                0.9
+                1,
+                1
             ],
             [
-                0.6,
-                0.6
+                1,
+                1
             ],
             [
-                0.3,
-                0.3
+                1,
+                1
             ],
             [
-                0.8,
-                0.8
+                1,
+                0.85
             ]
         ],
         "itemRightHandPos": [
@@ -33682,11 +33682,12 @@
             "0,2546"
         ],
         "availableFireModes": [
+            "Single",
             "Auto"
         ],
-        "fireRateAuto": "0,05",
+        "fireRateAuto": "0,086",
         "fireRateBurst": "1",
-        "fireRateSingle": "3",
+        "fireRateSingle": "0,086",
         "fixedZoom": "4",
         "itemAmmoType": "Pistol9mm",
         "itemAnimReloadCrouch": "VSS_Reload_Crouch",
@@ -33757,23 +33758,23 @@
             "100"
         ],
         "itemRecoilInfo": [
+            8,
             5,
-            2,
             [
-                0.9,
+                0.3,
                 0.9
             ],
             [
-                0.6,
-                0.6
+                0.3,
+                0.85
             ],
             [
-                0.3,
+                0.1,
                 0.3
             ],
             [
-                0.8,
-                0.8
+                0.3,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -34034,9 +34035,9 @@
         "availableFireModes": [
             "Single"
         ],
-        "fireRateAuto": "0,5",
+        "fireRateAuto": "0,05",
         "fireRateBurst": "1",
-        "fireRateSingle": "3",
+        "fireRateSingle": "0,5",
         "fixedZoom": "2,7",
         "itemAmmoType": "ACP45",
         "itemAnimReloadCrouch": "Win1894_Reload_Crouch",
@@ -34083,7 +34084,7 @@
         ],
         "itemMagSize": 8,
         "itemMagSizeEx": 8,
-        "itemName": "Winchester 1894",
+        "itemName": "Win94",
         "itemPreview3DcamDis": "0,4",
         "itemPreview3Dcolor": [
             "1",
@@ -34107,23 +34108,23 @@
             "100"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            16,
+            10,
             [
-                0.9,
+                0.3,
                 0.9
             ],
             [
-                0.6,
-                0.6
+                0.3,
+                0.85
             ],
             [
-                0.3,
+                0.1,
                 0.3
             ],
             [
-                0.8,
-                0.8
+                0.3,
+                1
             ]
         ],
         "itemRightHandPos": [
@@ -34431,7 +34432,7 @@
         ],
         "itemMagSize": 5,
         "itemMagSizeEx": 5,
-        "itemName": "Win1897",
+        "itemName": "S1897",
         "itemPreview3DcamDis": "0,4",
         "itemPreview3Dcolor": [
             "1",
@@ -34455,23 +34456,23 @@
             "100"
         ],
         "itemRecoilInfo": [
-            5,
-            2,
+            16,
+            11,
             [
-                0.9,
+                0.3,
                 0.9
             ],
             [
-                0.6,
-                0.6
+                0.3,
+                0.85
             ],
             [
-                0.3,
+                0.1,
                 0.3
             ],
             [
-                0.8,
-                0.8
+                0.3,
+                1
             ]
         ],
         "itemRightHandPos": [

@@ -42,8 +42,8 @@ namespace Server
             foreach (KeyValuePair<string, string> pair in settings)
                 Log.Print(" - " + pair.Key + " = " + pair.Value);
             HttpServerWV.secure = settings["use_https"] == "1";
-            LoadItemSettings();
             LoadServerKeys();
+            LoadItemSettings();
             StatusServer.Init();
             EnvServer.Init();
             ReloadPlayerProfiles();

@@ -219,7 +219,8 @@ namespace UnknownServerWV
             if (IsRunning)
                 return;
             playlistIndex = listBox1.SelectedIndex;
-            playlistCount = listBox1.Items.Count;
+            playlistCount = listBox1.Items.Count;            
+            Config.LoadItemSettings();
             new Thread(ThreadRun).Start();
         }
 
