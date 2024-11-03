@@ -22,7 +22,7 @@ namespace Server
             new NetMapInfo("vikendi",
                             new List<string>()
                             {
-                                "Not available yet!"
+                                "Test spawn location"
                             }),
             new NetMapInfo("erangel",
                             new List<string>()
